@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /**
@@ -20,8 +21,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class StockService {
-
-    private static final Random random = new Random();
 
     /**
      * Get real-time quote for a specific stock symbol
@@ -124,10 +123,14 @@ public class StockService {
         );
 
         String name = symbolNames.getOrDefault(symbol.toUpperCase(), "Unknown Company");
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         BigDecimal basePrice = BigDecimal.valueOf(100 + random.nextDouble() * 400);
         BigDecimal change = BigDecimal.valueOf(-10 + random.nextDouble() * 20);
-        BigDecimal changePercent = change.divide(basePrice, 4, RoundingMode.HALF_UP)
-                .multiply(BigDecimal.valueOf(100));
+        
+        // Prevent division by zero
+        BigDecimal changePercent = basePrice.compareTo(BigDecimal.ZERO) > 0 
+                ? change.divide(basePrice, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100))
+                : BigDecimal.ZERO;
 
         return StockQuote.builder()
                 .symbol(symbol.toUpperCase())
@@ -171,6 +174,7 @@ public class StockService {
      * Generate mock market indices
      */
     private List<MarketIndex> generateMockMarketIndices() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         List<MarketIndex> indices = new ArrayList<>();
 
         indices.add(MarketIndex.builder()

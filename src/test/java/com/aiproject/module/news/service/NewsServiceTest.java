@@ -1,7 +1,6 @@
 package com.aiproject.module.news.service;
 
 import com.aiproject.module.news.model.NewsArticle;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
