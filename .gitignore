@@ -37,6 +37,12 @@ Thumbs.db
 # Spring Boot
 spring-boot-starter-cache/
 
+# Database files
+data/
+*.db
+*.mv.db
+*.trace.db
+
 # Temporary files
 /tmp/
 *.tmp
