@@ -1,13 +1,10 @@
 package com.aiproject.module.page.model;
 
-import com.aiproject.module.user.model.User;
-import jakarta.persistence.*;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -15,49 +12,39 @@ import java.time.LocalDateTime;
  * Page Entity
  * Represents a static page (About, Contact, etc.)
  */
-@Entity
-@Table(name = "pages")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("pages")
 public class Page {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
-    @Column(nullable = false, length = 200)
     private String title;
 
-    @Column(unique = true, nullable = false, length = 200)
     private String slug;
 
-    @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "TEXT")
+    @TableField("original_content")
     private String originalContent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    @TableField("author_id")
+    private Long authorId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     @Builder.Default
     private PageStatus status = PageStatus.DRAFT;
 
-    @Column(name = "view_count")
+    @TableField("view_count")
     @Builder.Default
     private Long viewCount = 0L;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(nullable = false)
+    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     public enum PageStatus {

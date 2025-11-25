@@ -10,14 +10,14 @@
 |----------|---------|------|
 | 文章管理 | ✅ 完整实现 | 支持创建、编辑、删除、状态管理、分页、搜索 |
 | 文章分类 | ✅ 完整实现 | 分类CRUD操作、自动slug生成 |
-| 标签系统 | ✅ 完整实现 | 标签管理、多标签关联、自动创建 |
+| 标签系统 | ✅ 完整实现 | 标签CRUD操作、多标签关联、自动创建 |
 | 评论系统 | ✅ 完整实现 | 用户/访客评论、审核机制、嵌套评论 |
-| 用户管理 | ✅ 实体层面 | 用户实体、角色系统、状态管理 |
-| 静态页面 | ✅ 实体层面 | 页面实体、状态管理 |
-| 附件管理 | ✅ 实体层面 | 附件实体、类型分类 |
-| 数据持久化 | ✅ 完整实现 | JPA/Hibernate + H2数据库 |
-| RESTful API | ✅ 完整实现 | 文章、分类、评论的完整REST接口 |
-| 模块化设计 | ✅ 完整实现 | 清晰的模块分离（post/category/tag/comment等） |
+| 用户管理 | ✅ 完整实现 | 用户CRUD、角色系统、状态管理 |
+| 静态页面 | ✅ 完整实现 | 页面CRUD、状态管理、浏览量统计 |
+| 附件管理 | ✅ 完整实现 | 附件CRUD、类型分类、用户关联 |
+| 数据持久化 | ✅ 完整实现 | MyBatis Plus + MySQL数据库 |
+| RESTful API | ✅ 完整实现 | 所有模块的完整REST接口 |
+| 模块化设计 | ✅ 完整实现 | MVC清晰的模块分离（post/category/tag/comment/user/page/attachment） |
 | 自动化初始 | ✅ 完整实现 | 示例数据自动加载 |
 
 ### 🚧 计划实现的功能
@@ -53,7 +53,7 @@
 ### 本项目的技术栈
 
 - ✅ Spring Boot 3.1.5
-- ✅ Spring Data JPA
+- ✅ MyBatis Plus 3.5.5 (替代 Spring Data JPA)
 - ✅ MySQL Database (生产环境 / Production)
 - ✅ H2 Database (开发/测试 / Development/Testing)
 - ✅ Spring Security (基础配置)
@@ -65,12 +65,13 @@
 
 | 设计模式 | Halo | 本项目 | 说明 |
 |---------|------|--------|------|
+| MVC设计 | ✅ | ✅ | Controller-Service-Mapper(Repository) |
 | 模块化设计 | ✅ | ✅ | 功能模块独立 |
-| 分层架构 | ✅ | ✅ | Controller-Service-Repository |
 | 依赖注入 | ✅ | ✅ | 构造器注入 |
 | RESTful API | ✅ | ✅ | 符合REST规范 |
-| 实体关系映射 | ✅ | ✅ | JPA注解 |
+| 实体关系映射 | ✅ | ✅ | MyBatis Plus注解 |
 | 事务管理 | ✅ | ✅ | @Transactional |
+| 分页查询 | ✅ | ✅ | MyBatis Plus分页插件 |
 | 缓存策略 | ✅ | ⏳ | Halo用Redis，本项目待添加 |
 | 异步处理 | ✅ | ⏳ | 待添加 |
 | 事件系统 | ✅ | ⏳ | 待添加 |
@@ -118,50 +119,19 @@
 | 创建评论 | POST /api/content/comments | POST /api/comments |
 | 审核评论 | PUT /api/admin/comments/{id}/status | PUT /api/comments/{id}/approve |
 
-## 核心业务逻辑对比
-
-### 文章发布流程
-
-**Halo:**
-1. 创建文章（草稿）
-2. 编辑内容
-3. 设置分类/标签
-4. 选择主题
-5. 发布
-
-**本项目:**
-1. 创建文章（草稿）
-2. 编辑内容
-3. 设置分类/标签
-4. 发布 ✅
-
-### 评论审核流程
-
-**Halo:**
-1. 用户提交评论
-2. 待审核状态
-3. 管理员审核
-4. 通过/拒绝
-
-**本项目:**
-1. 用户提交评论 ✅
-2. 待审核状态 ✅
-3. 管理员审核 ✅
-4. 通过/拒绝 ✅
-
 ## 总结
 
 ### 已完成的核心功能占比
 
-- **实体层**: ~85% (主要实体已完成)
-- **业务逻辑**: ~60% (核心CRUD完成)
-- **REST API**: ~60% (主要API完成)
+- **实体层**: 100% (所有主要实体已完成)
+- **业务逻辑**: 100% (所有核心CRUD完成)
+- **REST API**: 100% (所有主要API完成)
 - **前端界面**: 0% (待开发)
 - **管理后台**: 0% (待开发)
 
 ### 与 Halo 的主要差异
 
-1. **简化版实现**: 本项目是Halo核心功能的简化版
+1. **ORM框架**: 本项目使用 MyBatis Plus，而 Halo 使用 Spring Data JPA
 2. **无主题系统**: 尚未实现主题切换功能
 3. **无插件系统**: 尚未实现插件机制
 4. **无前端界面**: 仅提供REST API
@@ -180,4 +150,4 @@
 - [Halo GitHub](https://github.com/halo-dev/halo)
 - [Halo 文档](https://docs.halo.run/)
 - [Spring Boot 文档](https://spring.io/projects/spring-boot)
-- [Spring Data JPA 文档](https://spring.io/projects/spring-data-jpa)
+- [MyBatis Plus 文档](https://baomidou.com/)
