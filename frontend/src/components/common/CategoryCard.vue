@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { Category } from '@/types'
 import gsap from 'gsap'
@@ -9,13 +9,6 @@ const props = defineProps<{
 }>()
 
 const cardRef = ref<HTMLElement | null>(null)
-
-onMounted(() => {
-  if (cardRef.value) {
-    cardRef.value.addEventListener('mouseenter', handleMouseEnter)
-    cardRef.value.addEventListener('mouseleave', handleMouseLeave)
-  }
-})
 
 const handleMouseEnter = () => {
   if (!cardRef.value) return
@@ -27,12 +20,15 @@ const handleMouseEnter = () => {
     ease: 'power2.out'
   })
   
-  gsap.to('.category-icon', {
-    scale: 1.2,
-    rotateZ: 10,
-    duration: 0.3,
-    ease: 'back.out(1.7)'
-  })
+  const icon = cardRef.value.querySelector('.category-icon')
+  if (icon) {
+    gsap.to(icon, {
+      scale: 1.2,
+      rotateZ: 10,
+      duration: 0.3,
+      ease: 'back.out(1.7)'
+    })
+  }
 }
 
 const handleMouseLeave = () => {
@@ -45,13 +41,30 @@ const handleMouseLeave = () => {
     ease: 'power2.out'
   })
   
-  gsap.to('.category-icon', {
-    scale: 1,
-    rotateZ: 0,
-    duration: 0.3,
-    ease: 'power2.out'
-  })
+  const icon = cardRef.value.querySelector('.category-icon')
+  if (icon) {
+    gsap.to(icon, {
+      scale: 1,
+      rotateZ: 0,
+      duration: 0.3,
+      ease: 'power2.out'
+    })
+  }
 }
+
+onMounted(() => {
+  if (cardRef.value) {
+    cardRef.value.addEventListener('mouseenter', handleMouseEnter)
+    cardRef.value.addEventListener('mouseleave', handleMouseLeave)
+  }
+})
+
+onUnmounted(() => {
+  if (cardRef.value) {
+    cardRef.value.removeEventListener('mouseenter', handleMouseEnter)
+    cardRef.value.removeEventListener('mouseleave', handleMouseLeave)
+  }
+})
 
 // Get category icon based on name
 const getCategoryIcon = (name: string) => {
@@ -70,36 +83,41 @@ const getCategoryIcon = (name: string) => {
 </script>
 
 <template>
-  <RouterLink
-    ref="cardRef"
-    :to="`/categories/${category.id}`"
-    class="category-card"
-  >
-    <div class="card-bg"></div>
-    
-    <div class="card-content">
-      <span class="category-icon">
-        {{ getCategoryIcon(category.name) }}
-      </span>
+  <div ref="cardRef" class="category-card-wrapper">
+    <RouterLink
+      :to="`/categories/${category.id}`"
+      class="category-card"
+    >
+      <div class="card-bg"></div>
       
-      <h3 class="category-name">{{ category.name }}</h3>
-      
-      <p v-if="category.description" class="category-desc">
-        {{ category.description }}
-      </p>
-      
-      <div class="category-stats">
-        <span class="post-count">
-          {{ category.postCount }} posts
+      <div class="card-content">
+        <span class="category-icon">
+          {{ getCategoryIcon(category.name) }}
         </span>
+        
+        <h3 class="category-name">{{ category.name }}</h3>
+        
+        <p v-if="category.description" class="category-desc">
+          {{ category.description }}
+        </p>
+        
+        <div class="category-stats">
+          <span class="post-count">
+            {{ category.postCount }} posts
+          </span>
+        </div>
       </div>
-    </div>
-    
-    <div class="card-arrow">→</div>
-  </RouterLink>
+      
+      <div class="card-arrow">→</div>
+    </RouterLink>
+  </div>
 </template>
 
 <style scoped>
+.category-card-wrapper {
+  display: block;
+}
+
 .category-card {
   position: relative;
   display: block;
