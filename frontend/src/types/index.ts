@@ -8,6 +8,7 @@ export interface Post {
   thumbnail?: string
   status: 'DRAFT' | 'PUBLISHED' | 'PRIVATE' | 'SCHEDULED'
   authorName?: string
+  categoryId?: number
   categoryName?: string
   tags?: string[]
   viewCount: number

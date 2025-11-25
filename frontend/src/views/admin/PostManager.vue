@@ -48,7 +48,7 @@ const openEditModal = (post: Post) => {
     summary: post.summary || '',
     content: post.content || '',
     status: post.status,
-    categoryId: undefined,
+    categoryId: post.categoryId,
     tags: post.tags || [],
     allowComment: post.allowComment
   })

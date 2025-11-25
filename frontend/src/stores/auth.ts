@@ -74,9 +74,11 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
   }
 
-  // Initialize - fetch user if token exists
-  if (token.value) {
-    fetchCurrentUser()
+  // Initialize function to be called after app setup
+  async function initialize() {
+    if (token.value) {
+      await fetchCurrentUser()
+    }
   }
 
   return {
@@ -91,6 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     fetchCurrentUser,
-    logout
+    logout,
+    initialize
   }
 })
