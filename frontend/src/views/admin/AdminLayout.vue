@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { RouterView, RouterLink, useRoute } from 'vue-router'
+import { RouterView, RouterLink, useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
 
 const navItems = [
   { path: '/admin', name: 'Dashboard', icon: '📊' },
@@ -18,6 +21,11 @@ const isActive = (path: string) => {
     return route.path === path
   }
   return route.path.startsWith(path)
+}
+
+const handleLogout = () => {
+  authStore.logout()
+  router.push('/login')
 }
 </script>
 
@@ -46,9 +54,21 @@ const isActive = (path: string) => {
       </nav>
       
       <div class="sidebar-footer">
-        <RouterLink to="/" class="back-to-site">
-          ← Back to Site
-        </RouterLink>
+        <div v-if="authStore.user" class="user-info">
+          <span class="user-avatar">{{ authStore.user.username.charAt(0).toUpperCase() }}</span>
+          <span class="user-name">{{ authStore.user.nickname || authStore.user.username }}</span>
+        </div>
+        <div class="footer-actions">
+          <RouterLink to="/" class="back-to-site">
+            ← Back to Site
+          </RouterLink>
+          <button v-if="authStore.isAuthenticated" class="logout-btn" @click="handleLogout">
+            Logout
+          </button>
+          <RouterLink v-else to="/login" class="login-link">
+            Login
+          </RouterLink>
+        </div>
       </div>
     </aside>
     
@@ -139,6 +159,39 @@ const isActive = (path: string) => {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .back-to-site {
   color: var(--text-muted);
   text-decoration: none;
@@ -148,6 +201,36 @@ const isActive = (path: string) => {
 
 .back-to-site:hover {
   color: var(--color-primary);
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.login-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  padding: 8px 16px;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.login-link:hover {
+  background: rgba(99, 102, 241, 0.2);
 }
 
 .admin-main {
