@@ -510,11 +510,6 @@ th {
 }
 
 @media (max-width: 480px) {
-  th, td {
-    padding: 12px 8px;
-    font-size: 0.875rem;
-  }
-  
   .action-btn {
     padding: 4px 8px;
   }

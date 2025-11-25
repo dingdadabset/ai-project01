@@ -332,7 +332,7 @@ const closeSidebar = () => {
 }
 
 /* Mobile Responsive */
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .mobile-header {
     display: flex;
   }

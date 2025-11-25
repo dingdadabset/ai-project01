@@ -39,7 +39,6 @@ onMounted(() => {
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
-  store.toggleSidebar()
 }
 
 const handleLogoHover = (entering: boolean) => {
