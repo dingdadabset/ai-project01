@@ -1,13 +1,10 @@
 package com.aiproject.module.comment.model;
 
-import com.aiproject.module.post.model.Post;
-import com.aiproject.module.user.model.User;
-import jakarta.persistence.*;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -15,53 +12,44 @@ import java.time.LocalDateTime;
  * Comment Entity
  * Represents a comment on a blog post
  */
-@Entity
-@Table(name = "comments")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("comments")
 public class Comment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    @TableField("post_id")
+    private Long postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @TableField("user_id")
+    private Long userId;
 
     // For guest comments (if user is null)
-    @Column(length = 50)
+    @TableField("guest_name")
     private String guestName;
 
-    @Column(length = 100)
+    @TableField("guest_email")
     private String guestEmail;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Comment parent;  // For nested comments
+    @TableField("parent_id")
+    private Long parentId;  // For nested comments
 
-    @Column(length = 100)
+    @TableField("ip_address")
     private String ipAddress;
 
-    @Column(length = 500)
+    @TableField("user_agent")
     private String userAgent;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     @Builder.Default
     private CommentStatus status = CommentStatus.PENDING;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     public enum CommentStatus {

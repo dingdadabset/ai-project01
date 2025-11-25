@@ -1,8 +1,11 @@
 package com.aiproject.module.category.service;
 
+import com.aiproject.module.category.mapper.CategoryMapper;
 import com.aiproject.module.category.model.Category;
-import com.aiproject.module.category.repository.CategoryRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,9 +19,9 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
+public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Transactional
     public Category createCategory(String name, String description) {
@@ -30,24 +33,42 @@ public class CategoryService {
                 .description(description)
                 .build();
         
-        return categoryRepository.save(category);
+        categoryMapper.insert(category);
+        return category;
     }
 
-    @Transactional(readOnly = true)
     public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        Category category = categoryMapper.selectById(id);
+        if (category == null) {
+            throw new RuntimeException("Category not found");
+        }
+        return category;
     }
 
-    @Transactional(readOnly = true)
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        return categoryMapper.selectList(null);
+    }
+
+    public IPage<Category> listCategories(int page, int size) {
+        Page<Category> categoryPage = new Page<>(page + 1, size);
+        return categoryMapper.selectPage(categoryPage, 
+                new LambdaQueryWrapper<Category>().orderByDesc(Category::getCreatedAt));
+    }
+
+    @Transactional
+    public Category updateCategory(Long id, String name, String description) {
+        Category category = getCategoryById(id);
+        category.setName(name);
+        category.setSlug(generateSlug(name));
+        category.setDescription(description);
+        categoryMapper.updateById(category);
+        return category;
     }
 
     @Transactional
     public void deleteCategory(Long id) {
         Category category = getCategoryById(id);
-        categoryRepository.delete(category);
+        categoryMapper.deleteById(category.getId());
     }
 
     private String generateSlug(String name) {
@@ -58,7 +79,7 @@ public class CategoryService {
         
         String baseSlug = slug;
         int counter = 1;
-        while (categoryRepository.existsBySlug(slug)) {
+        while (categoryMapper.selectCount(new LambdaQueryWrapper<Category>().eq(Category::getSlug, slug)) > 0) {
             slug = baseSlug + "-" + counter++;
         }
         

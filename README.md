@@ -6,9 +6,9 @@ A complete blog system based on [Halo](https://github.com/halo-dev/halo)'s archi
 
 ## 项目简介 (Project Introduction)
 
-本项目是一个功能完整的博客网站，参考 Halo 开源项目的技术架构和设计理念，采用模块化设计。
+本项目是一个功能完整的博客网站，参考 Halo 开源项目的技术架构和设计理念，采用 MVC 模块化设计。
 
-This is a full-featured blog website that references the technical architecture and design philosophy of the Halo open-source project with a modular design.
+This is a full-featured blog website that references the technical architecture and design philosophy of the Halo open-source project with MVC modular design.
 
 ## 核心功能 (Core Features)
 
@@ -23,8 +23,8 @@ This is a full-featured blog website that references the technical architecture 
 - ✅ 评论计数
 
 ### 2. 分类和标签 (Categories & Tags)
-- ✅ 分类管理
-- ✅ 标签管理
+- ✅ 分类管理（增删改查）
+- ✅ 标签管理（增删改查）
 - ✅ 自动生成 URL slug
 - ✅ 文章数量统计
 
@@ -46,7 +46,7 @@ This is a full-featured blog website that references the technical architecture 
 - ✅ 浏览量统计
 
 ### 6. 附件管理 (Attachment Management)
-- ✅ 文件上传
+- ✅ 文件信息管理
 - ✅ 媒体库
 - ✅ 图片尺寸记录
 
@@ -56,27 +56,29 @@ This is a full-featured blog website that references the technical architecture 
 
 - **Java 17**: Modern Java features
 - **Spring Boot 3.1.5**: Enterprise application framework
-- **Spring Data JPA**: Database abstraction layer
+- **MyBatis Plus 3.5.5**: Database abstraction layer (ORM)
 - **Spring Security**: Authentication and authorization
-- **H2 Database**: Embedded database (development)
-- **Hibernate**: ORM framework
+- **MySQL 8.0+**: Primary database (production)
+- **H2 Database**: Embedded database (development/testing)
 - **Maven**: Build tool
 - **Lombok**: Code generation
 - **CommonMark**: Markdown processing
 
-### 模块化设计 (Modular Design)
+### MVC 模块化设计 (MVC Modular Design)
 
-Following Halo's modular architecture:
+Following Halo's modular architecture with MVC pattern:
 
 ```
 src/main/java/com/aiproject/
 ├── Application.java                    # Main application
+├── config/                             # Configuration classes
+│   └── MybatisPlusConfig.java          # MyBatis Plus configuration
 ├── common/                             # Common utilities
 │   └── initializer/                    # Data initialization
 └── module/                             # Feature modules
     ├── post/                           # Post module
     │   ├── model/                      # Post entity & DTOs
-    │   ├── repository/                 # Data access
+    │   ├── mapper/                     # MyBatis Plus Mapper
     │   ├── service/                    # Business logic
     │   └── controller/                 # REST API
     ├── category/                       # Category module
@@ -93,6 +95,29 @@ src/main/java/com/aiproject/
 
 - Java 17 or higher
 - Maven 3.6+
+- MySQL 8.0+ (推荐) / MySQL 8.0+ (recommended)
+
+### 数据库设置 (Database Setup)
+
+1. 安装并启动 MySQL 数据库 / Install and start MySQL database
+
+2. 创建数据库 / Create database:
+```sql
+CREATE DATABASE halo_blog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+3. 导入数据库表结构 / Import database schema:
+```bash
+mysql -u root -p halo_blog < src/main/resources/db/schema.sql
+```
+
+4. 配置数据库用户（默认使用 root/root）/ Configure database user (default: root/root):
+```sql
+-- 如果需要创建新用户 / If you need to create a new user:
+-- CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';
+-- GRANT ALL PRIVILEGES ON halo_blog.* TO 'root'@'localhost';
+-- FLUSH PRIVILEGES;
+```
 
 ### 构建和运行 (Build and Run)
 
@@ -114,6 +139,20 @@ mvn spring-boot:run
 
 4. The application will start on `http://localhost:8080`
 
+### 使用 H2 数据库开发 (Using H2 for Development)
+
+如果你想使用嵌入式 H2 数据库进行开发测试，可以使用以下命令：
+If you want to use embedded H2 database for development/testing:
+
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=h2
+```
+
+H2 Console 将在以下地址可用 / H2 Console will be available at: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:file:./data/blog;MODE=MySQL`
+- Username: `sa`
+- Password: (empty)
+
 ### 默认用户 (Default Users)
 
 The system comes with pre-configured users:
@@ -121,170 +160,109 @@ The system comes with pre-configured users:
 - **Admin**: `admin` / `admin123`
 - **Author**: `author` / `author123`
 
-### 数据库控制台 (Database Console)
+### 数据库配置 (Database Configuration)
 
-H2 Console is available at: `http://localhost:8080/h2-console`
-
-- JDBC URL: `jdbc:h2:file:./data/blog`
-- Username: `sa`
-- Password: (empty)
+MySQL 数据库配置（本地开发）/ MySQL database configuration (local development):
+- JDBC URL: `jdbc:mysql://localhost:3306/halo_blog`
+- Username: `root`
+- Password: `root`
 
 ## API 文档 (API Documentation)
 
 ### 文章 API (Post APIs)
 
-#### 创建文章 (Create Post)
-```bash
-POST /api/posts
-Content-Type: application/json
-
-{
-  "title": "我的第一篇博客",
-  "summary": "这是摘要",
-  "content": "<p>文章内容</p>",
-  "originalContent": "# 文章内容",
-  "status": "PUBLISHED",
-  "categoryId": 1,
-  "tags": ["Java", "Spring Boot"],
-  "allowComment": true
-}
-```
-
-#### 获取文章列表 (List Posts)
-```bash
-GET /api/posts?page=0&size=10&sortBy=createdAt&direction=DESC
-```
-
-#### 获取已发布文章 (List Published Posts)
-```bash
-GET /api/posts/published?page=0&size=10
-```
-
-#### 获取文章详情 (Get Post by ID)
-```bash
-GET /api/posts/{id}
-```
-
-#### 通过 Slug 获取文章 (Get Post by Slug)
-```bash
-GET /api/posts/slug/{slug}
-```
-
-#### 搜索文章 (Search Posts)
-```bash
-GET /api/posts/search?keyword=Java&page=0&size=10
-```
-
-#### 按分类获取文章 (Get Posts by Category)
-```bash
-GET /api/posts/category/{categoryId}?page=0&size=10
-```
-
-#### 更新文章 (Update Post)
-```bash
-PUT /api/posts/{id}
-Content-Type: application/json
-
-{
-  "title": "更新后的标题",
-  "content": "<p>更新后的内容</p>",
-  ...
-}
-```
-
-#### 删除文章 (Delete Post)
-```bash
-DELETE /api/posts/{id}
-```
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/posts | 创建文章 |
+| GET | /api/posts | 获取文章列表 |
+| GET | /api/posts/{id} | 获取文章详情 |
+| GET | /api/posts/slug/{slug} | 通过slug获取文章 |
+| GET | /api/posts/published | 获取已发布文章 |
+| GET | /api/posts/category/{id} | 按分类获取文章 |
+| GET | /api/posts/search?keyword= | 搜索文章 |
+| PUT | /api/posts/{id} | 更新文章 |
+| DELETE | /api/posts/{id} | 删除文章 |
 
 ### 分类 API (Category APIs)
 
-#### 创建分类 (Create Category)
-```bash
-POST /api/categories
-Content-Type: application/json
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/categories | 创建分类 |
+| GET | /api/categories | 获取所有分类 |
+| GET | /api/categories/{id} | 获取分类详情 |
+| PUT | /api/categories/{id} | 更新分类 |
+| DELETE | /api/categories/{id} | 删除分类 |
 
-{
-  "name": "技术",
-  "description": "技术相关文章"
-}
-```
+### 标签 API (Tag APIs)
 
-#### 获取所有分类 (List Categories)
-```bash
-GET /api/categories
-```
-
-#### 删除分类 (Delete Category)
-```bash
-DELETE /api/categories/{id}
-```
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/tags | 创建标签 |
+| GET | /api/tags | 获取所有标签 |
+| GET | /api/tags/{id} | 获取标签详情 |
+| GET | /api/tags/slug/{slug} | 通过slug获取标签 |
+| PUT | /api/tags/{id} | 更新标签 |
+| DELETE | /api/tags/{id} | 删除标签 |
 
 ### 评论 API (Comment APIs)
 
-#### 创建评论 (Create Comment)
-```bash
-POST /api/comments
-Content-Type: application/json
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/comments | 创建评论 |
+| GET | /api/comments/post/{postId} | 获取文章评论 |
+| GET | /api/comments/{id} | 获取评论详情 |
+| PUT | /api/comments/{id}/approve | 审核评论 |
+| DELETE | /api/comments/{id} | 删除评论 |
 
-{
-  "postId": 1,
-  "userId": 1,              # Optional, for logged-in users
-  "guestName": "访客",       # Required if userId is null
-  "guestEmail": "guest@example.com",  # Required if userId is null
-  "content": "很棒的文章！"
-}
-```
+### 用户 API (User APIs)
 
-#### 获取文章评论 (Get Comments by Post)
-```bash
-GET /api/comments/post/{postId}?page=0&size=10
-```
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/users | 创建用户 |
+| GET | /api/users | 获取所有用户 |
+| GET | /api/users/{id} | 获取用户详情 |
+| GET | /api/users/username/{username} | 通过用户名获取用户 |
+| PUT | /api/users/{id} | 更新用户 |
+| PUT | /api/users/{id}/status | 更新用户状态 |
+| PUT | /api/users/{id}/role | 更新用户角色 |
+| DELETE | /api/users/{id} | 删除用户 |
 
-#### 审核评论 (Approve Comment)
-```bash
-PUT /api/comments/{id}/approve
-```
+### 页面 API (Page APIs)
 
-#### 删除评论 (Delete Comment)
-```bash
-DELETE /api/comments/{id}
-```
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/pages | 创建页面 |
+| GET | /api/pages | 获取所有页面 |
+| GET | /api/pages/{id} | 获取页面详情 |
+| GET | /api/pages/slug/{slug} | 通过slug获取页面 |
+| GET | /api/pages/published | 获取已发布页面 |
+| PUT | /api/pages/{id} | 更新页面 |
+| DELETE | /api/pages/{id} | 删除页面 |
 
-## 数据库设计 (Database Schema)
+### 附件 API (Attachment APIs)
 
-### 主要表结构 (Main Tables)
-
-- **users** - 用户表
-- **posts** - 文章表
-- **categories** - 分类表
-- **tags** - 标签表
-- **post_tags** - 文章标签关联表
-- **comments** - 评论表
-- **pages** - 页面表
-- **attachments** - 附件表
-
-## 设计理念 (Design Principles)
-
-### 借鉴 Halo 的架构 (Inspired by Halo)
-
-1. **模块化设计**: 每个功能模块独立，易于维护和扩展
-2. **分层架构**: Controller → Service → Repository
-3. **RESTful API**: 清晰的 API 设计
-4. **JPA/Hibernate**: 对象关系映射
-5. **依赖注入**: 松耦合设计
-6. **实体关系**: 使用 JPA 注解定义关系
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/attachments | 创建附件记录 |
+| GET | /api/attachments | 获取所有附件 |
+| GET | /api/attachments/{id} | 获取附件详情 |
+| GET | /api/attachments/uploader/{id} | 按上传者获取附件 |
+| GET | /api/attachments/type/{type} | 按类型获取附件 |
+| PUT | /api/attachments/{id} | 更新附件 |
+| DELETE | /api/attachments/{id} | 删除附件 |
 
 ## 开发计划 (Development Roadmap)
 
 ### 已完成 (Completed)
-- [x] 文章管理模块
-- [x] 分类和标签模块
-- [x] 评论系统
-- [x] 用户管理
-- [x] 页面管理
-- [x] 附件管理
-- [x] 数据库持久化
+- [x] 文章管理模块（完整CRUD）
+- [x] 分类模块（完整CRUD）
+- [x] 标签模块（完整CRUD）
+- [x] 评论系统（完整CRUD）
+- [x] 用户管理（完整CRUD）
+- [x] 页面管理（完整CRUD）
+- [x] 附件管理（完整CRUD）
+- [x] MySQL 数据库持久化
+- [x] MyBatis Plus ORM 集成
 - [x] REST API 接口
 - [x] 示例数据初始化
 
@@ -315,4 +293,5 @@ MIT License
 
 - [Halo](https://github.com/halo-dev/halo) - 优秀的博客系统架构设计
 - Spring Boot 社区
+- MyBatis Plus 社区
 - 所有贡献者

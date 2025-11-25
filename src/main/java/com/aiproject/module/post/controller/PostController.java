@@ -3,13 +3,10 @@ package com.aiproject.module.post.controller;
 import com.aiproject.module.post.model.PostRequest;
 import com.aiproject.module.post.model.PostResponse;
 import com.aiproject.module.post.service.PostService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,18 +72,11 @@ public class PostController {
      * List all posts with pagination
      */
     @GetMapping
-    public ResponseEntity<Page<PostResponse>> listPosts(
+    public ResponseEntity<IPage<PostResponse>> listPosts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") String direction) {
+            @RequestParam(defaultValue = "10") int size) {
         log.info("GET /api/posts - page: {}, size: {}", page, size);
-        
-        Sort.Direction sortDirection = direction.equalsIgnoreCase("ASC") 
-                ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
-        
-        Page<PostResponse> posts = postService.listPosts(pageable);
+        IPage<PostResponse> posts = postService.listPosts(page, size);
         return ResponseEntity.ok(posts);
     }
 
@@ -94,13 +84,11 @@ public class PostController {
      * List published posts
      */
     @GetMapping("/published")
-    public ResponseEntity<Page<PostResponse>> listPublishedPosts(
+    public ResponseEntity<IPage<PostResponse>> listPublishedPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         log.info("GET /api/posts/published");
-        
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "publishedAt"));
-        Page<PostResponse> posts = postService.listPublishedPosts(pageable);
+        IPage<PostResponse> posts = postService.listPublishedPosts(page, size);
         return ResponseEntity.ok(posts);
     }
 
@@ -108,14 +96,12 @@ public class PostController {
      * List posts by category
      */
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<Page<PostResponse>> listPostsByCategory(
+    public ResponseEntity<IPage<PostResponse>> listPostsByCategory(
             @PathVariable Long categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         log.info("GET /api/posts/category/{}", categoryId);
-        
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<PostResponse> posts = postService.listPostsByCategory(categoryId, pageable);
+        IPage<PostResponse> posts = postService.listPostsByCategory(categoryId, page, size);
         return ResponseEntity.ok(posts);
     }
 
@@ -123,14 +109,12 @@ public class PostController {
      * Search posts by keyword
      */
     @GetMapping("/search")
-    public ResponseEntity<Page<PostResponse>> searchPosts(
+    public ResponseEntity<IPage<PostResponse>> searchPosts(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         log.info("GET /api/posts/search - keyword: {}", keyword);
-        
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<PostResponse> posts = postService.searchPosts(keyword, pageable);
+        IPage<PostResponse> posts = postService.searchPosts(keyword, page, size);
         return ResponseEntity.ok(posts);
     }
 

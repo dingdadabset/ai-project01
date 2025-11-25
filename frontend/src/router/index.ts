@@ -1,0 +1,108 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('@/views/home/HomeView.vue'),
+      meta: { title: 'Home' }
+    },
+    {
+      path: '/posts',
+      name: 'posts',
+      component: () => import('@/views/posts/PostList.vue'),
+      meta: { title: 'Posts' }
+    },
+    {
+      path: '/posts/:slug',
+      name: 'post-detail',
+      component: () => import('@/views/posts/PostDetail.vue'),
+      meta: { title: 'Post' }
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: () => import('@/views/categories/CategoryList.vue'),
+      meta: { title: 'Categories' }
+    },
+    {
+      path: '/categories/:id',
+      name: 'category-posts',
+      component: () => import('@/views/categories/CategoryPosts.vue'),
+      meta: { title: 'Category' }
+    },
+    {
+      path: '/tags',
+      name: 'tags',
+      component: () => import('@/views/tags/TagList.vue'),
+      meta: { title: 'Tags' }
+    },
+    {
+      path: '/tags/:slug',
+      name: 'tag-posts',
+      component: () => import('@/views/tags/TagPosts.vue'),
+      meta: { title: 'Tag' }
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import('@/views/pages/AboutPage.vue'),
+      meta: { title: 'About' }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/admin/AdminLayout.vue'),
+      meta: { title: 'Admin' },
+      children: [
+        {
+          path: '',
+          name: 'admin-dashboard',
+          component: () => import('@/views/admin/Dashboard.vue')
+        },
+        {
+          path: 'posts',
+          name: 'admin-posts',
+          component: () => import('@/views/admin/PostManager.vue')
+        },
+        {
+          path: 'categories',
+          name: 'admin-categories',
+          component: () => import('@/views/admin/CategoryManager.vue')
+        },
+        {
+          path: 'tags',
+          name: 'admin-tags',
+          component: () => import('@/views/admin/TagManager.vue')
+        },
+        {
+          path: 'comments',
+          name: 'admin-comments',
+          component: () => import('@/views/admin/CommentManager.vue')
+        },
+        {
+          path: 'users',
+          name: 'admin-users',
+          component: () => import('@/views/admin/UserManager.vue')
+        }
+      ]
+    }
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
+})
+
+// Page title update
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title || 'Blog'} - Halo Blog`
+  next()
+})
+
+export default router

@@ -1,11 +1,10 @@
 package com.aiproject.module.tag.model;
 
-import jakarta.persistence.*;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -13,29 +12,24 @@ import java.time.LocalDateTime;
  * Tag Entity
  * Represents a blog post tag
  */
-@Entity
-@Table(name = "tags")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("tags")
 public class Tag {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(unique = true, nullable = false, length = 50)
     private String slug;
 
-    @Column(name = "post_count")
+    @TableField("post_count")
     @Builder.Default
     private Integer postCount = 0;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 }

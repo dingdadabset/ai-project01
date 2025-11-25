@@ -2,12 +2,9 @@ package com.aiproject.module.comment.controller;
 
 import com.aiproject.module.comment.model.Comment;
 import com.aiproject.module.comment.service.CommentService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,14 +35,19 @@ public class CommentController {
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<Page<Comment>> getCommentsByPost(
+    public ResponseEntity<IPage<Comment>> getCommentsByPost(
             @PathVariable Long postId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<Comment> comments = commentService.getCommentsByPost(postId, pageable);
+        IPage<Comment> comments = commentService.getCommentsByPost(postId, page, size);
         return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
+        Comment comment = commentService.getCommentById(id);
+        return ResponseEntity.ok(comment);
     }
 
     @PutMapping("/{id}/approve")

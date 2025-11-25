@@ -1,25 +1,29 @@
 package com.aiproject.module.post.service;
 
+import com.aiproject.module.category.mapper.CategoryMapper;
 import com.aiproject.module.category.model.Category;
-import com.aiproject.module.category.repository.CategoryRepository;
+import com.aiproject.module.post.mapper.PostMapper;
+import com.aiproject.module.post.mapper.PostTagMapper;
 import com.aiproject.module.post.model.Post;
 import com.aiproject.module.post.model.PostRequest;
 import com.aiproject.module.post.model.PostResponse;
-import com.aiproject.module.post.repository.PostRepository;
+import com.aiproject.module.post.model.PostTag;
+import com.aiproject.module.tag.mapper.TagMapper;
 import com.aiproject.module.tag.model.Tag;
-import com.aiproject.module.tag.repository.TagRepository;
+import com.aiproject.module.user.mapper.UserMapper;
 import com.aiproject.module.user.model.User;
-import com.aiproject.module.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,12 +34,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PostService {
+public class PostService extends ServiceImpl<PostMapper, Post> {
 
-    private final PostRepository postRepository;
-    private final UserRepository userRepository;
-    private final CategoryRepository categoryRepository;
-    private final TagRepository tagRepository;
+    private final PostMapper postMapper;
+    private final UserMapper userMapper;
+    private final CategoryMapper categoryMapper;
+    private final TagMapper tagMapper;
+    private final PostTagMapper postTagMapper;
 
     /**
      * Create a new post
@@ -44,8 +49,10 @@ public class PostService {
     public PostResponse createPost(PostRequest request, Long authorId) {
         log.info("Creating new post: {}", request.getTitle());
 
-        User author = userRepository.findById(authorId)
-                .orElseThrow(() -> new EntityNotFoundException("Author not found"));
+        User author = userMapper.selectById(authorId);
+        if (author == null) {
+            throw new RuntimeException("Author not found");
+        }
 
         Post post = Post.builder()
                 .title(request.getTitle())
@@ -55,21 +62,19 @@ public class PostService {
                 .originalContent(request.getOriginalContent())
                 .thumbnail(request.getThumbnail())
                 .status(request.getStatus() != null ? request.getStatus() : Post.PostStatus.DRAFT)
-                .author(author)
+                .authorId(authorId)
                 .allowComment(request.getAllowComment() != null ? request.getAllowComment() : true)
+                
+                
                 .build();
 
         // Set category if provided
         if (request.getCategoryId() != null) {
-            Category category = categoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-            post.setCategory(category);
-        }
-
-        // Set tags
-        if (request.getTags() != null && !request.getTags().isEmpty()) {
-            Set<Tag> tags = getOrCreateTags(request.getTags());
-            post.setTags(tags);
+            Category category = categoryMapper.selectById(request.getCategoryId());
+            if (category == null) {
+                throw new RuntimeException("Category not found");
+            }
+            post.setCategoryId(request.getCategoryId());
         }
 
         // Set published date if status is PUBLISHED
@@ -77,8 +82,23 @@ public class PostService {
             post.setPublishedAt(LocalDateTime.now());
         }
 
-        Post savedPost = postRepository.save(post);
-        return convertToResponse(savedPost);
+        postMapper.insert(post);
+
+        // Set tags
+        if (request.getTags() != null && !request.getTags().isEmpty()) {
+            Set<Tag> tags = getOrCreateTags(request.getTags());
+            for (Tag tag : tags) {
+                PostTag postTag = PostTag.builder()
+                        .postId(post.getId())
+                        .tagId(tag.getId())
+                        .build();
+                postTagMapper.insert(postTag);
+            }
+        }
+
+        return convertToResponse(post, author, 
+                request.getCategoryId() != null ? categoryMapper.selectById(request.getCategoryId()) : null,
+                getTagsForPost(post.getId()));
     }
 
     /**
@@ -88,8 +108,10 @@ public class PostService {
     public PostResponse updatePost(Long id, PostRequest request) {
         log.info("Updating post: {}", id);
 
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        Post post = postMapper.selectById(id);
+        if (post == null) {
+            throw new RuntimeException("Post not found");
+        }
 
         post.setTitle(request.getTitle());
         post.setSlug(generateSlug(request.getTitle()));
@@ -97,9 +119,9 @@ public class PostService {
         post.setContent(request.getContent());
         post.setOriginalContent(request.getOriginalContent());
         post.setThumbnail(request.getThumbnail());
+        
 
         if (request.getStatus() != null) {
-            // If status changes to PUBLISHED, set published date
             if (request.getStatus() == Post.PostStatus.PUBLISHED && post.getPublishedAt() == null) {
                 post.setPublishedAt(LocalDateTime.now());
             }
@@ -107,78 +129,129 @@ public class PostService {
         }
 
         if (request.getCategoryId() != null) {
-            Category category = categoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-            post.setCategory(category);
-        }
-
-        if (request.getTags() != null) {
-            Set<Tag> tags = getOrCreateTags(request.getTags());
-            post.setTags(tags);
+            Category category = categoryMapper.selectById(request.getCategoryId());
+            if (category == null) {
+                throw new RuntimeException("Category not found");
+            }
+            post.setCategoryId(request.getCategoryId());
         }
 
         if (request.getAllowComment() != null) {
             post.setAllowComment(request.getAllowComment());
         }
 
-        Post savedPost = postRepository.save(post);
-        return convertToResponse(savedPost);
+        postMapper.updateById(post);
+
+        // Update tags
+        if (request.getTags() != null) {
+            // Delete old tags
+            postTagMapper.delete(new LambdaQueryWrapper<PostTag>().eq(PostTag::getPostId, id));
+            // Add new tags
+            Set<Tag> tags = getOrCreateTags(request.getTags());
+            for (Tag tag : tags) {
+                PostTag postTag = PostTag.builder()
+                        .postId(post.getId())
+                        .tagId(tag.getId())
+                        .build();
+                postTagMapper.insert(postTag);
+            }
+        }
+
+        User author = userMapper.selectById(post.getAuthorId());
+        Category category = post.getCategoryId() != null ? categoryMapper.selectById(post.getCategoryId()) : null;
+        return convertToResponse(post, author, category, getTagsForPost(post.getId()));
     }
 
     /**
      * Get post by ID
      */
-    @Transactional(readOnly = true)
     public PostResponse getPostById(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        return convertToResponse(post);
+        Post post = postMapper.selectById(id);
+        if (post == null) {
+            throw new RuntimeException("Post not found");
+        }
+        User author = userMapper.selectById(post.getAuthorId());
+        Category category = post.getCategoryId() != null ? categoryMapper.selectById(post.getCategoryId()) : null;
+        return convertToResponse(post, author, category, getTagsForPost(post.getId()));
     }
 
     /**
      * Get post by slug
      */
-    @Transactional(readOnly = true)
     public PostResponse getPostBySlug(String slug) {
-        Post post = postRepository.findBySlug(slug)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        return convertToResponse(post);
+        Post post = postMapper.selectOne(new LambdaQueryWrapper<Post>().eq(Post::getSlug, slug));
+        if (post == null) {
+            throw new RuntimeException("Post not found");
+        }
+        User author = userMapper.selectById(post.getAuthorId());
+        Category category = post.getCategoryId() != null ? categoryMapper.selectById(post.getCategoryId()) : null;
+        return convertToResponse(post, author, category, getTagsForPost(post.getId()));
     }
 
     /**
      * List all posts with pagination
      */
-    @Transactional(readOnly = true)
-    public Page<PostResponse> listPosts(Pageable pageable) {
-        return postRepository.findAll(pageable)
-                .map(this::convertToResponse);
+    public IPage<PostResponse> listPosts(int page, int size) {
+        Page<Post> postPage = new Page<>(page + 1, size);
+        IPage<Post> result = postMapper.selectPage(postPage, 
+                new LambdaQueryWrapper<Post>().orderByDesc(Post::getCreatedAt));
+        
+        return result.convert(post -> {
+            User author = userMapper.selectById(post.getAuthorId());
+            Category category = post.getCategoryId() != null ? categoryMapper.selectById(post.getCategoryId()) : null;
+            return convertToResponse(post, author, category, getTagsForPost(post.getId()));
+        });
     }
 
     /**
      * List published posts
      */
-    @Transactional(readOnly = true)
-    public Page<PostResponse> listPublishedPosts(Pageable pageable) {
-        return postRepository.findByStatus(Post.PostStatus.PUBLISHED, pageable)
-                .map(this::convertToResponse);
+    public IPage<PostResponse> listPublishedPosts(int page, int size) {
+        Page<Post> postPage = new Page<>(page + 1, size);
+        IPage<Post> result = postMapper.selectPage(postPage,
+                new LambdaQueryWrapper<Post>()
+                        .eq(Post::getStatus, Post.PostStatus.PUBLISHED)
+                        .orderByDesc(Post::getPublishedAt));
+        
+        return result.convert(post -> {
+            User author = userMapper.selectById(post.getAuthorId());
+            Category category = post.getCategoryId() != null ? categoryMapper.selectById(post.getCategoryId()) : null;
+            return convertToResponse(post, author, category, getTagsForPost(post.getId()));
+        });
     }
 
     /**
      * List posts by category
      */
-    @Transactional(readOnly = true)
-    public Page<PostResponse> listPostsByCategory(Long categoryId, Pageable pageable) {
-        return postRepository.findByCategoryId(categoryId, pageable)
-                .map(this::convertToResponse);
+    public IPage<PostResponse> listPostsByCategory(Long categoryId, int page, int size) {
+        Page<Post> postPage = new Page<>(page + 1, size);
+        IPage<Post> result = postMapper.selectPage(postPage,
+                new LambdaQueryWrapper<Post>()
+                        .eq(Post::getCategoryId, categoryId)
+                        .orderByDesc(Post::getCreatedAt));
+        
+        return result.convert(post -> {
+            User author = userMapper.selectById(post.getAuthorId());
+            Category category = categoryMapper.selectById(categoryId);
+            return convertToResponse(post, author, category, getTagsForPost(post.getId()));
+        });
     }
 
     /**
      * Search posts by keyword
      */
-    @Transactional(readOnly = true)
-    public Page<PostResponse> searchPosts(String keyword, Pageable pageable) {
-        return postRepository.findByTitleContainingIgnoreCase(keyword, pageable)
-                .map(this::convertToResponse);
+    public IPage<PostResponse> searchPosts(String keyword, int page, int size) {
+        Page<Post> postPage = new Page<>(page + 1, size);
+        IPage<Post> result = postMapper.selectPage(postPage,
+                new LambdaQueryWrapper<Post>()
+                        .like(Post::getTitle, keyword)
+                        .orderByDesc(Post::getCreatedAt));
+        
+        return result.convert(post -> {
+            User author = userMapper.selectById(post.getAuthorId());
+            Category category = post.getCategoryId() != null ? categoryMapper.selectById(post.getCategoryId()) : null;
+            return convertToResponse(post, author, category, getTagsForPost(post.getId()));
+        });
     }
 
     /**
@@ -187,9 +260,13 @@ public class PostService {
     @Transactional
     public void deletePost(Long id) {
         log.info("Deleting post: {}", id);
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        postRepository.delete(post);
+        Post post = postMapper.selectById(id);
+        if (post == null) {
+            throw new RuntimeException("Post not found");
+        }
+        // Delete post tags
+        postTagMapper.delete(new LambdaQueryWrapper<PostTag>().eq(PostTag::getPostId, id));
+        postMapper.deleteById(id);
     }
 
     /**
@@ -197,10 +274,28 @@ public class PostService {
      */
     @Transactional
     public void incrementViewCount(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        Post post = postMapper.selectById(id);
+        if (post == null) {
+            throw new RuntimeException("Post not found");
+        }
         post.setViewCount(post.getViewCount() + 1);
-        postRepository.save(post);
+        postMapper.updateById(post);
+    }
+
+    /**
+     * Get tags for a post
+     */
+    private Set<Tag> getTagsForPost(Long postId) {
+        List<PostTag> postTags = postTagMapper.selectList(
+                new LambdaQueryWrapper<PostTag>().eq(PostTag::getPostId, postId));
+        Set<Tag> tags = new HashSet<>();
+        for (PostTag postTag : postTags) {
+            Tag tag = tagMapper.selectById(postTag.getTagId());
+            if (tag != null) {
+                tags.add(tag);
+            }
+        }
+        return tags;
     }
 
     /**
@@ -209,14 +304,15 @@ public class PostService {
     private Set<Tag> getOrCreateTags(Set<String> tagNames) {
         Set<Tag> tags = new HashSet<>();
         for (String tagName : tagNames) {
-            Tag tag = tagRepository.findByName(tagName)
-                    .orElseGet(() -> {
-                        Tag newTag = Tag.builder()
-                                .name(tagName)
-                                .slug(generateSlug(tagName))
-                                .build();
-                        return tagRepository.save(newTag);
-                    });
+            Tag tag = tagMapper.selectOne(new LambdaQueryWrapper<Tag>().eq(Tag::getName, tagName));
+            if (tag == null) {
+                tag = Tag.builder()
+                        .name(tagName)
+                        .slug(generateTagSlug(tagName))
+                        
+                        .build();
+                tagMapper.insert(tag);
+            }
             tags.add(tag);
         }
         return tags;
@@ -232,20 +328,26 @@ public class PostService {
                 .replaceAll("-+", "-")
                 .trim();
         
-        // Ensure uniqueness
         String baseSlug = slug;
         int counter = 1;
-        while (postRepository.existsBySlug(slug)) {
+        while (postMapper.selectCount(new LambdaQueryWrapper<Post>().eq(Post::getSlug, slug)) > 0) {
             slug = baseSlug + "-" + counter++;
         }
         
         return slug;
     }
 
+    private String generateTagSlug(String name) {
+        return name.toLowerCase()
+                .replaceAll("[^a-z0-9\\s-]", "")
+                .replaceAll("\\s+", "-")
+                .trim();
+    }
+
     /**
      * Convert Post entity to PostResponse DTO
      */
-    private PostResponse convertToResponse(Post post) {
+    private PostResponse convertToResponse(Post post, User author, Category category, Set<Tag> tags) {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -254,12 +356,9 @@ public class PostService {
                 .content(post.getContent())
                 .thumbnail(post.getThumbnail())
                 .status(post.getStatus())
-                .authorName(post.getAuthor().getNickname() != null ? 
-                        post.getAuthor().getNickname() : post.getAuthor().getUsername())
-                .categoryName(post.getCategory() != null ? post.getCategory().getName() : null)
-                .tags(post.getTags().stream()
-                        .map(Tag::getName)
-                        .collect(Collectors.toSet()))
+                .authorName(author != null ? (author.getNickname() != null ? author.getNickname() : author.getUsername()) : null)
+                .categoryName(category != null ? category.getName() : null)
+                .tags(tags.stream().map(Tag::getName).collect(Collectors.toSet()))
                 .viewCount(post.getViewCount())
                 .likeCount(post.getLikeCount())
                 .commentCount(post.getCommentCount())
