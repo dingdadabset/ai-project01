@@ -162,11 +162,21 @@ onMounted(async () => {
   padding: 16px;
   background: var(--bg-secondary);
   border-radius: var(--radius-md);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.item-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .item-info h3 {
   font-size: 1rem;
   margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-info p {
@@ -184,6 +194,8 @@ onMounted(async () => {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .item-status.published {
@@ -194,5 +206,37 @@ onMounted(async () => {
 .item-status.draft {
   background: rgba(251, 191, 36, 0.2);
   color: #fbbf24;
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  
+  .stat-card {
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .recent-section {
+    padding: 16px;
+  }
+  
+  .recent-item {
+    padding: 12px;
+  }
 }
 </style>

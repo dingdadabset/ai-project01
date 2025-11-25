@@ -241,6 +241,8 @@ const formatDate = (date: string) => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .page-header h1 {
@@ -255,12 +257,13 @@ const formatDate = (date: string) => {
 .posts-table {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
 }
 
 th, td {
@@ -275,6 +278,7 @@ th {
   color: var(--text-muted);
   font-size: 0.875rem;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .post-title {
@@ -290,6 +294,7 @@ th {
   border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .status.published {
@@ -305,6 +310,7 @@ th {
 .actions {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .action-btn {
@@ -315,6 +321,7 @@ th {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .action-btn.edit {
@@ -434,6 +441,7 @@ th {
   gap: 12px;
   padding: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -466,5 +474,49 @@ th {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .post-title {
+    max-width: 150px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    margin: 10px;
+  }
+  
+  .modal-body {
+    padding: 16px;
+  }
+  
+  .modal-header,
+  .modal-footer {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  th, td {
+    padding: 12px 8px;
+    font-size: 0.875rem;
+  }
+  
+  .action-btn {
+    padding: 4px 8px;
+  }
 }
 </style>

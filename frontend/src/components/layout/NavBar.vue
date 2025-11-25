@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
+import { ref, onMounted, watch } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/app'
 import gsap from 'gsap'
 
 const store = useAppStore()
+const route = useRoute()
 const isScrolled = ref(false)
+const isMobileMenuOpen = ref(false)
 const navRef = ref<HTMLElement | null>(null)
 
 const navLinks = [
@@ -15,6 +17,11 @@ const navLinks = [
   { name: 'Tags', path: '/tags' },
   { name: 'About', path: '/about' }
 ]
+
+// Close mobile menu on route change
+watch(() => route.path, () => {
+  isMobileMenuOpen.value = false
+})
 
 onMounted(() => {
   // Animate nav on mount
@@ -29,6 +36,11 @@ onMounted(() => {
     isScrolled.value = window.scrollY > 50
   })
 })
+
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+  store.toggleSidebar()
+}
 
 const handleLogoHover = (entering: boolean) => {
   const logo = document.querySelector('.nav-logo')
@@ -61,7 +73,7 @@ const handleLogoHover = (entering: boolean) => {
         <span class="logo-text">Halo Blog</span>
       </RouterLink>
       
-      <!-- Nav Links -->
+      <!-- Nav Links (Desktop) -->
       <div class="nav-links">
         <RouterLink 
           v-for="link in navLinks" 
@@ -73,7 +85,7 @@ const handleLogoHover = (entering: boolean) => {
         </RouterLink>
       </div>
       
-      <!-- Actions -->
+      <!-- Actions (Desktop) -->
       <div class="nav-actions">
         <!-- View Mode Toggle -->
         <div class="view-mode-toggle">
@@ -105,12 +117,83 @@ const handleLogoHover = (entering: boolean) => {
       </div>
       
       <!-- Mobile Menu Toggle -->
-      <button class="mobile-menu-toggle" @click="store.toggleSidebar()">
+      <button 
+        class="mobile-menu-toggle" 
+        :class="{ 'active': isMobileMenuOpen }"
+        @click="toggleMobileMenu"
+        aria-label="Toggle menu"
+      >
         <span class="menu-bar"></span>
         <span class="menu-bar"></span>
         <span class="menu-bar"></span>
       </button>
     </div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" :class="{ 'open': isMobileMenuOpen }">
+      <div class="mobile-menu-content">
+        <!-- Mobile Nav Links -->
+        <div class="mobile-nav-links">
+          <RouterLink 
+            v-for="link in navLinks" 
+            :key="link.path"
+            :to="link.path"
+            class="mobile-nav-link"
+            @click="isMobileMenuOpen = false"
+          >
+            {{ link.name }}
+          </RouterLink>
+        </div>
+        
+        <!-- Mobile Actions -->
+        <div class="mobile-actions">
+          <!-- View Mode Toggle -->
+          <div class="mobile-view-toggle">
+            <span class="toggle-label">View Mode</span>
+            <div class="view-mode-toggle">
+              <button 
+                class="view-mode-btn"
+                :class="{ 'active': store.viewMode === 'story' }"
+                @click="store.toggleViewMode()"
+              >
+                🎬 Story
+              </button>
+              <button 
+                class="view-mode-btn"
+                :class="{ 'active': store.viewMode === 'list' }"
+                @click="store.toggleViewMode()"
+              >
+                📋 List
+              </button>
+            </div>
+          </div>
+          
+          <!-- Dark Mode Toggle -->
+          <div class="mobile-theme-toggle">
+            <span class="toggle-label">Theme</span>
+            <button class="theme-toggle" @click="store.toggleDarkMode()">
+              {{ store.isDarkMode ? '🌞 Light' : '🌙 Dark' }}
+            </button>
+          </div>
+          
+          <!-- Admin Link -->
+          <RouterLink 
+            to="/admin" 
+            class="btn btn-primary mobile-admin-btn"
+            @click="isMobileMenuOpen = false"
+          >
+            Admin Panel
+          </RouterLink>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div 
+      v-if="isMobileMenuOpen" 
+      class="mobile-menu-overlay"
+      @click="isMobileMenuOpen = false"
+    ></div>
   </nav>
 </template>
 
@@ -231,6 +314,7 @@ const handleLogoHover = (entering: boolean) => {
   font-size: 0.75rem;
 }
 
+/* Mobile Menu Toggle */
 .mobile-menu-toggle {
   display: none;
   flex-direction: column;
@@ -239,6 +323,7 @@ const handleLogoHover = (entering: boolean) => {
   background: none;
   border: none;
   cursor: pointer;
+  z-index: 1002;
 }
 
 .menu-bar {
@@ -246,6 +331,110 @@ const handleLogoHover = (entering: boolean) => {
   height: 2px;
   background: var(--text-primary);
   transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle.active .menu-bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-toggle.active .menu-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active .menu-bar:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 320px;
+  height: 100vh;
+  background: var(--bg-secondary);
+  z-index: 1001;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+}
+
+.mobile-menu.open {
+  right: 0;
+}
+
+.mobile-menu-content {
+  padding: 100px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 16px 20px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.router-link-active {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--color-primary);
+}
+
+.mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-view-toggle,
+.mobile-theme-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toggle-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.mobile-theme-toggle .theme-toggle {
+  width: auto;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+}
+
+.mobile-admin-btn {
+  width: 100%;
+  text-align: center;
+  padding: 14px 24px;
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
 @media (max-width: 768px) {
@@ -256,6 +445,25 @@ const handleLogoHover = (entering: boolean) => {
   
   .mobile-menu-toggle {
     display: flex;
+  }
+  
+  .mobile-menu {
+    display: block;
+  }
+  
+  .mobile-menu-overlay {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo .logo-text {
+    font-size: 1.2rem;
+  }
+  
+  .mobile-menu {
+    width: 100%;
+    max-width: none;
   }
 }
 </style>

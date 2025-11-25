@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { RouterView, useRouter } from 'vue-router'
+import { onMounted, computed } from 'vue'
+import { RouterView, useRouter, useRoute } from 'vue-router'
 import NavBar from '@/components/layout/NavBar.vue'
 import FooterBar from '@/components/layout/FooterBar.vue'
 import gsap from 'gsap'
 
 const router = useRouter()
+const route = useRoute()
+
+// Check if current route is admin or login
+const isAdminRoute = computed(() => {
+  return route.path.startsWith('/admin') || route.path === '/login'
+})
 
 // Page transition animation
 router.beforeEach((to, from, next) => {
@@ -48,11 +54,11 @@ onMounted(() => {
     <!-- Page Transition Overlay -->
     <div class="page-transition-overlay"></div>
     
-    <!-- Navigation -->
-    <NavBar />
+    <!-- Navigation (hide on admin/login routes) -->
+    <NavBar v-if="!isAdminRoute" />
     
     <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content" :class="{ 'no-padding': isAdminRoute }">
       <RouterView v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -60,8 +66,8 @@ onMounted(() => {
       </RouterView>
     </main>
     
-    <!-- Footer -->
-    <FooterBar />
+    <!-- Footer (hide on admin/login routes) -->
+    <FooterBar v-if="!isAdminRoute" />
   </div>
 </template>
 
@@ -75,6 +81,10 @@ onMounted(() => {
 .main-content {
   flex: 1;
   padding-top: 80px;
+}
+
+.main-content.no-padding {
+  padding-top: 0;
 }
 
 /* Page transition overlay */
