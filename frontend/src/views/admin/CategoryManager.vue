@@ -60,7 +60,10 @@ const deleteCategory = async (id: number) => {
 .page-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .page-header h1 { margin-bottom: 8px; }
@@ -73,6 +76,12 @@ const deleteCategory = async (id: number) => {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.form-card .input {
+  flex: 1;
+  min-width: 200px;
 }
 
 .items-grid {
@@ -103,5 +112,32 @@ const deleteCategory = async (id: number) => {
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
   cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .form-card {
+    flex-direction: column;
+  }
+  
+  .form-card .input {
+    width: 100%;
+  }
+  
+  .items-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

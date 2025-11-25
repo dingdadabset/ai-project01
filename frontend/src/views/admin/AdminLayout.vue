@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { RouterView, RouterLink, useRoute, useRouter } from 'vue-router'
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+const isSidebarOpen = ref(false)
 
 const navItems = [
   { path: '/admin', name: 'Dashboard', icon: '📊' },
@@ -27,17 +28,46 @@ const handleLogout = () => {
   authStore.logout()
   router.push('/login')
 }
+
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
+
+const closeSidebar = () => {
+  isSidebarOpen.value = false
+}
 </script>
 
 <template>
   <div class="admin-layout">
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <button class="menu-toggle" @click="toggleSidebar" aria-label="Toggle menu">
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+      </button>
+      <RouterLink to="/" class="brand">
+        <span class="brand-icon">✨</span>
+        <span class="brand-text">Halo Admin</span>
+      </RouterLink>
+    </header>
+    
+    <!-- Sidebar Overlay -->
+    <div 
+      v-if="isSidebarOpen" 
+      class="sidebar-overlay"
+      @click="closeSidebar"
+    ></div>
+    
     <!-- Sidebar -->
-    <aside class="admin-sidebar">
+    <aside class="admin-sidebar" :class="{ 'open': isSidebarOpen }">
       <div class="sidebar-header">
-        <RouterLink to="/" class="brand">
+        <RouterLink to="/" class="brand" @click="closeSidebar">
           <span class="brand-icon">✨</span>
           <span class="brand-text">Halo Admin</span>
         </RouterLink>
+        <button class="close-sidebar" @click="closeSidebar" aria-label="Close menu">×</button>
       </div>
       
       <nav class="sidebar-nav">
@@ -47,6 +77,7 @@ const handleLogout = () => {
           :to="item.path"
           class="nav-item"
           :class="{ 'active': isActive(item.path) }"
+          @click="closeSidebar"
         >
           <span class="nav-icon">{{ item.icon }}</span>
           <span class="nav-text">{{ item.name }}</span>
@@ -59,13 +90,13 @@ const handleLogout = () => {
           <span class="user-name">{{ authStore.user.nickname || authStore.user.username }}</span>
         </div>
         <div class="footer-actions">
-          <RouterLink to="/" class="back-to-site">
+          <RouterLink to="/" class="back-to-site" @click="closeSidebar">
             ← Back to Site
           </RouterLink>
           <button v-if="authStore.isAuthenticated" class="logout-btn" @click="handleLogout">
             Logout
           </button>
-          <RouterLink v-else to="/login" class="login-link">
+          <RouterLink v-else to="/login" class="login-link" @click="closeSidebar">
             Login
           </RouterLink>
         </div>
@@ -85,6 +116,48 @@ const handleLogout = () => {
   min-height: 100vh;
 }
 
+/* Mobile Header */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--bg-secondary);
+  z-index: 100;
+  padding: 0 16px;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-bar {
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 199;
+}
+
 .admin-sidebar {
   width: 260px;
   background: var(--bg-secondary);
@@ -95,10 +168,29 @@ const handleLogout = () => {
   top: 0;
   bottom: 0;
   padding: 24px;
+  z-index: 200;
+  transition: transform 0.3s ease;
 }
 
 .sidebar-header {
   margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-sidebar {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 5px;
+}
+
+.close-sidebar:hover {
+  color: var(--text-primary);
 }
 
 .brand {
@@ -237,5 +329,43 @@ const handleLogout = () => {
   flex: 1;
   margin-left: 260px;
   padding: 32px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .mobile-header {
+    display: flex;
+  }
+  
+  .sidebar-overlay {
+    display: block;
+  }
+  
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .close-sidebar {
+    display: block;
+  }
+  
+  .admin-main {
+    margin-left: 0;
+    padding: 80px 16px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-sidebar {
+    width: 100%;
+  }
+  
+  .admin-main {
+    padding: 70px 12px 20px;
+  }
 }
 </style>

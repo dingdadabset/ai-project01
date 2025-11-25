@@ -269,6 +269,8 @@ const deleteUser = async (id: number) => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .page-header h1 { margin-bottom: 8px; }
@@ -277,12 +279,13 @@ const deleteUser = async (id: number) => {
 .users-table {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
 }
 
 th, td {
@@ -296,6 +299,7 @@ th {
   font-weight: 600;
   color: var(--text-muted);
   font-size: 0.875rem;
+  white-space: nowrap;
 }
 
 .user-info {
@@ -313,6 +317,7 @@ th {
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .username {
@@ -329,6 +334,7 @@ th {
   border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .role.admin { background: rgba(99, 102, 241, 0.2); color: #6366f1; }
@@ -342,6 +348,7 @@ th {
 .actions {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .action-btn {
@@ -351,6 +358,7 @@ th {
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .action-btn.edit {
@@ -361,6 +369,10 @@ th {
 .action-btn.delete {
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
+}
+
+.action-btn:hover {
+  opacity: 0.8;
 }
 
 /* Modal styles */
@@ -455,6 +467,7 @@ th {
   gap: 12px;
   padding: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -487,5 +500,41 @@ th {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  th, td {
+    padding: 12px 8px;
+    font-size: 0.875rem;
+  }
+  
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+  
+  .modal-content {
+    margin: 10px;
+  }
+  
+  .modal-body {
+    padding: 16px;
+  }
+  
+  .modal-header,
+  .modal-footer {
+    padding: 16px;
+  }
 }
 </style>

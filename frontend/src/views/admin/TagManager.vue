@@ -58,7 +58,10 @@ const deleteTag = async (id: number) => {
 .page-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .page-header h1 { margin-bottom: 8px; }
@@ -71,6 +74,12 @@ const deleteTag = async (id: number) => {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.form-card .input {
+  flex: 1;
+  min-width: 200px;
 }
 
 .tags-cloud {
@@ -108,5 +117,35 @@ const deleteTag = async (id: number) => {
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .form-card {
+    flex-direction: column;
+  }
+  
+  .form-card .input {
+    width: 100%;
+  }
+  
+  .tags-cloud {
+    gap: 12px;
+  }
+  
+  .tag-item {
+    padding: 10px 16px;
+  }
 }
 </style>
