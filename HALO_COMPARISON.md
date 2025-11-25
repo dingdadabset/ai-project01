@@ -54,7 +54,8 @@
 
 - ✅ Spring Boot 3.1.5
 - ✅ Spring Data JPA
-- ✅ H2 Database
+- ✅ MySQL Database (生产环境 / Production)
+- ✅ H2 Database (开发/测试 / Development/Testing)
 - ✅ Spring Security (基础配置)
 - ⏳ Thymeleaf (待添加)
 - ⏳ Reactive Programming (待添加)

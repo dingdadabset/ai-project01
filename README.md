@@ -58,7 +58,8 @@ This is a full-featured blog website that references the technical architecture 
 - **Spring Boot 3.1.5**: Enterprise application framework
 - **Spring Data JPA**: Database abstraction layer
 - **Spring Security**: Authentication and authorization
-- **H2 Database**: Embedded database (development)
+- **MySQL 8.0+**: Primary database (production)
+- **H2 Database**: Embedded database (development/testing)
 - **Hibernate**: ORM framework
 - **Maven**: Build tool
 - **Lombok**: Code generation
@@ -93,6 +94,24 @@ src/main/java/com/aiproject/
 
 - Java 17 or higher
 - Maven 3.6+
+- MySQL 8.0+ (推荐) / MySQL 8.0+ (recommended)
+
+### 数据库设置 (Database Setup)
+
+1. 安装并启动 MySQL 数据库 / Install and start MySQL database
+
+2. 创建数据库 / Create database:
+```sql
+CREATE DATABASE halo_blog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+3. 配置数据库用户（默认使用 root/root）/ Configure database user (default: root/root):
+```sql
+-- 如果需要创建新用户 / If you need to create a new user:
+-- CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';
+-- GRANT ALL PRIVILEGES ON halo_blog.* TO 'root'@'localhost';
+-- FLUSH PRIVILEGES;
+```
 
 ### 构建和运行 (Build and Run)
 
@@ -114,6 +133,32 @@ mvn spring-boot:run
 
 4. The application will start on `http://localhost:8080`
 
+### 使用 H2 数据库开发 (Using H2 for Development)
+
+如果你想使用嵌入式 H2 数据库进行开发测试，可以使用以下命令：
+If you want to use embedded H2 database for development/testing:
+
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=h2
+```
+
+H2 Console 将在以下地址可用 / H2 Console will be available at: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:file:./data/blog`
+- Username: `sa`
+- Password: (empty)
+
+### 生产环境部署 (Production Deployment)
+
+对于生产环境，使用 prod profile 并配置环境变量：
+For production, use the prod profile and configure environment variables:
+
+```bash
+export SPRING_DATASOURCE_URL=jdbc:mysql://your-db-host:3306/halo_blog?useSSL=true
+export SPRING_DATASOURCE_USERNAME=your_username
+export SPRING_DATASOURCE_PASSWORD=your_secure_password
+mvn spring-boot:run -Dspring-boot.run.profiles=prod
+```
+
 ### 默认用户 (Default Users)
 
 The system comes with pre-configured users:
@@ -121,13 +166,12 @@ The system comes with pre-configured users:
 - **Admin**: `admin` / `admin123`
 - **Author**: `author` / `author123`
 
-### 数据库控制台 (Database Console)
+### 数据库配置 (Database Configuration)
 
-H2 Console is available at: `http://localhost:8080/h2-console`
-
-- JDBC URL: `jdbc:h2:file:./data/blog`
-- Username: `sa`
-- Password: (empty)
+MySQL 数据库配置（本地开发）/ MySQL database configuration (local development):
+- JDBC URL: `jdbc:mysql://localhost:3306/halo_blog`
+- Username: `root`
+- Password: `root`
 
 ## API 文档 (API Documentation)
 
