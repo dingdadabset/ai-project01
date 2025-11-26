@@ -7,6 +7,7 @@ const showModal = ref(false)
 const editingStock = ref<Stock | null>(null)
 const isSubmitting = ref(false)
 const isLoading = ref(true)
+const isFetching = ref(false)
 
 const markets = ['SH', 'SZ', 'HK', 'US', 'OTHER']
 
@@ -36,6 +37,20 @@ const fetchStocks = async () => {
     console.error('Failed to fetch stocks:', error)
   } finally {
     isLoading.value = false
+  }
+}
+
+const fetchExternalStocks = async () => {
+  isFetching.value = true
+  try {
+    const response = await stockApi.fetchExternal()
+    alert(`成功拉取 ${response.data.count} 条股票数据`)
+    await fetchStocks()
+  } catch (error) {
+    console.error('Failed to fetch external stocks:', error)
+    alert('拉取外部股票数据失败')
+  } finally {
+    isFetching.value = false
   }
 }
 
@@ -144,9 +159,14 @@ const getChangeClass = (percent: number) => {
         <h1>📈 股票管理</h1>
         <p>管理股票市场数据</p>
       </div>
-      <button class="btn btn-primary" @click="openCreateModal">
-        + 添加股票
-      </button>
+      <div class="header-actions">
+        <button class="btn btn-secondary" @click="fetchExternalStocks" :disabled="isFetching">
+          {{ isFetching ? '拉取中...' : '🔄 拉取外部数据' }}
+        </button>
+        <button class="btn btn-primary" @click="openCreateModal">
+          + 添加股票
+        </button>
+      </div>
     </header>
     
     <div v-if="isLoading" class="loading">加载中...</div>
@@ -316,6 +336,12 @@ const getChangeClass = (percent: number) => {
 
 .page-header p {
   color: var(--text-secondary);
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .stocks-table {

@@ -70,7 +70,11 @@ export const newsApi = {
 
   // Set news as hot
   setHot: (id: number, isHot: boolean, hotScore: number) =>
-    api.put<News>(`/news/${id}/hot`, { isHot, hotScore })
+    api.put<News>(`/news/${id}/hot`, { isHot, hotScore }),
+
+  // Fetch news from external sources
+  fetchExternal: () =>
+    api.post<{ message: string; count: number; news: News[] }>('/news/fetch')
 }
 
 export default newsApi

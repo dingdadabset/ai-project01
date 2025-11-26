@@ -1,5 +1,6 @@
 package com.aiproject.module.news.controller;
 
+import com.aiproject.module.news.fetcher.NewsFetcherService;
 import com.aiproject.module.news.model.News;
 import com.aiproject.module.news.service.NewsService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class NewsController {
 
     private final NewsService newsService;
+    private final NewsFetcherService newsFetcherService;
 
     /**
      * Create a new news item
@@ -195,5 +197,24 @@ public class NewsController {
         
         News news = newsService.setHot(id, isHot, hotScore);
         return ResponseEntity.ok(news);
+    }
+
+    /**
+     * Manually trigger news fetch from external sources
+     */
+    @PostMapping("/fetch")
+    public ResponseEntity<?> fetchNews() {
+        log.info("POST /api/news/fetch - Triggering manual news fetch");
+        try {
+            List<News> fetchedNews = newsFetcherService.fetchNewsManually();
+            return ResponseEntity.ok(Map.of(
+                    "message", "News fetch completed",
+                    "count", fetchedNews.size(),
+                    "news", fetchedNews
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error fetching news: " + e.getMessage()));
+        }
     }
 }

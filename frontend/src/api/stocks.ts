@@ -94,7 +94,11 @@ export const stockApi = {
 
   // Delete stock
   delete: (id: number) =>
-    api.delete(`/stocks/${id}`)
+    api.delete(`/stocks/${id}`),
+
+  // Fetch stock data from external sources
+  fetchExternal: () =>
+    api.post<{ message: string; count: number; stocks: Stock[] }>('/stocks/fetch')
 }
 
 export default stockApi

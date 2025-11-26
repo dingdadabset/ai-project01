@@ -7,6 +7,7 @@ const showModal = ref(false)
 const editingNews = ref<News | null>(null)
 const isSubmitting = ref(false)
 const isLoading = ref(true)
+const isFetching = ref(false)
 
 const categories = [
   'TECHNOLOGY', 'FINANCE', 'POLITICS', 'SPORTS',
@@ -34,6 +35,20 @@ const fetchNews = async () => {
     console.error('Failed to fetch news:', error)
   } finally {
     isLoading.value = false
+  }
+}
+
+const fetchExternalNews = async () => {
+  isFetching.value = true
+  try {
+    const response = await newsApi.fetchExternal()
+    alert(`成功拉取 ${response.data.count} 条新闻`)
+    await fetchNews()
+  } catch (error) {
+    console.error('Failed to fetch external news:', error)
+    alert('拉取外部新闻失败')
+  } finally {
+    isFetching.value = false
   }
 }
 
@@ -125,9 +140,14 @@ const formatDate = (date: string) => {
         <h1>📰 新闻管理</h1>
         <p>管理热点新闻内容</p>
       </div>
-      <button class="btn btn-primary" @click="openCreateModal">
-        + 添加新闻
-      </button>
+      <div class="header-actions">
+        <button class="btn btn-secondary" @click="fetchExternalNews" :disabled="isFetching">
+          {{ isFetching ? '拉取中...' : '🔄 拉取外部新闻' }}
+        </button>
+        <button class="btn btn-primary" @click="openCreateModal">
+          + 添加新闻
+        </button>
+      </div>
     </header>
     
     <div v-if="isLoading" class="loading">加载中...</div>
@@ -269,6 +289,12 @@ const formatDate = (date: string) => {
 
 .page-header p {
   color: var(--text-secondary);
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .news-table {

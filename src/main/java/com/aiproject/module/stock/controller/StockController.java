@@ -1,5 +1,6 @@
 package com.aiproject.module.stock.controller;
 
+import com.aiproject.module.stock.fetcher.StockFetcherService;
 import com.aiproject.module.stock.model.Stock;
 import com.aiproject.module.stock.service.StockService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class StockController {
 
     private final StockService stockService;
+    private final StockFetcherService stockFetcherService;
 
     /**
      * Create or update a stock
@@ -207,5 +209,24 @@ public class StockController {
         log.info("DELETE /api/stocks/{}", id);
         stockService.deleteStock(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Manually trigger stock data fetch from external sources
+     */
+    @PostMapping("/fetch")
+    public ResponseEntity<?> fetchStocks() {
+        log.info("POST /api/stocks/fetch - Triggering manual stock data fetch");
+        try {
+            List<Stock> fetchedStocks = stockFetcherService.fetchStocksManually();
+            return ResponseEntity.ok(Map.of(
+                    "message", "Stock data fetch completed",
+                    "count", fetchedStocks.size(),
+                    "stocks", fetchedStocks
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error fetching stock data: " + e.getMessage()));
+        }
     }
 }
