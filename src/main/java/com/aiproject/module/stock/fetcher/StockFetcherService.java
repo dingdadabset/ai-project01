@@ -30,7 +30,6 @@ public class StockFetcherService {
 
     // zhituapi.com API configuration
     private static final String ZHITU_API_BASE_URL = "https://api.zhituapi.com";
-    private static final String ZHITU_STOCK_LIST_URL = ZHITU_API_BASE_URL + "/hs/list/all";
     private static final String ZHITU_REALTIME_URL = ZHITU_API_BASE_URL + "/hs/real/time/";
 
     // Constants for simulated data generation (fallback)
@@ -41,7 +40,7 @@ public class StockFetcherService {
     private static final double PE_RATIO_MIN = 5.0;
     private static final double PE_RATIO_RANGE = 50.0;
 
-    @Value("${stock.api.token:B42F2A36-E7F6-435C-942B-C8A915385328}")
+    @Value("${stock.api.token:}")
     private String apiToken;
 
     private final StockMapper stockMapper;
@@ -96,6 +95,12 @@ public class StockFetcherService {
     private List<Stock> fetchFromZhituApi() {
         List<Stock> stockList = new ArrayList<>();
         
+        // Check if API token is configured
+        if (apiToken == null || apiToken.isEmpty()) {
+            log.warn("Stock API token not configured, using fallback data");
+            return stockList;
+        }
+        
         // Popular stock symbols to fetch real-time data for
         String[] popularSymbols = {
             "000001", "600519", "601318", "000858", "300750", 
@@ -103,8 +108,7 @@ public class StockFetcherService {
             "000002", "601166", "600276", "600030", "601398"
         };
         
-        log.info("Fetching stock data from zhituapi.com with token: {}...", 
-                apiToken != null ? apiToken.substring(0, 8) + "..." : "null");
+        log.info("Fetching stock data from zhituapi.com...");
         
         for (String symbol : popularSymbols) {
             try {
@@ -126,7 +130,7 @@ public class StockFetcherService {
     private Stock fetchStockFromZhituApi(String symbol) {
         try {
             String url = ZHITU_REALTIME_URL + symbol + "?token=" + apiToken;
-            log.debug("Fetching stock data from: {}", url);
+            log.debug("Fetching stock data for symbol: {}", symbol);
             
             String response = restTemplate.getForObject(url, String.class);
             if (response == null || response.isEmpty()) {
@@ -250,13 +254,20 @@ public class StockFetcherService {
         if (symbol == null || symbol.isEmpty()) {
             return Stock.StockMarket.OTHER;
         }
-        if (symbol.startsWith("6")) {
-            return Stock.StockMarket.SH;
-        } else if (symbol.startsWith("0") || symbol.startsWith("3")) {
-            return Stock.StockMarket.SZ;
-        } else if (symbol.startsWith("00") && symbol.length() == 5) {
+        // Hong Kong stocks: 5-digit codes starting with 0 (e.g., 00700, 09988)
+        if (symbol.length() == 5 && symbol.startsWith("0")) {
             return Stock.StockMarket.HK;
-        } else if (symbol.matches("[A-Z]+")) {
+        }
+        // Shanghai stocks: 6-digit codes starting with 6
+        if (symbol.startsWith("6") && symbol.length() == 6) {
+            return Stock.StockMarket.SH;
+        }
+        // Shenzhen stocks: 6-digit codes starting with 0 or 3
+        if ((symbol.startsWith("0") || symbol.startsWith("3")) && symbol.length() == 6) {
+            return Stock.StockMarket.SZ;
+        }
+        // US stocks: uppercase letter symbols
+        if (symbol.matches("[A-Z]+")) {
             return Stock.StockMarket.US;
         }
         return Stock.StockMarket.OTHER;
