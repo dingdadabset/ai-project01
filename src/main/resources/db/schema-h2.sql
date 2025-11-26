@@ -128,3 +128,52 @@ CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
 CREATE INDEX IF NOT EXISTS idx_comments_status ON comments(status);
 CREATE INDEX IF NOT EXISTS idx_attachments_user_id ON attachments(user_id);
 CREATE INDEX IF NOT EXISTS idx_attachments_type ON attachments(type);
+
+-- News table for hot news
+CREATE TABLE IF NOT EXISTS news (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    summary VARCHAR(500),
+    content CLOB,
+    source VARCHAR(100),
+    source_url VARCHAR(500),
+    thumbnail VARCHAR(500),
+    category VARCHAR(20) NOT NULL,
+    view_count BIGINT DEFAULT 0,
+    is_hot BOOLEAN DEFAULT FALSE,
+    hot_score INT DEFAULT 0,
+    published_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+-- Stocks table for stock market data
+CREATE TABLE IF NOT EXISTS stocks (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    symbol VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    name_cn VARCHAR(100),
+    market VARCHAR(20) NOT NULL,
+    price DECIMAL(20, 4),
+    change_amount DECIMAL(20, 4),
+    change_percent DECIMAL(10, 4),
+    high DECIMAL(20, 4),
+    low DECIMAL(20, 4),
+    open DECIMAL(20, 4),
+    prev_close DECIMAL(20, 4),
+    volume BIGINT,
+    market_cap DECIMAL(30, 2),
+    pe_ratio DECIMAL(20, 4),
+    is_hot BOOLEAN DEFAULT FALSE,
+    hot_rank INT DEFAULT 0,
+    last_updated TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL
+);
+
+-- Create indexes for news and stocks
+CREATE INDEX IF NOT EXISTS idx_news_category ON news(category);
+CREATE INDEX IF NOT EXISTS idx_news_is_hot ON news(is_hot);
+CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at);
+CREATE INDEX IF NOT EXISTS idx_stocks_market ON stocks(market);
+CREATE INDEX IF NOT EXISTS idx_stocks_is_hot ON stocks(is_hot);
+CREATE INDEX IF NOT EXISTS idx_stocks_symbol ON stocks(symbol);

@@ -2,6 +2,7 @@
 import { onMounted, ref, reactive } from 'vue'
 import { useAppStore } from '@/stores/app'
 import postApi from '@/api/posts'
+import MarkdownEditor from '@/components/common/MarkdownEditor.vue'
 import type { Post, PostRequest } from '@/types'
 
 const store = useAppStore()
@@ -177,14 +178,11 @@ const formatDate = (date: string) => {
           </div>
           
           <div class="form-group">
-            <label for="content">Content</label>
-            <textarea 
-              id="content"
-              v-model="formData.content" 
-              class="form-input content-editor" 
-              rows="10"
-              placeholder="Write your post content here..."
-            ></textarea>
+            <label for="content">Content (Markdown)</label>
+            <MarkdownEditor 
+              v-model="formData.content"
+              placeholder="Write your post content in Markdown format..."
+            />
           </div>
           
           <div class="form-row">

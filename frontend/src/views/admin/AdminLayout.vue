@@ -14,7 +14,9 @@ const navItems = [
   { path: '/admin/categories', name: 'Categories', icon: '📁' },
   { path: '/admin/tags', name: 'Tags', icon: '🏷️' },
   { path: '/admin/comments', name: 'Comments', icon: '💬' },
-  { path: '/admin/users', name: 'Users', icon: '👥' }
+  { path: '/admin/users', name: 'Users', icon: '👥' },
+  { path: '/admin/news', name: 'News', icon: '📰' },
+  { path: '/admin/stocks', name: 'Stocks', icon: '📈' }
 ]
 
 const isActive = (path: string) => {
