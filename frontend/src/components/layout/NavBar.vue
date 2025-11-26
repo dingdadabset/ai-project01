@@ -13,6 +13,8 @@ const navRef = ref<HTMLElement | null>(null)
 const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'Posts', path: '/posts' },
+  { name: 'News', path: '/news' },
+  { name: 'Stocks', path: '/stocks' },
   { name: 'Categories', path: '/categories' },
   { name: 'Tags', path: '/tags' },
   { name: 'About', path: '/about' }

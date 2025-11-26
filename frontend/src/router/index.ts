@@ -92,8 +92,36 @@ const router = createRouter({
           path: 'users',
           name: 'admin-users',
           component: () => import('@/views/admin/UserManager.vue')
+        },
+        {
+          path: 'news',
+          name: 'admin-news',
+          component: () => import('@/views/admin/NewsManager.vue')
+        },
+        {
+          path: 'stocks',
+          name: 'admin-stocks',
+          component: () => import('@/views/admin/StockManager.vue')
         }
       ]
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: () => import('@/views/news/NewsList.vue'),
+      meta: { title: 'Hot News' }
+    },
+    {
+      path: '/news/:id',
+      name: 'news-detail',
+      component: () => import('@/views/news/NewsDetail.vue'),
+      meta: { title: 'News' }
+    },
+    {
+      path: '/stocks',
+      name: 'stocks',
+      component: () => import('@/views/stocks/StockList.vue'),
+      meta: { title: 'Stock Market' }
     }
   ],
   scrollBehavior(to, from, savedPosition) {
