@@ -28,12 +28,17 @@ public class NewsController {
      * Create a new news item
      */
     @PostMapping
-    public ResponseEntity<News> createNews(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<?> createNews(@RequestBody Map<String, Object> request) {
         log.info("POST /api/news - Creating new news");
         
         News.NewsCategory category = null;
         if (request.get("category") != null) {
-            category = News.NewsCategory.valueOf((String) request.get("category"));
+            try {
+                category = News.NewsCategory.valueOf((String) request.get("category"));
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Invalid category: " + request.get("category")));
+            }
         }
         
         News news = newsService.createNews(
@@ -113,18 +118,36 @@ public class NewsController {
      * Update a news item
      */
     @PutMapping("/{id}")
-    public ResponseEntity<News> updateNews(
+    public ResponseEntity<?> updateNews(
             @PathVariable Long id,
             @RequestBody Map<String, Object> request) {
         log.info("PUT /api/news/{}", id);
         
         News.NewsCategory category = null;
         if (request.get("category") != null) {
-            category = News.NewsCategory.valueOf((String) request.get("category"));
+            try {
+                category = News.NewsCategory.valueOf((String) request.get("category"));
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Invalid category: " + request.get("category")));
+            }
         }
         
-        Boolean isHot = request.get("isHot") != null ? (Boolean) request.get("isHot") : null;
-        Integer hotScore = request.get("hotScore") != null ? (Integer) request.get("hotScore") : null;
+        Boolean isHot = null;
+        if (request.get("isHot") != null) {
+            Object isHotObj = request.get("isHot");
+            if (isHotObj instanceof Boolean) {
+                isHot = (Boolean) isHotObj;
+            }
+        }
+        
+        Integer hotScore = null;
+        if (request.get("hotScore") != null) {
+            Object hotScoreObj = request.get("hotScore");
+            if (hotScoreObj instanceof Number) {
+                hotScore = ((Number) hotScoreObj).intValue();
+            }
+        }
         
         News news = newsService.updateNews(
                 id,
@@ -159,8 +182,17 @@ public class NewsController {
             @PathVariable Long id,
             @RequestBody Map<String, Object> request) {
         log.info("PUT /api/news/{}/hot", id);
-        boolean isHot = (Boolean) request.getOrDefault("isHot", true);
-        int hotScore = (Integer) request.getOrDefault("hotScore", 0);
+        
+        boolean isHot = true;
+        if (request.get("isHot") != null && request.get("isHot") instanceof Boolean) {
+            isHot = (Boolean) request.get("isHot");
+        }
+        
+        int hotScore = 0;
+        if (request.get("hotScore") != null && request.get("hotScore") instanceof Number) {
+            hotScore = ((Number) request.get("hotScore")).intValue();
+        }
+        
         News news = newsService.setHot(id, isHot, hotScore);
         return ResponseEntity.ok(news);
     }

@@ -29,12 +29,17 @@ public class StockController {
      * Create or update a stock
      */
     @PostMapping
-    public ResponseEntity<Stock> createOrUpdateStock(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<?> createOrUpdateStock(@RequestBody Map<String, Object> request) {
         log.info("POST /api/stocks - Creating/updating stock");
         
         Stock.StockMarket market = null;
         if (request.get("market") != null) {
-            market = Stock.StockMarket.valueOf((String) request.get("market"));
+            try {
+                market = Stock.StockMarket.valueOf((String) request.get("market"));
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Invalid market: " + request.get("market")));
+            }
         }
         
         Stock stock = stockService.createOrUpdateStock(
@@ -152,10 +157,16 @@ public class StockController {
      * Update stock price
      */
     @PutMapping("/{id}/price")
-    public ResponseEntity<Stock> updatePrice(
+    public ResponseEntity<?> updatePrice(
             @PathVariable Long id,
             @RequestBody Map<String, Object> request) {
         log.info("PUT /api/stocks/{}/price", id);
+        
+        if (request.get("price") == null || request.get("changeAmount") == null || request.get("changePercent") == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "price, changeAmount, and changePercent are required"));
+        }
+        
         Stock stock = stockService.updatePrice(
                 id,
                 new BigDecimal(request.get("price").toString()),
@@ -173,8 +184,17 @@ public class StockController {
             @PathVariable Long id,
             @RequestBody Map<String, Object> request) {
         log.info("PUT /api/stocks/{}/hot", id);
-        boolean isHot = (Boolean) request.getOrDefault("isHot", true);
-        int hotRank = (Integer) request.getOrDefault("hotRank", 0);
+        
+        boolean isHot = true;
+        if (request.get("isHot") != null && request.get("isHot") instanceof Boolean) {
+            isHot = (Boolean) request.get("isHot");
+        }
+        
+        int hotRank = 0;
+        if (request.get("hotRank") != null && request.get("hotRank") instanceof Number) {
+            hotRank = ((Number) request.get("hotRank")).intValue();
+        }
+        
         Stock stock = stockService.setHot(id, isHot, hotRank);
         return ResponseEntity.ok(stock);
     }
