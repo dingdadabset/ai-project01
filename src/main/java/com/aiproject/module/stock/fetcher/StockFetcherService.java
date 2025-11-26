@@ -42,7 +42,7 @@ public class StockFetcherService {
     private static final double PE_RATIO_MIN = 5.0;
     private static final double PE_RATIO_RANGE = 50.0;
 
-    // Stock name mapping for A-share stocks (symbol -> {nameCn, nameEn})
+    // Stock name mapping for A-share, Hong Kong, and US stocks (symbol -> {nameCn, nameEn})
     private static final Map<String, String[]> STOCK_NAME_MAP = new HashMap<>();
     static {
         // A股热门股票名称映射
@@ -163,7 +163,7 @@ public class StockFetcherService {
         
         // If most stocks have zero prices, API data is likely invalid
         // Return empty list to trigger fallback
-        if (validDataCount < stockList.size() / 2) {
+        if (stockList.size() > 0 && validDataCount < stockList.size() / 2.0) {
             log.warn("zhituapi returned mostly invalid price data ({}/{}), will use fallback", 
                      validDataCount, stockList.size());
             return new ArrayList<>();
