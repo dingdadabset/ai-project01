@@ -1,5 +1,12 @@
 <template>
   <div class="background-selector-wrapper">
+    <!-- Notification Toast -->
+    <transition name="slide-up">
+      <div v-if="notification" class="notification-toast" :class="notification.type">
+        {{ notification.message }}
+      </div>
+    </transition>
+
     <!-- Floating Button -->
     <button 
       class="floating-btn"
@@ -21,12 +28,13 @@
         <div class="panel-content">
           <!-- Custom Upload Section -->
           <div class="upload-section">
-            <label class="upload-btn">
+            <label class="upload-btn" :class="{ disabled: uploading }">
               <input 
                 type="file" 
                 accept="image/*" 
                 @change="handleUpload" 
                 hidden
+                :disabled="uploading"
               >
               <span class="upload-icon">📤</span>
               <span>Upload Custom Background</span>
@@ -192,13 +200,27 @@ const handleUpload = async (event: Event) => {
     const response = await uploadApi.upload(file, 'backgrounds')
     if (response.data.success && response.data.url) {
       await applyCustomBackground(response.data.url)
+      showNotification('Background uploaded successfully!', 'success')
+    } else {
+      showNotification(response.data.error || 'Failed to upload background', 'error')
     }
   } catch (error) {
     console.error('Failed to upload background:', error)
+    showNotification('Failed to upload background. Please try again.', 'error')
   } finally {
     uploading.value = false
     input.value = ''
   }
+}
+
+// Notification helper
+const notification = ref<{ message: string; type: 'success' | 'error' } | null>(null)
+
+const showNotification = (message: string, type: 'success' | 'error') => {
+  notification.value = { message, type }
+  setTimeout(() => {
+    notification.value = null
+  }, 3000)
 }
 
 const applyCustomUrl = async () => {
@@ -536,6 +558,34 @@ const toggleOverlay = async () => {
 .toggle-label {
   font-size: 0.875rem;
   color: var(--text-primary);
+}
+
+/* Notification Toast */
+.notification-toast {
+  position: fixed;
+  bottom: 180px;
+  right: 24px;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+  z-index: 1001;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.notification-toast.success {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.notification-toast.error {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* Upload button disabled state */
+.upload-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Transitions */

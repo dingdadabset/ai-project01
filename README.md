@@ -378,7 +378,7 @@ settings:
 |------|------|------|
 | POST | /api/uploads | 上传单个文件 |
 | POST | /api/uploads/batch | 批量上传文件 |
-| GET | /api/uploads/backgrounds | 获取背景图片列表 |
+| GET | /api/uploads/list/{type} | 获取指定类型文件列表 (如: backgrounds) |
 | GET | /api/uploads/{type}/{filename} | 获取指定文件 |
 | DELETE | /api/uploads/{type}/{filename} | 删除文件 |
 
