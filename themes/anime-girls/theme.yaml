@@ -26,6 +26,7 @@ settings:
       - name: currentBackground
         label: 当前背景
         type: select
+        description: 选择背景图片，图片存储在 themes/anime-girls/static/images/backgrounds/ 目录
         defaultValue: bg1
         options:
           - label: 樱花少女
@@ -38,6 +39,11 @@ settings:
             value: bg4
           - label: 城市夜景
             value: bg5
+      - name: customBackgroundUrl
+        label: 自定义背景URL
+        type: text
+        description: 输入自定义背景图片URL（留空使用上方选择的背景）
+        defaultValue: ""
       - name: enableAutoSwitch
         label: 自动切换背景
         type: switch

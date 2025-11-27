@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg2-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0c29;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#302b63;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#24243e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg2-gradient)"/>
+  <!-- Stars -->
+  <g fill="#fff">
+    <circle cx="100" cy="80" r="2" opacity="0.9"/>
+    <circle cx="250" cy="150" r="1.5" opacity="0.7"/>
+    <circle cx="400" cy="50" r="2.5" opacity="0.8"/>
+    <circle cx="550" cy="120" r="1" opacity="0.6"/>
+    <circle cx="700" cy="70" r="3" opacity="0.9"/>
+    <circle cx="850" cy="180" r="1.5" opacity="0.7"/>
+    <circle cx="1000" cy="90" r="2" opacity="0.8"/>
+    <circle cx="1150" cy="140" r="1" opacity="0.6"/>
+    <circle cx="1300" cy="60" r="2.5" opacity="0.9"/>
+    <circle cx="1450" cy="110" r="1.5" opacity="0.7"/>
+    <circle cx="1600" cy="80" r="2" opacity="0.8"/>
+    <circle cx="1750" cy="160" r="1" opacity="0.6"/>
+    <circle cx="1850" cy="100" r="2.5" opacity="0.9"/>
+    <circle cx="150" cy="300" r="1.5" opacity="0.7"/>
+    <circle cx="300" cy="250" r="2" opacity="0.8"/>
+    <circle cx="450" cy="320" r="1" opacity="0.6"/>
+    <circle cx="600" cy="280" r="2.5" opacity="0.9"/>
+    <circle cx="750" cy="350" r="1.5" opacity="0.7"/>
+    <circle cx="900" cy="290" r="2" opacity="0.8"/>
+    <circle cx="1050" cy="330" r="1" opacity="0.6"/>
+    <circle cx="1200" cy="270" r="2.5" opacity="0.9"/>
+    <circle cx="1350" cy="340" r="1.5" opacity="0.7"/>
+    <circle cx="1500" cy="300" r="2" opacity="0.8"/>
+    <circle cx="1650" cy="360" r="1" opacity="0.6"/>
+    <circle cx="1800" cy="280" r="2.5" opacity="0.9"/>
+    <circle cx="80" cy="500" r="1.5" opacity="0.7"/>
+    <circle cx="200" cy="450" r="2" opacity="0.8"/>
+    <circle cx="350" cy="520" r="1" opacity="0.6"/>
+    <circle cx="500" cy="480" r="2.5" opacity="0.9"/>
+    <circle cx="650" cy="550" r="1.5" opacity="0.7"/>
+    <circle cx="800" cy="490" r="2" opacity="0.8"/>
+    <circle cx="950" cy="530" r="3" opacity="0.95"/>
+    <circle cx="1100" cy="470" r="2.5" opacity="0.9"/>
+    <circle cx="1250" cy="540" r="1.5" opacity="0.7"/>
+    <circle cx="1400" cy="500" r="2" opacity="0.8"/>
+    <circle cx="1550" cy="560" r="1" opacity="0.6"/>
+    <circle cx="1700" cy="480" r="2.5" opacity="0.9"/>
+    <circle cx="1870" cy="550" r="1.5" opacity="0.7"/>
+  </g>
+  <!-- Nebula effect -->
+  <ellipse cx="960" cy="400" rx="400" ry="200" fill="url(#nebula)" opacity="0.3"/>
+  <defs>
+    <radialGradient id="nebula" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">星空幻想 Starry Fantasy</text>
+</svg>

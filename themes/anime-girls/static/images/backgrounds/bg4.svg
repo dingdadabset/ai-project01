@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg4-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#134e5e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#71b280;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d5016;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="light-ray" cx="50%" cy="20%" r="80%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#fff;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg4-gradient)"/>
+  <!-- Light rays through trees -->
+  <ellipse cx="960" cy="100" rx="800" ry="600" fill="url(#light-ray)"/>
+  <!-- Trees silhouettes -->
+  <g fill="#1a3a1a" opacity="0.8">
+    <!-- Left trees -->
+    <polygon points="0,1080 100,600 200,1080"/>
+    <polygon points="150,1080 280,500 410,1080"/>
+    <polygon points="350,1080 500,450 650,1080"/>
+    <!-- Right trees -->
+    <polygon points="1520,1080 1650,550 1780,1080"/>
+    <polygon points="1650,1080 1780,480 1920,1080"/>
+    <polygon points="1720,1080 1850,520 1920,800 1920,1080"/>
+  </g>
+  <!-- Fireflies / magical particles -->
+  <g fill="#fffacd">
+    <circle cx="300" cy="400" r="4" opacity="0.8"/>
+    <circle cx="500" cy="350" r="3" opacity="0.6"/>
+    <circle cx="700" cy="450" r="5" opacity="0.7"/>
+    <circle cx="900" cy="380" r="3" opacity="0.8"/>
+    <circle cx="1100" cy="420" r="4" opacity="0.6"/>
+    <circle cx="1300" cy="360" r="3" opacity="0.7"/>
+    <circle cx="1500" cy="400" r="5" opacity="0.8"/>
+    <circle cx="400" cy="600" r="3" opacity="0.6"/>
+    <circle cx="600" cy="550" r="4" opacity="0.7"/>
+    <circle cx="800" cy="620" r="3" opacity="0.8"/>
+    <circle cx="1000" cy="580" r="5" opacity="0.6"/>
+    <circle cx="1200" cy="640" r="3" opacity="0.7"/>
+    <circle cx="1400" cy="590" r="4" opacity="0.8"/>
+    <circle cx="1600" cy="650" r="3" opacity="0.6"/>
+  </g>
+  <!-- Mushrooms -->
+  <g>
+    <ellipse cx="250" cy="950" rx="30" ry="15" fill="#8b4513"/>
+    <ellipse cx="250" cy="935" rx="40" ry="20" fill="#ff6b6b"/>
+    <circle cx="240" cy="930" r="5" fill="#fff" opacity="0.7"/>
+    <circle cx="260" cy="940" r="4" fill="#fff" opacity="0.7"/>
+    <ellipse cx="1700" cy="980" rx="25" ry="12" fill="#8b4513"/>
+    <ellipse cx="1700" cy="968" rx="35" ry="18" fill="#ff6b6b"/>
+    <circle cx="1690" cy="963" r="4" fill="#fff" opacity="0.7"/>
+    <circle cx="1710" cy="973" r="3" fill="#fff" opacity="0.7"/>
+  </g>
+  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.9">梦幻森林 Enchanted Forest</text>
+</svg>

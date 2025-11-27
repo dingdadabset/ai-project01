@@ -9,13 +9,16 @@ import java.nio.file.Paths;
 
 /**
  * Web MVC Configuration
- * Configures static resource handlers for themes
+ * Configures static resource handlers for themes and uploads
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Value("${theme.directory:themes}")
     private String themeDirectory;
+
+    @Value("${upload.directory:uploads}")
+    private String uploadDirectory;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -24,6 +27,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         
         registry.addResourceHandler("/themes/**")
                 .addResourceLocations(themesPath)
+                .setCachePeriod(3600);
+
+        // Serve uploaded files
+        String uploadsPath = Paths.get(System.getProperty("user.dir"), uploadDirectory).toUri().toString();
+        
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations(uploadsPath)
                 .setCachePeriod(3600);
     }
 }
