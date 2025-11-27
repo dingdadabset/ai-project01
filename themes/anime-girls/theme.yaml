@@ -1,0 +1,116 @@
+id: anime-girls
+name: Anime Girls Theme
+version: 1.0.0
+author:
+  name: AI Project Team
+  website: https://github.com/aiproject
+description: 美女动漫主题，带有多种精美背景图片切换功能
+screenshot: screenshot.png
+requires: "1.0.0"
+
+settings:
+  - group: general
+    label: 通用设置
+    items:
+      - name: siteName
+        label: 站点名称
+        type: text
+        defaultValue: 动漫博客
+      - name: siteDescription
+        label: 站点描述
+        type: textarea
+        defaultValue: 一个充满动漫风格的个人博客
+  - group: background
+    label: 背景设置
+    items:
+      - name: currentBackground
+        label: 当前背景
+        type: select
+        defaultValue: bg1
+        options:
+          - label: 樱花少女
+            value: bg1
+          - label: 星空幻想
+            value: bg2
+          - label: 海边夕阳
+            value: bg3
+          - label: 梦幻森林
+            value: bg4
+          - label: 城市夜景
+            value: bg5
+      - name: enableAutoSwitch
+        label: 自动切换背景
+        type: switch
+        defaultValue: false
+      - name: switchInterval
+        label: 切换间隔(秒)
+        type: number
+        defaultValue: 30
+      - name: backgroundOpacity
+        label: 背景透明度
+        type: select
+        defaultValue: "0.85"
+        options:
+          - label: 100%
+            value: "1"
+          - label: 85%
+            value: "0.85"
+          - label: 70%
+            value: "0.7"
+          - label: 50%
+            value: "0.5"
+  - group: appearance
+    label: 外观设置
+    items:
+      - name: primaryColor
+        label: 主题色
+        type: color
+        defaultValue: "#ff69b4"
+      - name: accentColor
+        label: 强调色
+        type: color
+        defaultValue: "#ff1493"
+      - name: textColor
+        label: 文字颜色
+        type: color
+        defaultValue: "#ffffff"
+      - name: enableGlowEffect
+        label: 启用发光效果
+        type: switch
+        defaultValue: true
+      - name: enableParticles
+        label: 启用粒子特效
+        type: switch
+        defaultValue: true
+  - group: sidebar
+    label: 侧边栏
+    items:
+      - name: showSidebar
+        label: 显示侧边栏
+        type: switch
+        defaultValue: true
+      - name: showCategories
+        label: 显示分类
+        type: switch
+        defaultValue: true
+      - name: showTags
+        label: 显示标签
+        type: switch
+        defaultValue: true
+      - name: showRecentPosts
+        label: 显示最新文章
+        type: switch
+        defaultValue: true
+
+i18n:
+  defaultLocale: zh-CN
+  supportedLocales:
+    - zh-CN
+    - en
+
+features:
+  darkMode: true
+  responsive: true
+  pwa: false
+  comments: true
+  search: true
