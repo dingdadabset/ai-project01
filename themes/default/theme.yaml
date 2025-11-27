@@ -1,0 +1,76 @@
+id: default
+name: Default Theme
+version: 1.0.0
+author:
+  name: AI Project Team
+  website: https://github.com/aiproject
+description: A clean and responsive default theme for the blog
+screenshot: screenshot.png
+requires: "1.0.0"
+
+settings:
+  - group: general
+    label: General Settings
+    items:
+      - name: siteName
+        label: Site Name
+        type: text
+        defaultValue: My Blog
+      - name: siteDescription
+        label: Site Description
+        type: textarea
+        defaultValue: A personal blog
+  - group: appearance
+    label: Appearance
+    items:
+      - name: darkMode
+        label: Enable Dark Mode
+        type: switch
+        defaultValue: true
+      - name: primaryColor
+        label: Primary Color
+        type: color
+        defaultValue: "#6366f1"
+      - name: fontSize
+        label: Base Font Size
+        type: select
+        defaultValue: medium
+        options:
+          - label: Small
+            value: small
+          - label: Medium
+            value: medium
+          - label: Large
+            value: large
+  - group: sidebar
+    label: Sidebar
+    items:
+      - name: showSidebar
+        label: Show Sidebar
+        type: switch
+        defaultValue: true
+      - name: showCategories
+        label: Show Categories Widget
+        type: switch
+        defaultValue: true
+      - name: showTags
+        label: Show Tags Widget
+        type: switch
+        defaultValue: true
+      - name: showRecentPosts
+        label: Show Recent Posts Widget
+        type: switch
+        defaultValue: true
+
+i18n:
+  defaultLocale: en
+  supportedLocales:
+    - en
+    - zh-CN
+
+features:
+  darkMode: true
+  responsive: true
+  pwa: false
+  comments: true
+  search: true
