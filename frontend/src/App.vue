@@ -3,6 +3,7 @@ import { onMounted, computed, watch, ref } from 'vue'
 import { RouterView, useRouter, useRoute } from 'vue-router'
 import NavBar from '@/components/layout/NavBar.vue'
 import FooterBar from '@/components/layout/FooterBar.vue'
+import BackgroundSelector from '@/components/common/BackgroundSelector.vue'
 import { useThemeStore } from '@/stores/theme'
 import gsap from 'gsap'
 
@@ -31,12 +32,14 @@ const backgroundStyle = computed(() => {
   const currentBackground = settings.currentBackground as string || 'bg1'
   const customBackgroundUrl = settings.customBackgroundUrl as string
   const backgroundOpacity = settings.backgroundOpacity as string || '0.85'
+  const backgroundBlur = settings.backgroundBlur as string || '8'
   
   // If custom URL is provided, use it
   if (customBackgroundUrl) {
     return {
       '--theme-background-image': `url(${customBackgroundUrl})`,
-      '--theme-background-opacity': backgroundOpacity
+      '--theme-background-opacity': backgroundOpacity,
+      '--theme-background-blur': `${backgroundBlur}px`
     }
   }
   
@@ -44,7 +47,8 @@ const backgroundStyle = computed(() => {
   const backgroundUrl = `/themes/anime-girls/static/images/backgrounds/${currentBackground}.svg`
   return {
     '--theme-background-image': `url(${backgroundUrl})`,
-    '--theme-background-opacity': backgroundOpacity
+    '--theme-background-opacity': backgroundOpacity,
+    '--theme-background-blur': `${backgroundBlur}px`
   }
 })
 
@@ -75,6 +79,12 @@ const themeStyles = computed(() => {
 // Is anime-girls theme active
 const isAnimeTheme = computed(() => {
   return themeStore.activeTheme?.themeId === 'anime-girls'
+})
+
+// Check if background overlay is enabled
+const isOverlayEnabled = computed(() => {
+  const settings = themeStore.activeTheme?.settings
+  return settings?.backgroundOverlay !== false
 })
 
 // Watch for theme changes and apply background
@@ -154,8 +164,11 @@ onMounted(async () => {
 
 <template>
   <div id="app" :class="[currentBackgroundClass, { 'anime-theme': isAnimeTheme }]" :style="themeStyles">
-    <!-- Theme Background Layer -->
+    <!-- Theme Background Layer (底层背景) -->
     <div v-if="isAnimeTheme" class="theme-background-layer"></div>
+    
+    <!-- Background Overlay with Blur Effect (顶层覆盖虚化层) -->
+    <div v-if="isAnimeTheme && isOverlayEnabled" class="theme-background-overlay"></div>
     
     <!-- Page Transition Overlay -->
     <div class="page-transition-overlay"></div>
@@ -174,6 +187,9 @@ onMounted(async () => {
     
     <!-- Footer (hide on admin/login routes) -->
     <FooterBar v-if="!isAdminRoute" />
+    
+    <!-- Background Selector (一键切换背景) -->
+    <BackgroundSelector v-if="isAnimeTheme && !isAdminRoute" />
   </div>
 </template>
 
@@ -185,7 +201,7 @@ onMounted(async () => {
   position: relative;
 }
 
-/* Theme Background Layer for anime-girls theme */
+/* Theme Background Layer for anime-girls theme (底层背景) */
 .theme-background-layer {
   position: fixed;
   top: 0;
@@ -209,6 +225,41 @@ onMounted(async () => {
   bottom: 0;
   background: rgba(0, 0, 0, calc(1 - var(--theme-background-opacity, 0.85)));
   pointer-events: none;
+}
+
+/* Background Overlay with Blur Effect (顶层虚化覆盖层) */
+.theme-background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  pointer-events: none;
+  background-image: var(--theme-background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: var(--theme-background-opacity, 0.85);
+  -webkit-backdrop-filter: blur(var(--theme-background-blur, 8px));
+  backdrop-filter: blur(var(--theme-background-blur, 8px));
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.15) 20%,
+    rgba(0,0,0,0.1) 50%,
+    rgba(0,0,0,0.15) 80%,
+    rgba(0,0,0,0.3) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.15) 20%,
+    rgba(0,0,0,0.1) 50%,
+    rgba(0,0,0,0.15) 80%,
+    rgba(0,0,0,0.3) 100%
+  );
 }
 
 /* Anime theme specific styles */
@@ -253,6 +304,81 @@ onMounted(async () => {
       #0f0c29 0%, 
       #302b63 50%, 
       #24243e 100%);
+}
+
+#app.background-bg6 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
+#app.background-bg7 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+#app.background-bg8 .theme-background-layer {
+  background: 
+    linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+}
+
+#app.background-bg9 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #feca57 100%);
+}
+
+#app.background-bg10 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+#app.background-bg11 .theme-background-layer {
+  background: 
+    linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+#app.background-bg12 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%);
+}
+
+#app.background-bg13 .theme-background-layer {
+  background: 
+    linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+}
+
+#app.background-bg14 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #d946ef 100%);
+}
+
+#app.background-bg15 .theme-background-layer {
+  background: 
+    linear-gradient(180deg, #1e3c72 0%, #2a5298 50%, #0f2027 100%);
+}
+
+#app.background-bg16 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+#app.background-bg17 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #2d2d2d 100%);
+}
+
+#app.background-bg18 .theme-background-layer {
+  background: 
+    linear-gradient(180deg, #2c1810 0%, #8b4513 40%, #daa520 100%);
+}
+
+#app.background-bg19 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%);
+}
+
+#app.background-bg20 .theme-background-layer {
+  background: 
+    linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #fad0c4 75%, #ffd1ff 100%);
 }
 
 .main-content {

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg14-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d946ef;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg14-gradient)"/>
+  <g fill="#fff" opacity="0.3">
+    <path d="M100,200 L150,100 L200,200 Z"/>
+    <path d="M350,300 L420,180 L490,300 Z"/>
+    <path d="M600,250 L680,120 L760,250 Z"/>
+    <path d="M900,280 L990,150 L1080,280 Z"/>
+    <path d="M1200,220 L1290,90 L1380,220 Z"/>
+    <path d="M1500,300 L1600,160 L1700,300 Z"/>
+    <path d="M1780,250 L1860,130 L1940,250 Z"/>
+  </g>
+  <g fill="#fff" opacity="0.2">
+    <path d="M200,600 L280,450 L360,600 Z"/>
+    <path d="M500,550 L600,400 L700,550 Z"/>
+    <path d="M850,620 L960,470 L1070,620 Z"/>
+    <path d="M1200,580 L1320,430 L1440,580 Z"/>
+    <path d="M1550,600 L1680,450 L1810,600 Z"/>
+  </g>
+  <g fill="#fff" opacity="0.15">
+    <path d="M50,900 L180,700 L310,900 Z"/>
+    <path d="M400,850 L560,650 L720,850 Z"/>
+    <path d="M800,920 L1000,720 L1200,920 Z"/>
+    <path d="M1300,870 L1500,670 L1700,870 Z"/>
+    <path d="M1750,900 L1880,740 L2010,900 Z"/>
+  </g>
+  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">水晶公主 Crystal Princess</text>
+</svg>

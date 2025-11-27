@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg17-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d0d0d;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d2d2d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="aurora" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00ff87;stop-opacity:0.3" />
+      <stop offset="25%" style="stop-color:#60efff;stop-opacity:0.4" />
+      <stop offset="50%" style="stop-color:#ff69b4;stop-opacity:0.3" />
+      <stop offset="75%" style="stop-color:#7b68ee;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#00ff87;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg17-gradient)"/>
+  <ellipse cx="960" cy="200" rx="1000" ry="150" fill="url(#aurora)" opacity="0.6"/>
+  <ellipse cx="960" cy="250" rx="800" ry="100" fill="url(#aurora)" opacity="0.4"/>
+  <g fill="#fff" opacity="0.6">
+    <circle cx="100" cy="400" r="1.5"/>
+    <circle cx="250" cy="350" r="2"/>
+    <circle cx="400" cy="500" r="1"/>
+    <circle cx="550" cy="420" r="2.5"/>
+    <circle cx="700" cy="380" r="1.5"/>
+    <circle cx="850" cy="480" r="2"/>
+    <circle cx="1000" cy="400" r="1"/>
+    <circle cx="1150" cy="520" r="2.5"/>
+    <circle cx="1300" cy="380" r="1.5"/>
+    <circle cx="1450" cy="450" r="2"/>
+    <circle cx="1600" cy="400" r="1"/>
+    <circle cx="1750" cy="480" r="2.5"/>
+    <circle cx="1850" cy="420" r="1.5"/>
+    <circle cx="150" cy="700" r="2"/>
+    <circle cx="350" cy="650" r="1.5"/>
+    <circle cx="550" cy="750" r="2"/>
+    <circle cx="750" cy="680" r="1"/>
+    <circle cx="950" cy="720" r="2.5"/>
+    <circle cx="1150" cy="680" r="1.5"/>
+    <circle cx="1350" cy="750" r="2"/>
+    <circle cx="1550" cy="700" r="1"/>
+    <circle cx="1750" cy="760" r="2.5"/>
+  </g>
+  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#00ff87" opacity="0.8">极光仙子 Aurora Fairy</text>
+</svg>

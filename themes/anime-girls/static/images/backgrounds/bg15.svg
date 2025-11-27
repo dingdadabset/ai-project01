@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg15-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3c72;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2a5298;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f2027;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg15-gradient)"/>
+  <g stroke="#64b5f6" stroke-width="1" fill="none" opacity="0.3">
+    <path d="M0,900 Q400,700 800,850 T1600,800 T1920,900"/>
+    <path d="M0,950 Q300,800 700,920 T1400,860 T1920,950"/>
+    <path d="M0,1000 Q500,850 900,950 T1700,880 T1920,1000"/>
+  </g>
+  <g fill="#64b5f6" opacity="0.4">
+    <circle cx="200" cy="850" r="15"/>
+    <circle cx="400" cy="800" r="20"/>
+    <circle cx="650" cy="870" r="12"/>
+    <circle cx="900" cy="820" r="18"/>
+    <circle cx="1150" cy="860" r="14"/>
+    <circle cx="1400" cy="810" r="22"/>
+    <circle cx="1650" cy="850" r="16"/>
+    <circle cx="1850" cy="880" r="10"/>
+  </g>
+  <text x="960" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#64b5f6" opacity="0.8">海洋精灵 Ocean Spirit</text>
+</svg>
