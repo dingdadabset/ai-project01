@@ -15,6 +15,7 @@ const navLinks = [
   { name: 'Posts', path: '/posts' },
   { name: 'News', path: '/news' },
   { name: 'Stocks', path: '/stocks' },
+  { name: 'Tools', path: '/tools' },
   { name: 'Categories', path: '/categories' },
   { name: 'Tags', path: '/tags' },
   { name: 'About', path: '/about' }

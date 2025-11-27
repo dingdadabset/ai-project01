@@ -52,6 +52,12 @@ const router = createRouter({
       meta: { title: 'About' }
     },
     {
+      path: '/tools',
+      name: 'tools',
+      component: () => import('@/views/tools/ExternalTools.vue'),
+      meta: { title: 'External Tools' }
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/views/admin/LoginPage.vue'),

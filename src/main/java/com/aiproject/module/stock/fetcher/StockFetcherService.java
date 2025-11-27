@@ -16,7 +16,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -39,6 +41,39 @@ public class StockFetcherService {
     private static final long MARKET_CAP_RANGE = 10_000_000_000L;
     private static final double PE_RATIO_MIN = 5.0;
     private static final double PE_RATIO_RANGE = 50.0;
+
+    // Stock name mapping for A-share, Hong Kong, and US stocks (symbol -> {nameCn, nameEn})
+    private static final Map<String, String[]> STOCK_NAME_MAP = new HashMap<>();
+    static {
+        // A股热门股票名称映射
+        STOCK_NAME_MAP.put("000001", new String[]{"平安银行", "Ping An Bank"});
+        STOCK_NAME_MAP.put("600519", new String[]{"贵州茅台", "Kweichow Moutai"});
+        STOCK_NAME_MAP.put("601318", new String[]{"中国平安", "Ping An Insurance"});
+        STOCK_NAME_MAP.put("000858", new String[]{"五粮液", "Wuliangye"});
+        STOCK_NAME_MAP.put("300750", new String[]{"宁德时代", "CATL"});
+        STOCK_NAME_MAP.put("000333", new String[]{"美的集团", "Midea Group"});
+        STOCK_NAME_MAP.put("601012", new String[]{"隆基绿能", "LONGi Green Energy"});
+        STOCK_NAME_MAP.put("002594", new String[]{"比亚迪", "BYD"});
+        STOCK_NAME_MAP.put("600036", new String[]{"招商银行", "CMB"});
+        STOCK_NAME_MAP.put("600000", new String[]{"浦发银行", "SPD Bank"});
+        STOCK_NAME_MAP.put("000002", new String[]{"万科A", "Vanke A"});
+        STOCK_NAME_MAP.put("601166", new String[]{"兴业银行", "Industrial Bank"});
+        STOCK_NAME_MAP.put("600276", new String[]{"恒瑞医药", "Hengrui Medicine"});
+        STOCK_NAME_MAP.put("600030", new String[]{"中信证券", "CITIC Securities"});
+        STOCK_NAME_MAP.put("601398", new String[]{"工商银行", "ICBC"});
+        // 港股
+        STOCK_NAME_MAP.put("00700", new String[]{"腾讯控股", "Tencent"});
+        STOCK_NAME_MAP.put("09988", new String[]{"阿里巴巴", "Alibaba"});
+        STOCK_NAME_MAP.put("03690", new String[]{"美团", "Meituan"});
+        STOCK_NAME_MAP.put("09888", new String[]{"百度集团", "Baidu"});
+        // 美股
+        STOCK_NAME_MAP.put("AAPL", new String[]{"苹果", "Apple Inc."});
+        STOCK_NAME_MAP.put("GOOGL", new String[]{"谷歌", "Alphabet Inc."});
+        STOCK_NAME_MAP.put("MSFT", new String[]{"微软", "Microsoft"});
+        STOCK_NAME_MAP.put("TSLA", new String[]{"特斯拉", "Tesla Inc."});
+        STOCK_NAME_MAP.put("NVDA", new String[]{"英伟达", "NVIDIA"});
+        STOCK_NAME_MAP.put("META", new String[]{"Meta", "Meta Platforms"});
+    }
 
     @Value("${stock.api.token:}")
     private String apiToken;
@@ -110,15 +145,28 @@ public class StockFetcherService {
         
         log.info("Fetching stock data from zhituapi.com...");
         
+        int validDataCount = 0;
         for (String symbol : popularSymbols) {
             try {
                 Stock stock = fetchStockFromZhituApi(symbol);
                 if (stock != null) {
                     stockList.add(stock);
+                    // Check if the stock has valid price data (not all zeros)
+                    if (stock.getPrice() != null && stock.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+                        validDataCount++;
+                    }
                 }
             } catch (Exception e) {
                 log.warn("Error fetching stock {} from zhituapi: {}", symbol, e.getMessage());
             }
+        }
+        
+        // If most stocks have zero prices, API data is likely invalid
+        // Return empty list to trigger fallback
+        if (stockList.size() > 0 && validDataCount < stockList.size() / 2.0) {
+            log.warn("zhituapi returned mostly invalid price data ({}/{}), will use fallback", 
+                     validDataCount, stockList.size());
+            return new ArrayList<>();
         }
         
         return stockList;
@@ -142,8 +190,25 @@ public class StockFetcherService {
             
             // Parse the response based on zhituapi.com format
             // The API returns an object with stock data
-            String stockName = jsonNode.has("name") ? jsonNode.get("name").asText() : symbol;
             String stockCode = jsonNode.has("code") ? jsonNode.get("code").asText() : symbol;
+            String apiStockName = jsonNode.has("name") ? jsonNode.get("name").asText() : null;
+            
+            // Use stock name mapping if API doesn't return a proper name
+            String stockName;
+            String stockNameCn;
+            String[] mappedNames = STOCK_NAME_MAP.get(symbol);
+            if (mappedNames != null) {
+                stockNameCn = mappedNames[0];
+                stockName = mappedNames[1];
+            } else if (apiStockName != null && !apiStockName.isEmpty() && !apiStockName.equals(stockCode)) {
+                // Use API name if it's valid and different from code
+                stockNameCn = apiStockName;
+                stockName = apiStockName;
+            } else {
+                // Fallback to symbol if no name available
+                stockNameCn = symbol;
+                stockName = symbol;
+            }
             
             BigDecimal price = parseDecimal(jsonNode, "price", "now", "trade");
             BigDecimal high = parseDecimal(jsonNode, "high", "max");
@@ -174,7 +239,7 @@ public class StockFetcherService {
                 stock = Stock.builder()
                         .symbol(stockCode)
                         .name(stockName)
-                        .nameCn(stockName)
+                        .nameCn(stockNameCn)
                         .market(market)
                         .price(price != null ? price : BigDecimal.ZERO)
                         .changeAmount(changeAmount != null ? changeAmount : BigDecimal.ZERO)
@@ -189,9 +254,15 @@ public class StockFetcherService {
                         .lastUpdated(LocalDateTime.now())
                         .build();
                 stockMapper.insert(stock);
-                log.info("Created stock from zhituapi: {} - {}", stockCode, stockName);
+                log.info("Created stock from zhituapi: {} - {}", stockCode, stockNameCn);
             } else {
-                // Update existing stock with new data
+                // Update existing stock with new data - also update names if they were incorrect
+                if (stock.getName() == null || stock.getName().equals(stock.getSymbol())) {
+                    stock.setName(stockName);
+                }
+                if (stock.getNameCn() == null || stock.getNameCn().equals(stock.getSymbol())) {
+                    stock.setNameCn(stockNameCn);
+                }
                 if (price != null) stock.setPrice(price);
                 if (changeAmount != null) stock.setChangeAmount(changeAmount);
                 if (changePercent != null) stock.setChangePercent(changePercent);
@@ -202,7 +273,7 @@ public class StockFetcherService {
                 if (volume != null) stock.setVolume(volume);
                 stock.setLastUpdated(LocalDateTime.now());
                 stockMapper.updateById(stock);
-                log.info("Updated stock from zhituapi: {} - {} ({}%)", stockCode, stockName, changePercent);
+                log.info("Updated stock from zhituapi: {} - {} ({}%)", stockCode, stockNameCn, changePercent);
             }
             
             return stock;
