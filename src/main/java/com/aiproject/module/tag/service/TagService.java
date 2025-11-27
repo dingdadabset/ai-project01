@@ -64,6 +64,15 @@ public class TagService extends ServiceImpl<TagMapper, Tag> {
         return tagMapper.selectList(null);
     }
 
+    /**
+     * List all tags (for theme context)
+     */
+    public List<Tag> listTags() {
+        return tagMapper.selectList(
+            new LambdaQueryWrapper<Tag>().orderByAsc(Tag::getName)
+        );
+    }
+
     public IPage<Tag> listTags(int page, int size) {
         Page<Tag> tagPage = new Page<>(page + 1, size);
         return tagMapper.selectPage(tagPage, 

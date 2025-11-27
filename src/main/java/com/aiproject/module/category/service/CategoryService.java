@@ -49,6 +49,15 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
         return categoryMapper.selectList(null);
     }
 
+    /**
+     * List all categories (for theme context)
+     */
+    public List<Category> listCategories() {
+        return categoryMapper.selectList(
+            new LambdaQueryWrapper<Category>().orderByAsc(Category::getName)
+        );
+    }
+
     public IPage<Category> listCategories(int page, int size) {
         Page<Category> categoryPage = new Page<>(page + 1, size);
         return categoryMapper.selectPage(categoryPage, 

@@ -197,3 +197,27 @@ CREATE TABLE IF NOT EXISTS external_tools (
 CREATE INDEX IF NOT EXISTS idx_external_tools_category ON external_tools(category);
 CREATE INDEX IF NOT EXISTS idx_external_tools_is_active ON external_tools(is_active);
 CREATE INDEX IF NOT EXISTS idx_external_tools_display_order ON external_tools(display_order);
+
+-- Themes table for theme management
+CREATE TABLE IF NOT EXISTS themes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    theme_id VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    version VARCHAR(20),
+    author VARCHAR(100),
+    author_url VARCHAR(500),
+    description VARCHAR(1000),
+    screenshot VARCHAR(500),
+    config_json CLOB,
+    settings_json CLOB,
+    is_active BOOLEAN DEFAULT FALSE,
+    status VARCHAR(20) NOT NULL DEFAULT 'ENABLED',
+    template_engine VARCHAR(20) DEFAULT 'thymeleaf',
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+-- Create indexes for themes
+CREATE INDEX IF NOT EXISTS idx_themes_theme_id ON themes(theme_id);
+CREATE INDEX IF NOT EXISTS idx_themes_is_active ON themes(is_active);
+CREATE INDEX IF NOT EXISTS idx_themes_status ON themes(status);

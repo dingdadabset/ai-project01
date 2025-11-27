@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: document(~{::content}, '首页')}">
+<th:block th:fragment="content">
+    <section class="posts-section">
+        <h1 class="section-title">✨ 最新文章</h1>
+        <div class="posts-grid">
+            <article class="post-card" th:each="post : ${posts}">
+                <img th:if="${post.thumbnail}" th:src="${post.thumbnail}" alt="" class="post-thumbnail">
+                <div class="post-content">
+                    <h2><a th:href="@{/posts/{slug}(slug=${post.slug})}" th:text="${post.title}">文章标题</a></h2>
+                    <p class="post-meta">
+                        <span>📝 <span th:text="${post.authorName}">作者</span></span>
+                        <span>📅 <span th:text="${post.publishedAt}">日期</span></span>
+                        <span th:if="${post.viewCount}">👀 <span th:text="${post.viewCount}">0</span></span>
+                    </p>
+                    <p class="post-summary" th:text="${post.summary}">文章摘要...</p>
+                    <div class="post-tags" th:if="${post.tags}">
+                        <a th:each="tag : ${post.tags}" th:href="@{/tags/{slug}(slug=${tag})}" class="tag" th:text="${tag}">标签</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+        
+        <div th:if="${posts == null or posts.empty}" class="no-posts">
+            <p>暂无文章，快去创作吧~ ✨</p>
+        </div>
+        
+        <nav class="pagination" th:if="${pagination != null and pagination.pages > 1}">
+            <a th:if="${pagination.hasPrevious}" th:href="${pagination.previousUrl}" class="page-link">⬅ 上一页</a>
+            <span th:text="${pagination.current + 1} + ' / ' + ${pagination.pages}">1 / 10</span>
+            <a th:if="${pagination.hasNext}" th:href="${pagination.nextUrl}" class="page-link">下一页 ➡</a>
+        </nav>
+    </section>
+</th:block>
+</html>

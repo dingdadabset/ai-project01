@@ -1,0 +1,34 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
+    <div class="widget categories-widget" th:if="${settings.showCategories != false}">
+        <h3>📁 分类</h3>
+        <ul>
+            <li th:each="category : ${categories}">
+                <a th:href="@{/categories/{id}(id=${category.id})}" th:text="${category.name + ' (' + category.postCount + ')'}">分类</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="widget tags-widget" th:if="${settings.showTags != false}">
+        <h3>🏷️ 标签</h3>
+        <div class="tag-cloud">
+            <a th:each="tag : ${tags}" th:href="@{/tags/{slug}(slug=${tag.slug})}" class="tag" th:text="${tag.name}">标签</a>
+        </div>
+    </div>
+    
+    <div class="widget recent-posts-widget" th:if="${settings.showRecentPosts != false}">
+        <h3>📝 最新文章</h3>
+        <ul>
+            <li th:each="post : ${recentPosts}">
+                <a th:href="@{/posts/{slug}(slug=${post.slug})}" th:text="${post.title}">文章</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="widget bg-info-widget">
+        <h3>🎨 背景切换</h3>
+        <p style="font-size: 0.875rem; opacity: 0.8;">
+            点击右下角的彩色按钮<br>
+            可以切换不同的动漫背景 ✨
+        </p>
+    </div>
+</th:block>
