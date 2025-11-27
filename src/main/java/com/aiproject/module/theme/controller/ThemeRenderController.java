@@ -27,6 +27,7 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 import jakarta.annotation.PostConstruct;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -279,7 +280,7 @@ public class ThemeRenderController {
             html.append("    </main>\n");
             html.append("    <footer class=\"site-footer\">\n");
             html.append("        <div class=\"container\">\n");
-            html.append("            <p>© 2025 ").append(escapeHtml(siteName)).append("</p>\n");
+            html.append("            <p>© ").append(LocalDate.now().getYear()).append(" ").append(escapeHtml(siteName)).append("</p>\n");
             html.append("            <p>Powered by ").append(escapeHtml(theme.getName())).append(" ✨</p>\n");
             html.append("        </div>\n");
             html.append("    </footer>\n");
@@ -291,7 +292,7 @@ public class ThemeRenderController {
             
         } catch (Exception e) {
             log.error("Failed to preview theme", e);
-            return "<html><body><h1>Preview Error</h1><p>" + escapeHtml(e.getMessage()) + "</p></body></html>";
+            return "<html><body><h1>Preview Error</h1><p>An error occurred while generating the preview. Please check the server logs for details.</p></body></html>";
         }
     }
     
