@@ -29,16 +29,46 @@ settings:
         description: Select background image from themes/anime-girls/static/images/backgrounds/
         defaultValue: bg1
         options:
-          - label: Sakura Girl (Pink)
+          - label: 樱花少女 Sakura Girl (Pink)
             value: bg1
-          - label: Starry Fantasy (Night)
+          - label: 星空幻想 Starry Fantasy (Night)
             value: bg2
-          - label: Sunset Beach (Orange)
+          - label: 日落海滩 Sunset Beach (Orange)
             value: bg3
-          - label: Enchanted Forest (Green)
+          - label: 魔法森林 Enchanted Forest (Green)
             value: bg4
-          - label: City Night (Purple)
+          - label: 城市夜景 City Night (Purple)
             value: bg5
+          - label: 魔法少女 Magical Girl (Gradient)
+            value: bg6
+          - label: 翠绿仙子 Emerald Fairy (Green)
+            value: bg7
+          - label: 月夜精灵 Moonlight Spirit (Night)
+            value: bg8
+          - label: 落日少女 Sunset Girl (Warm)
+            value: bg9
+          - label: 棉花糖天使 Cotton Candy Angel (Pastel)
+            value: bg10
+          - label: 赛博朋克 Cyber Punk (Neon)
+            value: bg11
+          - label: 恋爱天使 Love Angel (Pink)
+            value: bg12
+          - label: 云端少女 Cloud Girl (Sky)
+            value: bg13
+          - label: 水晶公主 Crystal Princess (Purple)
+            value: bg14
+          - label: 海洋精灵 Ocean Spirit (Blue)
+            value: bg15
+          - label: 蜜桃少女 Peach Girl (Peach)
+            value: bg16
+          - label: 极光仙子 Aurora Fairy (Aurora)
+            value: bg17
+          - label: 秋叶精灵 Autumn Leaf Spirit (Autumn)
+            value: bg18
+          - label: 森林仙女 Forest Nymph (Forest)
+            value: bg19
+          - label: 梦幻少女 Dream Girl (Dreamy)
+            value: bg20
       - name: customBackgroundUrl
         label: Custom Background URL
         type: text
@@ -65,6 +95,27 @@ settings:
             value: "0.7"
           - label: 50%
             value: "0.5"
+      - name: backgroundBlur
+        label: Background Blur Effect (虚化效果)
+        type: select
+        description: Apply blur effect to background for better text readability
+        defaultValue: "8"
+        options:
+          - label: None (无)
+            value: "0"
+          - label: Light (轻微) - 4px
+            value: "4"
+          - label: Medium (中等) - 8px
+            value: "8"
+          - label: Strong (强) - 12px
+            value: "12"
+          - label: Very Strong (非常强) - 16px
+            value: "16"
+      - name: backgroundOverlay
+        label: Background Overlay
+        type: switch
+        description: Show background image as overlay on top layer with blur effect
+        defaultValue: true
   - group: appearance
     label: Appearance Settings
     items:

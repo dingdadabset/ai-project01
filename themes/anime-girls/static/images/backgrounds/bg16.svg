@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg16-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffecd2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fcb69f;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg16-gradient)"/>
+  <g fill="#fff" opacity="0.5">
+    <path d="M150,150 Q160,120 180,150 Q200,180 210,150 Q200,120 180,150 Q160,180 150,150 Z" transform="scale(1.5)"/>
+    <path d="M350,100 Q360,70 380,100 Q400,130 410,100 Q400,70 380,100 Q360,130 350,100 Z" transform="scale(1.2)"/>
+    <path d="M600,180 Q615,140 640,180 Q665,220 680,180 Q665,140 640,180 Q615,220 600,180 Z" transform="scale(1.3)"/>
+    <path d="M850,120 Q865,80 890,120 Q915,160 930,120 Q915,80 890,120 Q865,160 850,120 Z" transform="scale(1.4)"/>
+    <path d="M1100,160 Q1115,120 1140,160 Q1165,200 1180,160 Q1165,120 1140,160 Q1115,200 1100,160 Z" transform="scale(1.2)"/>
+    <path d="M1350,100 Q1365,60 1390,100 Q1415,140 1430,100 Q1415,60 1390,100 Q1365,140 1350,100 Z" transform="scale(1.5)"/>
+    <path d="M1600,180 Q1615,140 1640,180 Q1665,220 1680,180 Q1665,140 1640,180 Q1615,220 1600,180 Z" transform="scale(1.3)"/>
+  </g>
+  <g fill="#ffa07a" opacity="0.3">
+    <circle cx="300" cy="500" r="4"/>
+    <circle cx="500" cy="450" r="3"/>
+    <circle cx="700" cy="520" r="5"/>
+    <circle cx="900" cy="480" r="3"/>
+    <circle cx="1100" cy="530" r="4"/>
+    <circle cx="1300" cy="460" r="5"/>
+    <circle cx="1500" cy="510" r="3"/>
+    <circle cx="1700" cy="470" r="4"/>
+  </g>
+  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#d35400" opacity="0.6">蜜桃少女 Peach Girl</text>
+</svg>

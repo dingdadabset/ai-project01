@@ -265,21 +265,127 @@ MySQL 数据库配置（本地开发）/ MySQL database configuration (local dev
 - [x] MyBatis Plus ORM 集成
 - [x] REST API 接口
 - [x] 示例数据初始化
+- [x] 主题系统（上传、切换、设置管理）
+- [x] 自定义背景功能（一键切换、自定义上传）
+- [x] 前端界面（Vue 3 + TypeScript）
+- [x] 管理后台
+- [x] 文件上传实现
 
 ### 计划中 (Planned)
-- [ ] 主题系统
 - [ ] 插件系统
 - [ ] RSS 订阅
 - [ ] 全文搜索（Elasticsearch）
 - [ ] 缓存优化（Redis）
-- [ ] 前端界面
-- [ ] 管理后台
-- [ ] 文件上传实现
-- [ ] 图片处理
 - [ ] SEO 优化
 - [ ] 社交媒体集成
 - [ ] 邮件通知
 - [ ] 数据迁移工具
+
+## 主题系统 (Theme System)
+
+本项目支持完整的主题系统，包括主题上传、切换、设置管理和自定义背景图片功能。
+
+### 主题上传功能 (Theme Upload Feature)
+
+#### 如何上传主题 (How to Upload a Theme)
+
+1. **准备主题包**: 将主题文件打包为 ZIP 格式，确保 ZIP 根目录包含 `theme.yaml` 配置文件
+2. **进入主题管理**: 访问 `/admin/themes` 或点击管理后台的"Theme Management"
+3. **上传主题**: 点击右上角的 "📦 Upload Theme" 按钮，选择 ZIP 文件
+4. **激活主题**: 上传成功后，点击主题卡片上的 "Activate" 按钮激活主题
+
+#### 主题包结构 (Theme Package Structure)
+
+```
+my-theme.zip
+├── theme.yaml          # 主题配置文件（必需）
+├── screenshot.png      # 主题截图（推荐）
+├── templates/          # 模板文件
+├── static/            # 静态资源
+│   ├── css/
+│   ├── js/
+│   └── images/
+│       └── backgrounds/  # 背景图片目录
+└── i18n/              # 国际化文件
+    ├── en.yaml
+    └── zh-CN.yaml
+```
+
+#### theme.yaml 配置示例 (theme.yaml Example)
+
+```yaml
+id: my-theme
+name: My Custom Theme
+version: 1.0.0
+author:
+  name: Your Name
+  website: https://example.com
+description: A beautiful custom theme
+screenshot: screenshot.png
+requires: "1.0.0"
+
+settings:
+  - group: background
+    label: Background Settings
+    items:
+      - name: currentBackground
+        label: Current Background
+        type: select
+        defaultValue: bg1
+        options:
+          - label: Background 1
+            value: bg1
+      - name: customBackgroundUrl
+        label: Custom Background URL
+        type: text
+        description: Enter custom background image URL
+        defaultValue: ""
+      - name: backgroundOpacity
+        label: Background Opacity
+        type: select
+        defaultValue: "0.85"
+        options:
+          - label: 100%
+            value: "1"
+          - label: 85%
+            value: "0.85"
+```
+
+### 自定义背景功能 (Custom Background Feature)
+
+#### 一键切换背景 (One-Click Background Switch)
+
+1. **进入主题设置**: 在主题管理页面，点击主题卡片上的 "Settings" 按钮
+2. **选择预设背景**: 在 "Background Settings" 中选择预设的背景图片
+3. **上传自定义背景**: 
+   - 点击页面右下角的 "🖼️" 浮动按钮打开背景选择器
+   - 选择预设背景或点击 "Upload Custom" 上传自己的图片
+   - 支持 JPG、PNG、GIF、WebP、SVG 格式
+4. **调整背景效果**: 
+   - 设置背景透明度 (Background Opacity)
+   - 启用/禁用背景虚化效果 (Blur Effect)
+
+#### 背景显示特性 (Background Display Features)
+
+- **图层最上层显示**: 背景图片在最顶层，但使用虚化效果 (backdrop-filter: blur)
+- **文字可读性保护**: 虚化叠加层确保文字清晰可读
+- **响应式设计**: 背景自适应各种屏幕尺寸
+- **性能优化**: 使用 CSS 硬件加速，不影响页面性能
+
+#### 背景图片 API (Background Image API)
+
+| 方法 | 路径 | 描述 |
+|------|------|------|
+| POST | /api/uploads | 上传单个文件 |
+| POST | /api/uploads/batch | 批量上传文件 |
+| GET | /api/uploads/list/{type} | 获取指定类型文件列表 (如: backgrounds) |
+| GET | /api/uploads/{type}/{filename} | 获取指定文件 |
+| DELETE | /api/uploads/{type}/{filename} | 删除文件 |
+
+### 内置主题 (Built-in Themes)
+
+1. **Default Theme**: 简洁响应式默认主题
+2. **Anime Girls Theme**: 二次元美少女主题，内置20张精美背景图片
 
 ## 贡献 (Contributing)
 
