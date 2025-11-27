@@ -5,54 +5,78 @@
       <stop offset="50%" style="stop-color:#302b63;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#24243e;stop-opacity:1" />
     </linearGradient>
-    <radialGradient id="nebula" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.5" />
-      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
+    <linearGradient id="hair-silver" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8e8f0" />
+      <stop offset="100%" style="stop-color:#b8b8d0" />
+    </linearGradient>
+    <linearGradient id="skin-pale" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff5f5" />
+      <stop offset="100%" style="stop-color:#ffe8e8" />
+    </linearGradient>
+    <radialGradient id="eye-purple" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#9370db" />
+      <stop offset="100%" style="stop-color:#4b0082" />
+    </radialGradient>
+    <radialGradient id="star-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9370db;stop-opacity:0" />
     </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg2-gradient)"/>
   <!-- Stars -->
   <g fill="#fff">
-    <circle cx="100" cy="80" r="2" opacity="0.9"/>
-    <circle cx="250" cy="150" r="1.5" opacity="0.7"/>
-    <circle cx="400" cy="50" r="2.5" opacity="0.8"/>
-    <circle cx="550" cy="120" r="1" opacity="0.6"/>
-    <circle cx="700" cy="70" r="3" opacity="0.9"/>
-    <circle cx="850" cy="180" r="1.5" opacity="0.7"/>
-    <circle cx="1000" cy="90" r="2" opacity="0.8"/>
-    <circle cx="1150" cy="140" r="1" opacity="0.6"/>
-    <circle cx="1300" cy="60" r="2.5" opacity="0.9"/>
-    <circle cx="1450" cy="110" r="1.5" opacity="0.7"/>
-    <circle cx="1600" cy="80" r="2" opacity="0.8"/>
-    <circle cx="1750" cy="160" r="1" opacity="0.6"/>
-    <circle cx="1850" cy="100" r="2.5" opacity="0.9"/>
-    <circle cx="150" cy="300" r="1.5" opacity="0.7"/>
-    <circle cx="300" cy="250" r="2" opacity="0.8"/>
-    <circle cx="450" cy="320" r="1" opacity="0.6"/>
-    <circle cx="600" cy="280" r="2.5" opacity="0.9"/>
-    <circle cx="750" cy="350" r="1.5" opacity="0.7"/>
-    <circle cx="900" cy="290" r="2" opacity="0.8"/>
-    <circle cx="1050" cy="330" r="1" opacity="0.6"/>
-    <circle cx="1200" cy="270" r="2.5" opacity="0.9"/>
-    <circle cx="1350" cy="340" r="1.5" opacity="0.7"/>
-    <circle cx="1500" cy="300" r="2" opacity="0.8"/>
-    <circle cx="1650" cy="360" r="1" opacity="0.6"/>
-    <circle cx="1800" cy="280" r="2.5" opacity="0.9"/>
-    <circle cx="80" cy="500" r="1.5" opacity="0.7"/>
-    <circle cx="200" cy="450" r="2" opacity="0.8"/>
-    <circle cx="350" cy="520" r="1" opacity="0.6"/>
-    <circle cx="500" cy="480" r="2.5" opacity="0.9"/>
-    <circle cx="650" cy="550" r="1.5" opacity="0.7"/>
-    <circle cx="800" cy="490" r="2" opacity="0.8"/>
-    <circle cx="950" cy="530" r="3" opacity="0.95"/>
-    <circle cx="1100" cy="470" r="2.5" opacity="0.9"/>
-    <circle cx="1250" cy="540" r="1.5" opacity="0.7"/>
-    <circle cx="1400" cy="500" r="2" opacity="0.8"/>
-    <circle cx="1550" cy="560" r="1" opacity="0.6"/>
-    <circle cx="1700" cy="480" r="2.5" opacity="0.9"/>
-    <circle cx="1870" cy="550" r="1.5" opacity="0.7"/>
+    <circle cx="100" cy="80" r="2" opacity="0.9"/><circle cx="250" cy="150" r="1.5" opacity="0.7"/>
+    <circle cx="400" cy="50" r="2.5" opacity="0.8"/><circle cx="700" cy="70" r="3" opacity="0.9"/>
+    <circle cx="1000" cy="90" r="2" opacity="0.8"/><circle cx="1300" cy="60" r="2.5" opacity="0.9"/>
+    <circle cx="1600" cy="80" r="2" opacity="0.8"/><circle cx="1850" cy="100" r="2.5" opacity="0.9"/>
+    <circle cx="150" cy="300" r="1.5" opacity="0.7"/><circle cx="600" cy="280" r="2.5" opacity="0.9"/>
+    <circle cx="1200" cy="270" r="2.5" opacity="0.9"/><circle cx="1800" cy="280" r="2.5" opacity="0.9"/>
+    <circle cx="200" cy="850" r="2" opacity="0.8"/><circle cx="1700" cy="900" r="2" opacity="0.8"/>
   </g>
-  <!-- Nebula effect -->
-  <ellipse cx="960" cy="400" rx="400" ry="200" fill="url(#nebula)" opacity="0.3"/>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">星空幻想 Starry Fantasy</text>
+  <!-- Anime Girl - Starry Fantasy Theme -->
+  <g transform="translate(960, 520)">
+    <!-- Long flowing silver hair -->
+    <ellipse cx="0" cy="-40" rx="200" ry="240" fill="url(#hair-silver)"/>
+    <ellipse cx="-140" cy="120" rx="70" ry="200" fill="url(#hair-silver)"/>
+    <ellipse cx="140" cy="120" rx="70" ry="200" fill="url(#hair-silver)"/>
+    <!-- Sparkles in hair -->
+    <circle cx="-80" cy="-100" r="4" fill="url(#star-glow)"/>
+    <circle cx="60" cy="-80" r="3" fill="url(#star-glow)"/>
+    <circle cx="-120" cy="50" r="3" fill="url(#star-glow)"/>
+    <circle cx="100" cy="80" r="4" fill="url(#star-glow)"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-20" rx="90" ry="105" fill="url(#skin-pale)"/>
+    <!-- Bangs -->
+    <path d="M-90,-70 Q-75,-140 -50,-155 Q-25,-125 0,-160 Q25,-125 50,-155 Q75,-140 90,-70" fill="url(#hair-silver)"/>
+    <!-- Eyes -->
+    <g transform="translate(-38, -45)">
+      <ellipse cx="0" cy="0" rx="26" ry="32" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="19" ry="24" fill="url(#eye-purple)"/>
+      <ellipse cx="5" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="-2" cy="6" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-26,-16 Q0,-28 26,-16" stroke="#302b63" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(38, -45)">
+      <ellipse cx="0" cy="0" rx="26" ry="32" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="19" ry="24" fill="url(#eye-purple)"/>
+      <ellipse cx="-5" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="2" cy="6" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-26,-16 Q0,-28 26,-16" stroke="#302b63" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-55" cy="-15" rx="18" ry="10" fill="#ffb6c1" opacity="0.4"/>
+    <ellipse cx="55" cy="-15" rx="18" ry="10" fill="#ffb6c1" opacity="0.4"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-15 L2,0" stroke="#dcc8c8" stroke-width="2" fill="none"/>
+    <path d="M-10,20 Q0,28 10,20" stroke="#d4a5a5" stroke-width="2" fill="none"/>
+    <!-- Star hair ornament -->
+    <g transform="translate(90, -130)">
+      <polygon points="0,-20 5,-8 18,-8 8,2 12,15 0,8 -12,15 -8,2 -18,-8 -5,-8" fill="#ffd700"/>
+      <circle cx="0" cy="0" r="5" fill="#fff"/>
+    </g>
+    <!-- Dress -->
+    <ellipse cx="0" cy="130" rx="110" ry="70" fill="#4b0082" opacity="0.8"/>
+    <path d="M-70,100 Q0,80 70,100" stroke="#9370db" stroke-width="3" fill="none"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#fff" opacity="0.9">星空幻想 Starry Fantasy</text>
 </svg>

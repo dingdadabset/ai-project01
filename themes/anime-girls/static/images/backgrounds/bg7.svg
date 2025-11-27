@@ -1,22 +1,82 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
-    <linearGradient id="bg7-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+    <linearGradient id="bg7-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#11998e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#38ef7d;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#38ef7d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#56ab2f;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-teal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#20b2aa" />
+      <stop offset="100%" style="stop-color:#008b8b" />
+    </linearGradient>
+    <linearGradient id="skin-fairy" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff8f0" />
+      <stop offset="100%" style="stop-color:#ffe8d8" />
+    </linearGradient>
+    <radialGradient id="eye-teal" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#40e0d0" />
+      <stop offset="100%" style="stop-color:#008080" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg7-gradient)"/>
-  <g fill="#fff" opacity="0.3">
-    <ellipse cx="200" cy="200" rx="80" ry="40" transform="rotate(30 200 200)"/>
-    <ellipse cx="600" cy="350" rx="100" ry="50" transform="rotate(-20 600 350)"/>
-    <ellipse cx="1000" cy="150" rx="70" ry="35" transform="rotate(45 1000 150)"/>
-    <ellipse cx="1400" cy="300" rx="90" ry="45" transform="rotate(-30 1400 300)"/>
-    <ellipse cx="1750" cy="180" rx="60" ry="30" transform="rotate(15 1750 180)"/>
-    <ellipse cx="300" cy="650" rx="85" ry="42" transform="rotate(-45 300 650)"/>
-    <ellipse cx="700" cy="800" rx="75" ry="38" transform="rotate(25 700 800)"/>
-    <ellipse cx="1100" cy="700" rx="95" ry="47" transform="rotate(-15 1100 700)"/>
-    <ellipse cx="1500" cy="850" rx="65" ry="33" transform="rotate(35 1500 850)"/>
-    <ellipse cx="1800" cy="600" rx="55" ry="28" transform="rotate(-25 1800 600)"/>
+  <!-- Floating leaves -->
+  <g fill="#90ee90" opacity="0.5">
+    <ellipse cx="180" cy="200" rx="15" ry="8" transform="rotate(25 180 200)"/>
+    <ellipse cx="350" cy="350" rx="12" ry="6" transform="rotate(-35 350 350)"/>
+    <ellipse cx="1600" cy="280" rx="14" ry="7" transform="rotate(40 1600 280)"/>
+    <ellipse cx="1750" cy="450" rx="13" ry="7" transform="rotate(-20 1750 450)"/>
+    <ellipse cx="250" cy="800" rx="12" ry="6" transform="rotate(30 250 800)"/>
+    <ellipse cx="1680" cy="820" rx="14" ry="8" transform="rotate(-30 1680 820)"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">翠绿仙子 Emerald Fairy</text>
+  <!-- Anime Girl - Emerald Fairy Theme -->
+  <g transform="translate(960, 500)">
+    <!-- Long flowing teal hair -->
+    <ellipse cx="0" cy="-30" rx="190" ry="240" fill="url(#hair-teal)"/>
+    <ellipse cx="-135" cy="100" rx="70" ry="200" fill="url(#hair-teal)"/>
+    <ellipse cx="135" cy="100" rx="70" ry="200" fill="url(#hair-teal)"/>
+    <!-- Hair waves -->
+    <path d="M-150,-50 Q-180,50 -160,180" stroke="#40e0d0" stroke-width="4" fill="none" opacity="0.5"/>
+    <path d="M150,-50 Q180,50 160,180" stroke="#40e0d0" stroke-width="4" fill="none" opacity="0.5"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-15" rx="87" ry="102" fill="url(#skin-fairy)"/>
+    <!-- Bangs -->
+    <path d="M-87,-65 Q-70,-138 -44,-152 Q-20,-115 0,-155 Q20,-115 44,-152 Q70,-138 87,-65" fill="url(#hair-teal)"/>
+    <!-- Eyes -->
+    <g transform="translate(-36, -38)">
+      <ellipse cx="0" cy="0" rx="25" ry="30" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="18" ry="22" fill="url(#eye-teal)"/>
+      <ellipse cx="5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <path d="M-25,-14 Q0,-26 25,-14" stroke="#006666" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(36, -38)">
+      <ellipse cx="0" cy="0" rx="25" ry="30" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="18" ry="22" fill="url(#eye-teal)"/>
+      <ellipse cx="-5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <path d="M-25,-14 Q0,-26 25,-14" stroke="#006666" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-52" cy="-8" rx="17" ry="9" fill="#ffb6c1" opacity="0.4"/>
+    <ellipse cx="52" cy="-8" rx="17" ry="9" fill="#ffb6c1" opacity="0.4"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-8 L2,5" stroke="#deb8a8" stroke-width="2" fill="none"/>
+    <path d="M-10,25 Q0,32 10,25" stroke="#c8a090" stroke-width="2" fill="none"/>
+    <!-- Fairy wings -->
+    <g opacity="0.6">
+      <ellipse cx="-120" cy="50" rx="60" ry="100" fill="#40e0d0" transform="rotate(-25 -120 50)"/>
+      <ellipse cx="120" cy="50" rx="60" ry="100" fill="#40e0d0" transform="rotate(25 120 50)"/>
+      <ellipse cx="-100" cy="120" rx="40" ry="70" fill="#7fffd4" transform="rotate(-15 -100 120)"/>
+      <ellipse cx="100" cy="120" rx="40" ry="70" fill="#7fffd4" transform="rotate(15 100 120)"/>
+    </g>
+    <!-- Leaf crown -->
+    <g transform="translate(0, -155)">
+      <ellipse cx="-50" cy="5" rx="18" ry="10" fill="#32cd32" transform="rotate(-40 -50 5)"/>
+      <ellipse cx="0" cy="-5" rx="20" ry="12" fill="#228b22"/>
+      <ellipse cx="50" cy="5" rx="18" ry="10" fill="#32cd32" transform="rotate(40 50 5)"/>
+      <circle cx="0" cy="5" r="6" fill="#ffd700"/>
+    </g>
+    <!-- Fairy dress -->
+    <ellipse cx="0" cy="130" rx="100" ry="60" fill="#20b2aa" opacity="0.85"/>
+    <path d="M-60,95 Q0,75 60,95" stroke="#7fffd4" stroke-width="3" fill="none"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#fff" opacity="0.9">翠绿仙子 Emerald Fairy</text>
 </svg>

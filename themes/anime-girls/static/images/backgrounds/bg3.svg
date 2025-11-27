@@ -1,35 +1,74 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
-    <linearGradient id="bg3-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="bg3-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#ff7e5f;stop-opacity:1" />
-      <stop offset="40%" style="stop-color:#feb47b;stop-opacity:1" />
-      <stop offset="70%" style="stop-color:#ff6b6b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#c44569;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#feb47b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b6b;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="bg3-sea" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#2c3e50;stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:#1a252f;stop-opacity:1" />
+    <linearGradient id="hair-orange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff8c00" />
+      <stop offset="100%" style="stop-color:#cc5500" />
     </linearGradient>
+    <linearGradient id="skin-sun" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffe4c4" />
+      <stop offset="100%" style="stop-color:#ffd4b4" />
+    </linearGradient>
+    <radialGradient id="eye-amber" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffd700" />
+      <stop offset="100%" style="stop-color:#ff8c00" />
+    </radialGradient>
   </defs>
-  <!-- Sky -->
-  <rect width="100%" height="100%" fill="url(#bg3-sky)"/>
-  <!-- Sun -->
-  <circle cx="960" cy="500" r="120" fill="#ffdb4d" opacity="0.9"/>
-  <circle cx="960" cy="500" r="140" fill="#ffdb4d" opacity="0.3"/>
-  <circle cx="960" cy="500" r="160" fill="#ffdb4d" opacity="0.2"/>
-  <!-- Sea -->
-  <rect x="0" y="650" width="100%" height="430" fill="url(#bg3-sea)"/>
-  <!-- Waves -->
-  <path d="M0,680 Q200,660 400,680 T800,680 T1200,680 T1600,680 T1920,680 L1920,1080 L0,1080 Z" fill="#1a252f" opacity="0.6"/>
-  <path d="M0,720 Q200,700 400,720 T800,720 T1200,720 T1600,720 T1920,720 L1920,1080 L0,1080 Z" fill="#1a252f" opacity="0.4"/>
-  <!-- Sun reflection -->
-  <ellipse cx="960" cy="750" rx="80" ry="120" fill="#ffdb4d" opacity="0.3"/>
-  <!-- Birds -->
-  <g fill="none" stroke="#333" stroke-width="2" opacity="0.6">
-    <path d="M300,200 Q310,190 320,200 Q330,190 340,200"/>
-    <path d="M350,180 Q360,170 370,180 Q380,170 390,180"/>
-    <path d="M1500,250 Q1510,240 1520,250 Q1530,240 1540,250"/>
-    <path d="M1550,220 Q1560,210 1570,220 Q1580,210 1590,220"/>
+  <rect width="100%" height="100%" fill="url(#bg3-gradient)"/>
+  <!-- Sun rays -->
+  <g fill="#fff" opacity="0.2">
+    <polygon points="1700,100 1650,200 1750,200"/>
+    <polygon points="1780,150 1720,250 1840,250"/>
+    <polygon points="1820,200 1800,300 1900,280"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.9">海边夕阳 Sunset Beach</text>
+  <!-- Ocean waves -->
+  <path d="M0,900 Q200,870 400,900 Q600,930 800,900 Q1000,870 1200,900 Q1400,930 1600,900 Q1800,870 1920,900 L1920,1080 L0,1080 Z" fill="#4a90a4" opacity="0.6"/>
+  <path d="M0,920 Q200,890 400,920 Q600,950 800,920 Q1000,890 1200,920 Q1400,950 1600,920 Q1800,890 1920,920 L1920,1080 L0,1080 Z" fill="#5fa8c4" opacity="0.5"/>
+  <!-- Anime Girl - Sunset Beach Theme -->
+  <g transform="translate(960, 500)">
+    <!-- Flowing orange hair with wind effect -->
+    <ellipse cx="0" cy="-30" rx="190" ry="230" fill="url(#hair-orange)"/>
+    <ellipse cx="-150" cy="80" rx="80" ry="200" fill="url(#hair-orange)" transform="rotate(-15 -150 80)"/>
+    <ellipse cx="150" cy="80" rx="80" ry="200" fill="url(#hair-orange)" transform="rotate(15 150 80)"/>
+    <!-- Hair strands flowing -->
+    <path d="M-170,0 Q-220,100 -200,250" stroke="#ff6600" stroke-width="8" fill="none" opacity="0.7"/>
+    <path d="M170,0 Q220,100 200,250" stroke="#ff6600" stroke-width="8" fill="none" opacity="0.7"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-10" rx="88" ry="102" fill="url(#skin-sun)"/>
+    <!-- Bangs -->
+    <path d="M-88,-60 Q-70,-130 -45,-145 Q-20,-110 0,-150 Q20,-110 45,-145 Q70,-130 88,-60" fill="url(#hair-orange)"/>
+    <!-- Eyes -->
+    <g transform="translate(-36, -35)">
+      <ellipse cx="0" cy="0" rx="25" ry="30" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="18" ry="22" fill="url(#eye-amber)"/>
+      <ellipse cx="5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <path d="M-25,-14 Q0,-26 25,-14" stroke="#8b4513" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(36, -35)">
+      <ellipse cx="0" cy="0" rx="25" ry="30" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="18" ry="22" fill="url(#eye-amber)"/>
+      <ellipse cx="-5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <path d="M-25,-14 Q0,-26 25,-14" stroke="#8b4513" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-52" cy="-5" rx="18" ry="10" fill="#ff9999" opacity="0.5"/>
+    <ellipse cx="52" cy="-5" rx="18" ry="10" fill="#ff9999" opacity="0.5"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-5 L2,8" stroke="#e0a890" stroke-width="2" fill="none"/>
+    <path d="M-8,28 Q0,35 8,28" stroke="#d4a5a5" stroke-width="2" fill="none"/>
+    <!-- Shell hair ornament -->
+    <g transform="translate(-100, -110)">
+      <ellipse cx="0" cy="0" rx="18" ry="14" fill="#ffe4b5"/>
+      <path d="M-15,0 Q-8,-10 0,-5 Q8,-10 15,0" stroke="#daa520" stroke-width="2" fill="none"/>
+      <path d="M-12,5 Q0,-5 12,5" stroke="#daa520" stroke-width="2" fill="none"/>
+    </g>
+    <!-- Summer dress -->
+    <ellipse cx="0" cy="130" rx="105" ry="65" fill="#fff" opacity="0.9"/>
+    <path d="M-65,95 Q0,75 65,95" stroke="#feb47b" stroke-width="4" fill="none"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#fff" opacity="0.9">日落海滩 Sunset Beach</text>
 </svg>

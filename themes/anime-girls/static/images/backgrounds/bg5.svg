@@ -1,74 +1,82 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
     <linearGradient id="bg5-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f0f1a;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#1a1a2e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#1a0030;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d1050;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a1080;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-purple" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9400d3" />
+      <stop offset="100%" style="stop-color:#4b0082" />
+    </linearGradient>
+    <linearGradient id="skin-night" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff0f5" />
+      <stop offset="100%" style="stop-color:#ffe4ec" />
+    </linearGradient>
+    <radialGradient id="eye-violet" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ee82ee" />
+      <stop offset="100%" style="stop-color:#9400d3" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg5-gradient)"/>
   <!-- City skyline -->
-  <g fill="#0a0a14">
-    <!-- Left buildings -->
-    <rect x="50" y="500" width="80" height="580"/>
-    <rect x="140" y="400" width="100" height="680"/>
-    <rect x="260" y="550" width="70" height="530"/>
-    <rect x="340" y="350" width="120" height="730"/>
-    <rect x="480" y="450" width="90" height="630"/>
-    <rect x="590" y="500" width="60" height="580"/>
-    <!-- Center buildings -->
-    <rect x="680" y="300" width="150" height="780"/>
-    <rect x="850" y="250" width="120" height="830"/>
-    <rect x="990" y="200" width="180" height="880"/>
-    <rect x="1190" y="280" width="130" height="800"/>
-    <!-- Right buildings -->
-    <rect x="1340" y="380" width="100" height="700"/>
-    <rect x="1460" y="450" width="80" height="630"/>
-    <rect x="1560" y="350" width="110" height="730"/>
-    <rect x="1690" y="480" width="90" height="600"/>
-    <rect x="1800" y="400" width="120" height="680"/>
+  <g fill="#1a0020" opacity="0.8">
+    <rect x="100" y="800" width="80" height="280"/>
+    <rect x="200" y="750" width="100" height="330"/>
+    <rect x="320" y="820" width="60" height="260"/>
+    <rect x="1500" y="780" width="90" height="300"/>
+    <rect x="1610" y="730" width="110" height="350"/>
+    <rect x="1740" y="800" width="70" height="280"/>
   </g>
-  <!-- Building windows (lit) -->
-  <g fill="#ffeb3b" opacity="0.8">
-    <!-- Random windows on buildings -->
-    <rect x="160" y="420" width="15" height="20"/>
-    <rect x="200" y="480" width="15" height="20"/>
-    <rect x="160" y="550" width="15" height="20"/>
-    <rect x="360" y="380" width="20" height="25"/>
-    <rect x="400" y="450" width="20" height="25"/>
-    <rect x="360" y="520" width="20" height="25"/>
-    <rect x="700" y="320" width="25" height="30"/>
-    <rect x="750" y="400" width="25" height="30"/>
-    <rect x="700" y="480" width="25" height="30"/>
-    <rect x="870" y="280" width="20" height="25"/>
-    <rect x="920" y="350" width="20" height="25"/>
-    <rect x="870" y="420" width="20" height="25"/>
-    <rect x="1020" y="230" width="30" height="35"/>
-    <rect x="1080" y="300" width="30" height="35"/>
-    <rect x="1020" y="380" width="30" height="35"/>
-    <rect x="1100" y="450" width="30" height="35"/>
-    <rect x="1210" y="310" width="20" height="25"/>
-    <rect x="1260" y="380" width="20" height="25"/>
-    <rect x="1580" y="380" width="20" height="25"/>
-    <rect x="1620" y="450" width="20" height="25"/>
-    <rect x="1820" y="430" width="25" height="30"/>
-    <rect x="1870" y="500" width="25" height="30"/>
+  <!-- Neon lights -->
+  <g>
+    <rect x="120" y="850" width="40" height="5" fill="#ff00ff" opacity="0.8"/>
+    <rect x="230" y="800" width="50" height="5" fill="#00ffff" opacity="0.8"/>
+    <rect x="1530" y="830" width="40" height="5" fill="#ff00ff" opacity="0.8"/>
+    <rect x="1650" y="780" width="50" height="5" fill="#00ffff" opacity="0.8"/>
   </g>
-  <!-- Stars -->
-  <g fill="#fff">
-    <circle cx="100" cy="60" r="1.5" opacity="0.7"/>
-    <circle cx="300" cy="100" r="1" opacity="0.5"/>
-    <circle cx="500" cy="50" r="2" opacity="0.8"/>
-    <circle cx="700" cy="120" r="1" opacity="0.6"/>
-    <circle cx="900" cy="80" r="1.5" opacity="0.7"/>
-    <circle cx="1100" cy="40" r="1" opacity="0.5"/>
-    <circle cx="1300" cy="90" r="2" opacity="0.8"/>
-    <circle cx="1500" cy="60" r="1" opacity="0.6"/>
-    <circle cx="1700" cy="110" r="1.5" opacity="0.7"/>
-    <circle cx="1850" cy="70" r="1" opacity="0.5"/>
+  <!-- Anime Girl - City Night Theme -->
+  <g transform="translate(960, 480)">
+    <!-- Purple hair with city glow -->
+    <ellipse cx="0" cy="-25" rx="195" ry="245" fill="url(#hair-purple)"/>
+    <ellipse cx="-140" cy="110" rx="75" ry="210" fill="url(#hair-purple)"/>
+    <ellipse cx="140" cy="110" rx="75" ry="210" fill="url(#hair-purple)"/>
+    <!-- Neon highlights in hair -->
+    <path d="M-100,-150 Q-80,-50 -110,80" stroke="#ff00ff" stroke-width="3" fill="none" opacity="0.6"/>
+    <path d="M100,-150 Q80,-50 110,80" stroke="#00ffff" stroke-width="3" fill="none" opacity="0.6"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-5" rx="90" ry="105" fill="url(#skin-night)"/>
+    <!-- Bangs -->
+    <path d="M-90,-55 Q-72,-130 -48,-148 Q-22,-112 0,-152 Q22,-112 48,-148 Q72,-130 90,-55" fill="url(#hair-purple)"/>
+    <!-- Eyes with neon effect -->
+    <g transform="translate(-38, -30)">
+      <ellipse cx="0" cy="0" rx="26" ry="32" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="19" ry="24" fill="url(#eye-violet)"/>
+      <ellipse cx="5" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="-3" cy="8" rx="3" ry="4" fill="#ff00ff" opacity="0.3"/>
+      <path d="M-26,-15 Q0,-27 26,-15" stroke="#2d1050" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(38, -30)">
+      <ellipse cx="0" cy="0" rx="26" ry="32" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="19" ry="24" fill="url(#eye-violet)"/>
+      <ellipse cx="-5" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="3" cy="8" rx="3" ry="4" fill="#00ffff" opacity="0.3"/>
+      <path d="M-26,-15 Q0,-27 26,-15" stroke="#2d1050" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-55" cy="0" rx="18" ry="10" fill="#ff69b4" opacity="0.4"/>
+    <ellipse cx="55" cy="0" rx="18" ry="10" fill="#ff69b4" opacity="0.4"/>
+    <!-- Nose and mouth -->
+    <path d="M0,0 L2,15" stroke="#e8c8d8" stroke-width="2" fill="none"/>
+    <path d="M-10,35 Q0,43 10,35" stroke="#c890a8" stroke-width="2" fill="none"/>
+    <!-- Cyber headphones -->
+    <ellipse cx="-100" cy="-30" rx="25" ry="35" fill="#2d1050" stroke="#ff00ff" stroke-width="2"/>
+    <ellipse cx="100" cy="-30" rx="25" ry="35" fill="#2d1050" stroke="#00ffff" stroke-width="2"/>
+    <path d="M-90,-80 Q0,-120 90,-80" stroke="#333" stroke-width="8" fill="none"/>
+    <!-- Cyberpunk outfit -->
+    <ellipse cx="0" cy="140" rx="110" ry="70" fill="#1a0030" opacity="0.9"/>
+    <path d="M-70,105 Q0,85 70,105" stroke="#ff00ff" stroke-width="3" fill="none"/>
+    <path d="M-50,120 Q0,100 50,120" stroke="#00ffff" stroke-width="2" fill="none"/>
   </g>
-  <!-- Moon -->
-  <circle cx="1600" cy="150" r="50" fill="#fff" opacity="0.9"/>
-  <circle cx="1580" cy="140" r="50" fill="url(#bg5-gradient)"/>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.9">城市夜景 City Night</text>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ff00ff" opacity="0.9">城市夜景 City Night</text>
 </svg>
