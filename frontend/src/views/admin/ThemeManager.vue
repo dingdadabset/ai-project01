@@ -169,13 +169,19 @@
                 </select>
                 
                 <!-- Color -->
-                <input 
-                  v-else-if="item.type === 'color'" 
-                  type="color" 
-                  :id="item.name"
-                  v-model="settingsValues[item.name]"
-                  class="color-input"
-                >
+                <div v-else-if="item.type === 'color'" class="color-picker-wrapper">
+                  <input 
+                    type="color" 
+                    :id="item.name"
+                    v-model="settingsValues[item.name]"
+                    class="color-input"
+                  >
+                  <span class="color-value">{{ settingsValues[item.name] }}</span>
+                  <div 
+                    class="color-preview" 
+                    :style="{ backgroundColor: settingsValues[item.name] as string }"
+                  ></div>
+                </div>
                 
                 <!-- Number -->
                 <input 
@@ -192,8 +198,8 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" @click="closeSettings">Cancel</button>
-          <button class="btn btn-primary" @click="saveSettings" :disabled="savingSettings">
-            {{ savingSettings ? 'Saving...' : 'Save Settings' }}
+          <button class="btn btn-primary btn-confirm" @click="saveSettings" :disabled="savingSettings">
+            {{ savingSettings ? 'Saving...' : '✓ Confirm & Apply' }}
           </button>
         </div>
       </div>
@@ -811,6 +817,43 @@ input:checked + .slider:before {
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
+}
+
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-value {
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  min-width: 80px;
+}
+
+.color-preview {
+  width: 100px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--bg-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-confirm {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+  }
 }
 
 .no-settings {
