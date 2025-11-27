@@ -3,32 +3,32 @@
 <th:block th:fragment="content">
     <article class="post-single">
         <header class="post-header">
-            <h1 th:text="${post.title}">文章标题</h1>
+            <h1 th:text="${post.title}">Post Title</h1>
             <div class="post-meta">
-                <span class="author">📝 <span th:text="${post.authorName}">作者</span></span>
-                <span class="date">📅 <span th:text="${post.publishedAt}">日期</span></span>
-                <span class="category" th:if="${post.categoryName}">📁 <span th:text="${post.categoryName}">分类</span></span>
-                <span class="views">👀 <span th:text="${post.viewCount}">0</span> 阅读</span>
+                <span class="author">📝 <span th:text="${post.authorName}">Author</span></span>
+                <span class="date">📅 <span th:text="${post.publishedAt}">Date</span></span>
+                <span class="category" th:if="${post.categoryName}">📁 <span th:text="${post.categoryName}">Category</span></span>
+                <span class="views">👀 <span th:text="${post.viewCount}">0</span> views</span>
             </div>
         </header>
         
         <img th:if="${post.thumbnail}" th:src="${post.thumbnail}" alt="" class="post-featured-image">
         
         <div class="post-content" th:utext="${post.content}">
-            文章内容...
+            Post content...
         </div>
         
         <footer class="post-footer">
             <div class="post-tags" th:if="${post.tags}">
-                <span>🏷️ 标签：</span>
-                <a th:each="tag : ${post.tags}" th:href="@{/tags/{slug}(slug=${tag})}" class="tag" th:text="${tag}">标签</a>
+                <span>🏷️ Tags:</span>
+                <a th:each="tag : ${post.tags}" th:href="@{/tags/{slug}(slug=${tag})}" class="tag" th:text="${tag}">Tag</a>
             </div>
         </footer>
         
         <section class="comments-section" th:if="${post.allowComment}">
-            <h3>💬 评论</h3>
+            <h3>💬 Comments</h3>
             <div id="comments-container">
-                <!-- 评论区 -->
+                <!-- Comments section -->
             </div>
         </section>
     </article>

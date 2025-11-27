@@ -4,56 +4,56 @@ version: 1.0.0
 author:
   name: AI Project Team
   website: https://github.com/aiproject
-description: 美女动漫主题，带有多种精美背景图片切换功能
+description: Beautiful anime-style theme with multiple stunning background switching feature
 screenshot: screenshot.png
 requires: "1.0.0"
 
 settings:
   - group: general
-    label: 通用设置
+    label: General Settings
     items:
       - name: siteName
-        label: 站点名称
+        label: Site Name
         type: text
-        defaultValue: 动漫博客
+        defaultValue: Anime Blog
       - name: siteDescription
-        label: 站点描述
+        label: Site Description
         type: textarea
-        defaultValue: 一个充满动漫风格的个人博客
+        defaultValue: A beautiful anime-style personal blog
   - group: background
-    label: 背景设置
+    label: Background Settings
     items:
       - name: currentBackground
-        label: 当前背景
+        label: Current Background
         type: select
-        description: 选择背景图片，图片存储在 themes/anime-girls/static/images/backgrounds/ 目录
+        description: Select background image from themes/anime-girls/static/images/backgrounds/
         defaultValue: bg1
         options:
-          - label: 樱花少女
+          - label: Sakura Girl (Pink)
             value: bg1
-          - label: 星空幻想
+          - label: Starry Fantasy (Night)
             value: bg2
-          - label: 海边夕阳
+          - label: Sunset Beach (Orange)
             value: bg3
-          - label: 梦幻森林
+          - label: Enchanted Forest (Green)
             value: bg4
-          - label: 城市夜景
+          - label: City Night (Purple)
             value: bg5
       - name: customBackgroundUrl
-        label: 自定义背景URL
+        label: Custom Background URL
         type: text
-        description: 输入自定义背景图片URL（留空使用上方选择的背景）
+        description: Enter custom background image URL (leave empty to use selection above)
         defaultValue: ""
       - name: enableAutoSwitch
-        label: 自动切换背景
+        label: Auto Switch Background
         type: switch
         defaultValue: false
       - name: switchInterval
-        label: 切换间隔(秒)
+        label: Switch Interval (seconds)
         type: number
         defaultValue: 30
       - name: backgroundOpacity
-        label: 背景透明度
+        label: Background Opacity
         type: select
         defaultValue: "0.85"
         options:
@@ -66,53 +66,53 @@ settings:
           - label: 50%
             value: "0.5"
   - group: appearance
-    label: 外观设置
+    label: Appearance Settings
     items:
       - name: primaryColor
-        label: 主题色
+        label: Primary Color
         type: color
         defaultValue: "#ff69b4"
       - name: accentColor
-        label: 强调色
+        label: Accent Color
         type: color
         defaultValue: "#ff1493"
       - name: textColor
-        label: 文字颜色
+        label: Text Color
         type: color
         defaultValue: "#ffffff"
       - name: enableGlowEffect
-        label: 启用发光效果
+        label: Enable Glow Effect
         type: switch
         defaultValue: true
       - name: enableParticles
-        label: 启用粒子特效
+        label: Enable Particle Effects
         type: switch
         defaultValue: true
   - group: sidebar
-    label: 侧边栏
+    label: Sidebar Settings
     items:
       - name: showSidebar
-        label: 显示侧边栏
+        label: Show Sidebar
         type: switch
         defaultValue: true
       - name: showCategories
-        label: 显示分类
+        label: Show Categories
         type: switch
         defaultValue: true
       - name: showTags
-        label: 显示标签
+        label: Show Tags
         type: switch
         defaultValue: true
       - name: showRecentPosts
-        label: 显示最新文章
+        label: Show Recent Posts
         type: switch
         defaultValue: true
 
 i18n:
-  defaultLocale: zh-CN
+  defaultLocale: en
   supportedLocales:
-    - zh-CN
     - en
+    - zh-CN
 
 features:
   darkMode: true

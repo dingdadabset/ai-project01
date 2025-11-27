@@ -51,11 +51,11 @@ function createSwitcherUI(backgrounds, currentIndex) {
     const switcher = document.createElement('div');
     switcher.className = 'bg-switcher';
     switcher.innerHTML = `
-        <button class="bg-btn bg-btn-1 ${currentIndex === 0 ? 'active' : ''}" data-bg="bg1" title="樱花少女"></button>
-        <button class="bg-btn bg-btn-2 ${currentIndex === 1 ? 'active' : ''}" data-bg="bg2" title="星空幻想"></button>
-        <button class="bg-btn bg-btn-3 ${currentIndex === 2 ? 'active' : ''}" data-bg="bg3" title="海边夕阳"></button>
-        <button class="bg-btn bg-btn-4 ${currentIndex === 3 ? 'active' : ''}" data-bg="bg4" title="梦幻森林"></button>
-        <button class="bg-btn bg-btn-5 ${currentIndex === 4 ? 'active' : ''}" data-bg="bg5" title="城市夜景"></button>
+        <button class="bg-btn bg-btn-1 ${currentIndex === 0 ? 'active' : ''}" data-bg="bg1" title="Sakura Girl"></button>
+        <button class="bg-btn bg-btn-2 ${currentIndex === 1 ? 'active' : ''}" data-bg="bg2" title="Starry Fantasy"></button>
+        <button class="bg-btn bg-btn-3 ${currentIndex === 2 ? 'active' : ''}" data-bg="bg3" title="Sunset Beach"></button>
+        <button class="bg-btn bg-btn-4 ${currentIndex === 3 ? 'active' : ''}" data-bg="bg4" title="Enchanted Forest"></button>
+        <button class="bg-btn bg-btn-5 ${currentIndex === 4 ? 'active' : ''}" data-bg="bg5" title="City Night"></button>
     `;
     
     document.body.appendChild(switcher);
