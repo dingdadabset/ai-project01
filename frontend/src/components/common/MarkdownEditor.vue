@@ -3,10 +3,31 @@ import { ref, computed, watch } from 'vue'
 import { marked } from 'marked'
 import uploadApi from '@/api/uploads'
 
-const props = defineProps<{
+interface I18nMessages {
+  emptyPreview?: string
+  uploadError?: string
+  uploading?: string
+  edit?: string
+  split?: string
+  preview?: string
+  hint?: string
+}
+
+const props = withDefaults(defineProps<{
   modelValue: string
   placeholder?: string
-}>()
+  messages?: I18nMessages
+}>(), {
+  messages: () => ({
+    emptyPreview: 'Preview will be displayed here...',
+    uploadError: 'Upload failed, please try again',
+    uploading: 'Uploading...',
+    edit: 'Edit',
+    split: 'Split',
+    preview: 'Preview',
+    hint: 'Supports Markdown syntax | Drag & drop or paste images | Real-time preview'
+  })
+})
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
@@ -25,7 +46,7 @@ const content = computed({
 })
 
 const renderedContent = computed(() => {
-  if (!content.value) return '<p class="empty-hint">预览将在此显示...</p>'
+  if (!content.value) return `<p class="empty-hint">${props.messages?.emptyPreview || 'Preview will be displayed here...'}</p>`
   return marked(content.value) as string
 })
 
@@ -81,10 +102,10 @@ const insertAtLineStart = (prefix: string) => {
 
 const insertTable = () => {
   const tableMarkdown = `
-| 列1 | 列2 | 列3 |
-|-----|-----|-----|
-| 内容 | 内容 | 内容 |
-| 内容 | 内容 | 内容 |
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Content  | Content  | Content  |
+| Content  | Content  | Content  |
 `
   insertMarkdown(tableMarkdown)
 }
@@ -116,11 +137,11 @@ const handleFileUpload = async (event: Event) => {
         const imageMarkdown = `![${file.name}](${response.data.url})`
         insertMarkdown(imageMarkdown)
       } else {
-        uploadError.value = response.data.error || '上传失败'
+        uploadError.value = response.data.error || props.messages?.uploadError || 'Upload failed'
       }
     }
   } catch (error) {
-    uploadError.value = '上传图片失败，请重试'
+    uploadError.value = props.messages?.uploadError || 'Upload failed, please try again'
     console.error('Upload failed:', error)
   } finally {
     isUploading.value = false
@@ -144,13 +165,13 @@ const handlePaste = async (event: ClipboardEvent) => {
       try {
         const response = await uploadApi.upload(file, 'images')
         if (response.data.success && response.data.url) {
-          const imageMarkdown = `![粘贴的图片](${response.data.url})`
+          const imageMarkdown = `![pasted-image](${response.data.url})`
           insertMarkdown(imageMarkdown)
         } else {
-          uploadError.value = response.data.error || '上传失败'
+          uploadError.value = response.data.error || props.messages?.uploadError || 'Upload failed'
         }
       } catch (error) {
-        uploadError.value = '上传图片失败，请重试'
+        uploadError.value = props.messages?.uploadError || 'Upload failed, please try again'
         console.error('Upload failed:', error)
       } finally {
         isUploading.value = false
@@ -176,12 +197,12 @@ const handleDrop = async (event: DragEvent) => {
           const imageMarkdown = `![${file.name}](${response.data.url})`
           insertMarkdown(imageMarkdown)
         } else {
-          uploadError.value = response.data.error || '上传失败'
+          uploadError.value = response.data.error || props.messages?.uploadError || 'Upload failed'
         }
       }
     }
   } catch (error) {
-    uploadError.value = '上传图片失败，请重试'
+    uploadError.value = props.messages?.uploadError || 'Upload failed, please try again'
     console.error('Upload failed:', error)
   } finally {
     isUploading.value = false
@@ -197,56 +218,56 @@ const handleDragOver = (event: DragEvent) => {
   <div class="markdown-editor">
     <div class="editor-toolbar">
       <div class="toolbar-buttons">
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('**', '**')" title="加粗 (Ctrl+B)">
+        <button type="button" class="toolbar-btn" @click="insertMarkdown('**', '**')" title="Bold (Ctrl+B)">
           <strong>B</strong>
         </button>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('*', '*')" title="斜体 (Ctrl+I)">
+        <button type="button" class="toolbar-btn" @click="insertMarkdown('*', '*')" title="Italic (Ctrl+I)">
           <em>I</em>
         </button>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('~~', '~~')" title="删除线">
+        <button type="button" class="toolbar-btn" @click="insertMarkdown('~~', '~~')" title="Strikethrough">
           <s>S</s>
         </button>
         <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertHeading(1)" title="标题1">
+        <button type="button" class="toolbar-btn" @click="insertHeading(1)" title="Heading 1">
           H1
         </button>
-        <button type="button" class="toolbar-btn" @click="insertHeading(2)" title="标题2">
+        <button type="button" class="toolbar-btn" @click="insertHeading(2)" title="Heading 2">
           H2
         </button>
-        <button type="button" class="toolbar-btn" @click="insertHeading(3)" title="标题3">
+        <button type="button" class="toolbar-btn" @click="insertHeading(3)" title="Heading 3">
           H3
         </button>
         <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertAtLineStart('- ')" title="无序列表">
+        <button type="button" class="toolbar-btn" @click="insertAtLineStart('- ')" title="Unordered List">
           •
         </button>
-        <button type="button" class="toolbar-btn" @click="insertAtLineStart('1. ')" title="有序列表">
+        <button type="button" class="toolbar-btn" @click="insertAtLineStart('1. ')" title="Ordered List">
           1.
         </button>
-        <button type="button" class="toolbar-btn" @click="insertAtLineStart('- [ ] ')" title="任务列表">
+        <button type="button" class="toolbar-btn" @click="insertAtLineStart('- [ ] ')" title="Task List">
           ☑
         </button>
         <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('`', '`')" title="行内代码">
+        <button type="button" class="toolbar-btn" @click="insertMarkdown('`', '`')" title="Inline Code">
           &lt;/&gt;
         </button>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('```\n', '\n```')" title="代码块">
+        <button type="button" class="toolbar-btn" @click="insertMarkdown('```\n', '\n```')" title="Code Block">
           { }
         </button>
-        <button type="button" class="toolbar-btn" @click="insertQuote" title="引用">
+        <button type="button" class="toolbar-btn" @click="insertQuote" title="Quote">
           ❝
         </button>
         <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('[链接文本](', ')')" title="链接">
+        <button type="button" class="toolbar-btn" @click="insertMarkdown('[Link Text](', ')')" title="Link">
           🔗
         </button>
-        <button type="button" class="toolbar-btn" @click="triggerFileUpload" title="上传图片" :disabled="isUploading">
+        <button type="button" class="toolbar-btn" @click="triggerFileUpload" title="Upload Image" :disabled="isUploading">
           {{ isUploading ? '⏳' : '🖼️' }}
         </button>
-        <button type="button" class="toolbar-btn" @click="insertTable" title="表格">
+        <button type="button" class="toolbar-btn" @click="insertTable" title="Table">
           📊
         </button>
-        <button type="button" class="toolbar-btn" @click="insertHorizontalRule" title="分割线">
+        <button type="button" class="toolbar-btn" @click="insertHorizontalRule" title="Horizontal Rule">
           ─
         </button>
       </div>
@@ -257,7 +278,7 @@ const handleDragOver = (event: DragEvent) => {
           :class="{ active: viewMode === 'edit' }"
           @click="setViewMode('edit')"
         >
-          ✏️ 编辑
+          ✏️ {{ messages?.edit || 'Edit' }}
         </button>
         <button 
           type="button" 
@@ -265,7 +286,7 @@ const handleDragOver = (event: DragEvent) => {
           :class="{ active: viewMode === 'split' }"
           @click="setViewMode('split')"
         >
-          📋 分屏
+          📋 {{ messages?.split || 'Split' }}
         </button>
         <button 
           type="button" 
@@ -273,7 +294,7 @@ const handleDragOver = (event: DragEvent) => {
           :class="{ active: viewMode === 'preview' }"
           @click="setViewMode('preview')"
         >
-          👁️ 预览
+          👁️ {{ messages?.preview || 'Preview' }}
         </button>
       </div>
     </div>
@@ -296,7 +317,7 @@ const handleDragOver = (event: DragEvent) => {
     
     <div class="editor-content" :class="viewMode">
       <!-- Edit pane -->
-      <div 
+      <div
         v-if="viewMode !== 'preview'" 
         class="edit-pane"
         @drop="handleDrop"
@@ -306,12 +327,12 @@ const handleDragOver = (event: DragEvent) => {
           ref="textareaRef"
           v-model="content"
           class="md-textarea"
-          :placeholder="placeholder || '使用 Markdown 格式编写内容...\n\n支持拖拽或粘贴图片上传'"
+          :placeholder="placeholder || 'Write your content in Markdown format...\n\nSupports drag & drop or paste for image uploads'"
           @paste="handlePaste"
         ></textarea>
         <div v-if="isUploading" class="upload-overlay">
           <div class="upload-spinner"></div>
-          <span>上传中...</span>
+          <span>{{ messages?.uploading || 'Uploading...' }}</span>
         </div>
       </div>
       
@@ -325,7 +346,7 @@ const handleDragOver = (event: DragEvent) => {
     </div>
     
     <div class="editor-hint">
-      💡 支持 Markdown 语法 | 可拖拽或粘贴图片上传 | 实时预览
+      💡 {{ messages?.hint || 'Supports Markdown syntax | Drag & drop or paste images | Real-time preview' }}
     </div>
   </div>
 </template>

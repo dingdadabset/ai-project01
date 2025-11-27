@@ -1,6 +1,5 @@
 package com.aiproject.module.upload;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -8,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,17 +22,17 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping("/api/uploads")
-@RequiredArgsConstructor
 public class UploadController {
 
     @Value("${upload.directory:uploads}")
     private String uploadDirectory;
 
+    @Value("${spring.servlet.multipart.max-file-size:10MB}")
+    private DataSize maxFileSize;
+
     private static final Set<String> ALLOWED_IMAGE_EXTENSIONS = Set.of(
         "jpg", "jpeg", "png", "gif", "webp", "svg"
     );
-
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
     /**
      * Upload a single file
@@ -231,8 +231,9 @@ public class UploadController {
             throw new IllegalArgumentException("File is empty");
         }
         
-        if (file.getSize() > MAX_FILE_SIZE) {
-            throw new IllegalArgumentException("File size exceeds maximum limit of 10MB");
+        long maxBytes = maxFileSize.toBytes();
+        if (file.getSize() > maxBytes) {
+            throw new IllegalArgumentException("File size exceeds maximum limit of " + maxFileSize.toMegabytes() + "MB");
         }
         
         String originalFilename = file.getOriginalFilename();
