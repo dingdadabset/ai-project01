@@ -178,3 +178,23 @@ CREATE INDEX idx_news_published_at ON news(published_at);
 CREATE INDEX idx_stocks_market ON stocks(market);
 CREATE INDEX idx_stocks_is_hot ON stocks(is_hot);
 CREATE INDEX idx_stocks_symbol ON stocks(symbol);
+
+-- External Tools table for quick links to external websites
+CREATE TABLE IF NOT EXISTS external_tools (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(500),
+    url VARCHAR(500) NOT NULL,
+    icon VARCHAR(100),
+    icon_bg_color VARCHAR(20),
+    category VARCHAR(30) NOT NULL,
+    display_order INT DEFAULT 0,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create indexes for external_tools
+CREATE INDEX idx_external_tools_category ON external_tools(category);
+CREATE INDEX idx_external_tools_is_active ON external_tools(is_active);
+CREATE INDEX idx_external_tools_display_order ON external_tools(display_order);
