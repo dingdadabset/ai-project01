@@ -451,6 +451,7 @@ onMounted(() => {
 <style scoped>
 .theme-manager {
   padding: 20px;
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', 'Heiti SC', -apple-system, sans-serif;
 }
 
 .page-header {
