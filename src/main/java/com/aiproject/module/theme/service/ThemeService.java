@@ -1250,32 +1250,35 @@ public class ThemeService extends ServiceImpl<ThemeMapper, Theme> {
     }
 
     private void copyDirectory(Path source, Path target) throws IOException {
-        Files.walk(source).forEach(sourcePath -> {
-            Path targetPath = target.resolve(source.relativize(sourcePath));
-            try {
-                if (Files.isDirectory(sourcePath)) {
-                    Files.createDirectories(targetPath);
-                } else {
-                    Files.createDirectories(targetPath.getParent());
-                    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        try (var paths = Files.walk(source)) {
+            paths.forEach(sourcePath -> {
+                Path targetPath = target.resolve(source.relativize(sourcePath));
+                try {
+                    if (Files.isDirectory(sourcePath)) {
+                        Files.createDirectories(targetPath);
+                    } else {
+                        Files.createDirectories(targetPath.getParent());
+                        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
                 }
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        });
+            });
+        }
     }
 
     private void deleteDirectory(Path dir) throws IOException {
         if (Files.exists(dir)) {
-            Files.walk(dir)
-                .sorted(Comparator.reverseOrder())
-                .forEach(path -> {
-                    try {
-                        Files.delete(path);
-                    } catch (IOException e) {
-                        log.warn("Failed to delete: {}", path, e);
-                    }
-                });
+            try (var paths = Files.walk(dir)) {
+                paths.sorted(Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path);
+                        } catch (IOException e) {
+                            log.warn("Failed to delete: {}", path, e);
+                        }
+                    });
+            }
         }
     }
 }

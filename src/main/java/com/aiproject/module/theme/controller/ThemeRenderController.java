@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
@@ -99,6 +100,17 @@ public class ThemeRenderController {
                 .collect(Collectors.toList()));
             
             // Add pagination
+            String previousUrl = UriComponentsBuilder.fromPath("/themes/{themeId}")
+                .queryParam("page", page - 1)
+                .queryParam("size", size)
+                .buildAndExpand(themeId)
+                .toUriString();
+            String nextUrl = UriComponentsBuilder.fromPath("/themes/{themeId}")
+                .queryParam("page", page + 1)
+                .queryParam("size", size)
+                .buildAndExpand(themeId)
+                .toUriString();
+            
             context.setPagination(ThemeContext.Pagination.builder()
                 .current(page)
                 .size(size)
@@ -106,8 +118,8 @@ public class ThemeRenderController {
                 .pages((int) postsPage.getPages())
                 .hasPrevious(page > 0)
                 .hasNext(page < postsPage.getPages() - 1)
-                .previousUrl("/themes/" + themeId + "?page=" + (page - 1) + "&size=" + size)
-                .nextUrl("/themes/" + themeId + "?page=" + (page + 1) + "&size=" + size)
+                .previousUrl(previousUrl)
+                .nextUrl(nextUrl)
                 .build());
             
             populateModel(model, context, theme);
