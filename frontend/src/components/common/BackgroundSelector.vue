@@ -26,6 +26,18 @@
         </div>
 
         <div class="panel-content">
+          <!-- Random Image Button Section -->
+          <div class="random-section">
+            <button 
+              class="random-btn"
+              @click="applyRandomImage"
+            >
+              <span class="random-icon">🎲</span>
+              <span>Random Image Background (随机图片背景)</span>
+            </button>
+            <p class="random-hint">Randomly select an anime image as background</p>
+          </div>
+
           <!-- Custom Upload Section -->
           <div class="upload-section">
             <label class="upload-btn" :class="{ disabled: uploading }">
@@ -228,6 +240,24 @@ const applyCustomUrl = async () => {
   await applyCustomBackground(customUrl.value)
 }
 
+// Random image backgrounds from themes/jpg folder
+const randomImages = [
+  '/themes/jpg/img.png',
+  '/themes/jpg/img_1.png'
+]
+
+const applyRandomImage = async () => {
+  try {
+    const randomIndex = Math.floor(Math.random() * randomImages.length)
+    const randomImageUrl = randomImages[randomIndex]
+    await applyCustomBackground(randomImageUrl)
+    showNotification('Random image applied! 🎲', 'success')
+  } catch (error) {
+    console.error('Failed to apply random image:', error)
+    showNotification('Failed to apply random image. Please try again.', 'error')
+  }
+}
+
 const applyCustomBackground = async (url: string) => {
   if (!themeStore.activeTheme) return
   
@@ -356,6 +386,42 @@ const toggleOverlay = async () => {
 
 .panel-content {
   padding: 16px 20px;
+}
+
+.random-section {
+  margin-bottom: 16px;
+}
+
+.random-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #ff69b4, #ff1493);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+}
+
+.random-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+}
+
+.random-icon {
+  font-size: 1.25rem;
+}
+
+.random-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 8px;
 }
 
 .upload-section {
