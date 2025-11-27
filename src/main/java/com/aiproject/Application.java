@@ -29,6 +29,10 @@ public class Application {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers
+                // Allow /themes/* to be embedded in iframe for preview
+                .frameOptions(frame -> frame.sameOrigin())
+            )
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             );

@@ -1,27 +1,30 @@
 <th:block xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
-    <div class="widget categories-widget" th:if="${settings.showCategories != false}">
+    <div class="widget categories-widget" th:if="${settings == null or settings.showCategories != false}">
         <h3>📁 Categories</h3>
-        <ul>
+        <ul th:if="${categories != null and !categories.empty}">
             <li th:each="category : ${categories}">
                 <a th:href="@{/categories/{id}(id=${category.id})}" th:text="${category.name + ' (' + category.postCount + ')'}">Category</a>
             </li>
         </ul>
+        <p th:if="${categories == null or categories.empty}">No categories yet</p>
     </div>
     
-    <div class="widget tags-widget" th:if="${settings.showTags != false}">
+    <div class="widget tags-widget" th:if="${settings == null or settings.showTags != false}">
         <h3>🏷️ Tags</h3>
-        <div class="tag-cloud">
+        <div class="tag-cloud" th:if="${tags != null and !tags.empty}">
             <a th:each="tag : ${tags}" th:href="@{/tags/{slug}(slug=${tag.slug})}" class="tag" th:text="${tag.name}">Tag</a>
         </div>
+        <p th:if="${tags == null or tags.empty}">No tags yet</p>
     </div>
     
-    <div class="widget recent-posts-widget" th:if="${settings.showRecentPosts != false}">
+    <div class="widget recent-posts-widget" th:if="${settings == null or settings.showRecentPosts != false}">
         <h3>📝 Recent Posts</h3>
-        <ul>
+        <ul th:if="${recentPosts != null and !recentPosts.empty}">
             <li th:each="post : ${recentPosts}">
                 <a th:href="@{/posts/{slug}(slug=${post.slug})}" th:text="${post.title}">Post</a>
             </li>
         </ul>
+        <p th:if="${recentPosts == null or recentPosts.empty}">No posts yet</p>
     </div>
     
     <div class="widget bg-info-widget">

@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${site.title + ' - ' + (pageTitle != null ? pageTitle : 'Home')}">Anime Blog</title>
+    <title th:text="${site != null and site.title != null ? site.title : 'Anime Blog'} + ' - ' + (pageTitle != null ? pageTitle : 'Home')">Anime Blog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/themes/anime-girls/static/css/style.css}">
-    <style th:inline="css">
+    <style th:if="${settings != null}">
         :root {
-            --primary-color: [(${settings.primaryColor != null ? settings.primaryColor : '#ff69b4'})];
-            --accent-color: [(${settings.accentColor != null ? settings.accentColor : '#ff1493'})];
-            --text-color: [(${settings.textColor != null ? settings.textColor : '#ffffff'})];
-            --bg-overlay: rgba(0, 0, 0, [(${settings.backgroundOpacity != null ? (1 - T(Double).parseDouble(settings.backgroundOpacity)) : 0.15})]);
+            --primary-color: [[${settings.primaryColor != null ? settings.primaryColor : '#ff69b4'}]];
+            --accent-color: [[${settings.accentColor != null ? settings.accentColor : '#ff1493'}]];
+            --text-color: [[${settings.textColor != null ? settings.textColor : '#ffffff'}]];
         }
     </style>
-    <th:block th:replace="~{fragments/head :: extra-head}"></th:block>
+    <style th:unless="${settings != null}">
+        :root {
+            --primary-color: #ff69b4;
+            --accent-color: #ff1493;
+            --text-color: #ffffff;
+        }
+    </style>
+    <th:block th:replace="~{anime-girls/templates/fragments/head :: extra-head}"></th:block>
 </head>
-<body th:class="${'background-' + (settings.currentBackground != null ? settings.currentBackground : 'bg1') + 
-                  (settings.enableGlowEffect == true ? ' glow-enabled' : '') +
-                  (settings.enableParticles == true ? ' particles-enabled' : '')}"
-      th:data-auto-switch="${settings.enableAutoSwitch}"
-      th:data-switch-interval="${settings.switchInterval}">
+<body th:classappend="${settings != null and settings.currentBackground != null ? 'background-' + settings.currentBackground : 'background-bg1'}">
     
     <header class="site-header">
         <nav class="navbar">
-            <a th:href="@{/}" class="logo" th:text="${settings.siteName != null ? settings.siteName : site.title}">Anime Blog</a>
+            <a th:href="@{/}" class="logo" th:text="${settings != null and settings.siteName != null ? settings.siteName : (site != null and site.title != null ? site.title : 'Anime Blog')}">Anime Blog</a>
             <ul class="nav-menu">
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/posts}">Posts</a></li>
@@ -39,12 +41,12 @@
     
     <main class="main-content">
         <div class="container">
-            <div class="content-wrapper" th:classappend="${settings.showSidebar != false ? 'with-sidebar' : ''}">
+            <div class="content-wrapper" th:classappend="${settings == null or settings.showSidebar != false ? 'with-sidebar' : ''}">
                 <div class="content">
-                    <th:block th:replace="~{__${template}__ :: content}"></th:block>
+                    <th:block th:replace="~{'anime-girls/templates/' + ${template} + ' :: content'}"></th:block>
                 </div>
-                <aside class="sidebar" th:if="${settings.showSidebar != false}">
-                    <th:block th:replace="~{fragments/sidebar :: sidebar}"></th:block>
+                <aside class="sidebar" th:if="${settings == null or settings.showSidebar != false}">
+                    <th:block th:replace="~{anime-girls/templates/fragments/sidebar :: sidebar}"></th:block>
                 </aside>
             </div>
         </div>
@@ -52,7 +54,7 @@
     
     <footer class="site-footer">
         <div class="container">
-            <p th:text="${site.copyright != null ? site.copyright : '© ' + #dates.year(#dates.createNow()) + ' ' + (settings.siteName != null ? settings.siteName : site.title)}"></p>
+            <p th:text="'© ' + ${#dates.year(#dates.createNow())} + ' ' + (settings != null and settings.siteName != null ? settings.siteName : (site != null and site.title != null ? site.title : 'Anime Blog'))"></p>
             <p>Powered by Anime Girls Theme ✨</p>
         </div>
     </footer>

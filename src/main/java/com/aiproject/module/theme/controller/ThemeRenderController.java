@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -169,11 +170,11 @@ public class ThemeRenderController {
     /**
      * Preview theme without activating
      */
-    @GetMapping("/{themeId}/preview")
+    @GetMapping(value = "/{themeId}/preview", produces = "text/html;charset=UTF-8")
+    @ResponseBody
     public String previewTheme(
             @PathVariable String themeId,
-            @RequestParam(defaultValue = "en") String lang,
-            Model model) {
+            @RequestParam(defaultValue = "en") String lang) {
         
         log.info("Previewing theme: {}", themeId);
         
@@ -196,16 +197,28 @@ public class ThemeRenderController {
                 .hasNext(postsPage.getPages() > 1)
                 .build());
             
-            populateModel(model, context, theme);
-            model.addAttribute("template", "index");
-            model.addAttribute("isPreview", true);
+            // Use the custom template engine to render
+            Context thymeleafContext = new Context(Locale.forLanguageTag(lang));
+            thymeleafContext.setVariable("site", context.getSite());
+            thymeleafContext.setVariable("posts", context.getPosts());
+            thymeleafContext.setVariable("categories", context.getCategories());
+            thymeleafContext.setVariable("tags", context.getTags());
+            thymeleafContext.setVariable("settings", theme.getSettings() != null ? theme.getSettings() : getDefaultSettings(theme));
+            thymeleafContext.setVariable("pagination", context.getPagination());
+            thymeleafContext.setVariable("locale", lang);
+            thymeleafContext.setVariable("theme", theme);
+            thymeleafContext.setVariable("pageTitle", "Preview");
+            thymeleafContext.setVariable("template", "index");
+            thymeleafContext.setVariable("isPreview", true);
             
-            return themeId + "/templates/layout";
+            // Load recent posts for sidebar
+            thymeleafContext.setVariable("recentPosts", context.getPosts());
+            
+            return themeTemplateEngine.process(themeId + "/templates/layout", thymeleafContext);
             
         } catch (Exception e) {
             log.error("Failed to preview theme", e);
-            model.addAttribute("error", e.getMessage());
-            return "error";
+            return "<html><body><h1>Preview Error</h1><p>" + e.getMessage() + "</p></body></html>";
         }
     }
 
