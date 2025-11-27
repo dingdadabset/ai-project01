@@ -16,7 +16,8 @@ const navItems = [
   { path: '/admin/comments', name: 'Comments', icon: '💬' },
   { path: '/admin/users', name: 'Users', icon: '👥' },
   { path: '/admin/news', name: 'News', icon: '📰' },
-  { path: '/admin/stocks', name: 'Stocks', icon: '📈' }
+  { path: '/admin/stocks', name: 'Stocks', icon: '📈' },
+  { path: '/admin/themes', name: 'Themes', icon: '🎨' }
 ]
 
 const isActive = (path: string) => {

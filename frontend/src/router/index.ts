@@ -108,6 +108,11 @@ const router = createRouter({
           path: 'stocks',
           name: 'admin-stocks',
           component: () => import('@/views/admin/StockManager.vue')
+        },
+        {
+          path: 'themes',
+          name: 'admin-themes',
+          component: () => import('@/views/admin/ThemeManager.vue')
         }
       ]
     },

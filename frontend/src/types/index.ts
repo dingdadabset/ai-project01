@@ -122,3 +122,62 @@ export interface PaginatedResponse<T> {
 
 // View mode types
 export type ViewMode = 'story' | 'list'
+
+// Theme types
+export interface Theme {
+  id: number
+  themeId: string
+  name: string
+  version: string
+  author: string
+  authorUrl?: string
+  description?: string
+  screenshot?: string
+  isActive: boolean
+  status: 'ENABLED' | 'DISABLED' | 'ERROR'
+  config?: ThemeConfig
+  settings?: Record<string, unknown>
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ThemeConfig {
+  id: string
+  name: string
+  version: string
+  author?: {
+    name: string
+    website?: string
+    email?: string
+  }
+  description?: string
+  screenshot?: string
+  requires?: string
+  settings?: ThemeSettingGroup[]
+  i18n?: {
+    defaultLocale: string
+    supportedLocales: string[]
+  }
+  features?: {
+    darkMode: boolean
+    responsive: boolean
+    pwa: boolean
+    comments: boolean
+    search: boolean
+  }
+}
+
+export interface ThemeSettingGroup {
+  group: string
+  label: string
+  items: ThemeSettingItem[]
+}
+
+export interface ThemeSettingItem {
+  name: string
+  label: string
+  type: 'text' | 'textarea' | 'switch' | 'select' | 'color' | 'number'
+  description?: string
+  defaultValue?: unknown
+  options?: { label: string; value: string }[]
+}

@@ -81,6 +81,18 @@
             <version>0.21.0</version>
         </dependency>
 
+        <!-- Thymeleaf Template Engine for Theme System -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- SnakeYAML for parsing theme.yaml configuration files -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
