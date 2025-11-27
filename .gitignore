@@ -50,3 +50,6 @@ data/
 # Frontend
 frontend/node_modules/
 frontend/dist/
+
+# Uploads (user-uploaded content)
+uploads/

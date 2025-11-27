@@ -242,7 +242,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import themeApi, { type Theme, type ThemeConfig } from '@/api/themes'
+import { useThemeStore } from '@/stores/theme'
 
+const themeStore = useThemeStore()
 const themes = ref<Theme[]>([])
 const loading = ref(true)
 const activating = ref(false)
@@ -296,6 +298,8 @@ const activateTheme = async (themeId: string) => {
   try {
     await themeApi.activate(themeId)
     await loadThemes()
+    // Update theme store so App.vue applies the new theme
+    await themeStore.fetchActiveTheme()
     showToast('Theme activated successfully', 'success')
   } catch (error) {
     showToast('Failed to activate theme', 'error')
@@ -368,6 +372,8 @@ const saveSettings = async () => {
   try {
     await themeApi.updateSettings(selectedTheme.value.themeId, settingsValues.value)
     await loadThemes()
+    // Update theme store so App.vue applies the new settings (like background)
+    await themeStore.fetchActiveTheme()
     showToast('Settings saved successfully', 'success')
     closeSettings()
   } catch (error) {
