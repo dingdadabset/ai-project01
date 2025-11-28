@@ -216,8 +216,8 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
         @click="toggleFullscreen"
         :title="isFullscreen ? '退出全屏' : '全屏编辑'"
       >
-        <span v-if="!isFullscreen">🖥️ 全屏编辑</span>
-        <span v-else>❌ 退出全屏</span>
+        <span class="fullscreen-icon">{{ isFullscreen ? '✕' : '⛶' }}</span>
+        <span>{{ isFullscreen ? '退出全屏' : '全屏编辑' }}</span>
       </button>
     </div>
     <!-- Upload error message -->
@@ -307,6 +307,11 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fullscreen-toggle-btn .fullscreen-icon {
+  font-size: 18px;
+  margin-right: 4px;
 }
 
 .fullscreen-toggle-btn:hover {
