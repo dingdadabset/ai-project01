@@ -1,21 +1,21 @@
-/* Default Theme Styles */
+/* Ocean Theme Styles */
 :root {
-    --primary-color: #6366f1;
-    --secondary-color: #ec4899;
-    --text-color: #1f2937;
-    --text-muted: #6b7280;
-    --bg-color: #ffffff;
-    --bg-secondary: #f3f4f6;
-    --border-color: #e5e7eb;
+    --primary-color: #0ea5e9;
+    --secondary-color: #14b8a6;
+    --text-color: #f0f9ff;
+    --text-muted: #7dd3fc;
+    --bg-color: #0c4a6e;
+    --bg-secondary: #075985;
+    --border-color: #0369a1;
     --font-size-base: 16px;
 }
 
 .dark-mode {
-    --text-color: #f9fafb;
-    --text-muted: #9ca3af;
-    --bg-color: #111827;
-    --bg-secondary: #1f2937;
-    --border-color: #374151;
+    --text-color: #f0f9ff;
+    --text-muted: #7dd3fc;
+    --bg-color: #0c4a6e;
+    --bg-secondary: #075985;
+    --border-color: #0369a1;
 }
 
 * {

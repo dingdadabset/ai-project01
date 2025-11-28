@@ -1,21 +1,21 @@
-/* Default Theme Styles */
+/* Forest Theme Styles */
 :root {
-    --primary-color: #6366f1;
-    --secondary-color: #ec4899;
-    --text-color: #1f2937;
-    --text-muted: #6b7280;
-    --bg-color: #ffffff;
-    --bg-secondary: #f3f4f6;
-    --border-color: #e5e7eb;
+    --primary-color: #22c55e;
+    --secondary-color: #84cc16;
+    --text-color: #f0fdf4;
+    --text-muted: #86efac;
+    --bg-color: #14532d;
+    --bg-secondary: #166534;
+    --border-color: #15803d;
     --font-size-base: 16px;
 }
 
 .dark-mode {
-    --text-color: #f9fafb;
-    --text-muted: #9ca3af;
-    --bg-color: #111827;
-    --bg-secondary: #1f2937;
-    --border-color: #374151;
+    --text-color: #f0fdf4;
+    --text-muted: #86efac;
+    --bg-color: #14532d;
+    --bg-secondary: #166534;
+    --border-color: #15803d;
 }
 
 * {
