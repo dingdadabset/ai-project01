@@ -183,6 +183,7 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
         'next',
         '=',
         'preview',
+        'pageFullscreen',
         'fullscreen'
       ]"
       @onUploadImg="onUploadImg"
