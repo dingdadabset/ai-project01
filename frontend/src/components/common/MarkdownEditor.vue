@@ -161,6 +161,26 @@ onUnmounted(() => {
   document.body.classList.remove('editor-fullscreen-active')
 })
 
+// Toggle fullscreen mode programmatically
+const toggleFullscreen = () => {
+  if (wrapperRef.value) {
+    const editor = wrapperRef.value.querySelector('.md-editor')
+    if (editor) {
+      // Find and click the pageFullscreen button in the toolbar
+      const fullscreenBtn = editor.querySelector('[title="页面全屏"]') || 
+                            editor.querySelector('[title="取消全屏"]') ||
+                            editor.querySelector('.md-editor-toolbar-item[title*="全屏"]')
+      if (fullscreenBtn) {
+        (fullscreenBtn as HTMLElement).click()
+      } else {
+        // Manually toggle fullscreen class if button not found
+        editor.classList.toggle('md-editor-fullscreen')
+        checkFullscreen()
+      }
+    }
+  }
+}
+
 // Handle image upload
 const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
   const uploadedUrls: string[] = []
@@ -189,6 +209,17 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 
 <template>
   <div ref="wrapperRef" class="markdown-editor-wrapper" :class="{ 'wrapper-fullscreen': isFullscreen }">
+    <!-- Prominent fullscreen toggle button -->
+    <div class="editor-header">
+      <button 
+        class="fullscreen-toggle-btn" 
+        @click="toggleFullscreen"
+        :title="isFullscreen ? '退出全屏' : '全屏编辑'"
+      >
+        <span v-if="!isFullscreen">🖥️ 全屏编辑</span>
+        <span v-else>❌ 退出全屏</span>
+      </button>
+    </div>
     <!-- Upload error message -->
     <div v-if="uploadError" class="upload-error-banner">
       {{ uploadError }}
@@ -251,6 +282,52 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   border-radius: var(--radius-md, 16px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Editor header with prominent fullscreen button */
+.editor-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fullscreen-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fullscreen-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.fullscreen-toggle-btn:active {
+  transform: translateY(0);
+}
+
+/* Fullscreen mode header styling */
+.wrapper-fullscreen .editor-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100001;
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
 }
 
 /* Upload error banner */

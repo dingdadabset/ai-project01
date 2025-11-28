@@ -107,42 +107,32 @@ public class ThemeService extends ServiceImpl<ThemeMapper, Theme> {
 
     /**
      * Ensure there's always an active theme
-     * If no theme is active, activate the default theme or the first available one
+     * Randomly selects one of the available themes to activate
      */
     private void ensureActiveTheme() {
-        Theme activeTheme = themeMapper.selectOne(
+        // Deactivate all themes first
+        List<Theme> allThemes = themeMapper.selectList(
             new LambdaQueryWrapper<Theme>().eq(Theme::getIsActive, true)
         );
+        for (Theme theme : allThemes) {
+            theme.setIsActive(false);
+            themeMapper.updateById(theme);
+        }
         
-        if (activeTheme == null) {
-            log.info("No active theme found, setting default theme as active");
-            
-            // Try to find and activate the default theme
-            Theme defaultTheme = themeMapper.selectOne(
-                new LambdaQueryWrapper<Theme>()
-                    .eq(Theme::getThemeId, defaultThemeName)
-                    .eq(Theme::getStatus, Theme.ThemeStatus.ENABLED)
-            );
-            
-            if (defaultTheme != null) {
-                defaultTheme.setIsActive(true);
-                themeMapper.updateById(defaultTheme);
-                log.info("Activated default theme: {}", defaultThemeName);
-            } else {
-                // If default theme doesn't exist, activate the first enabled theme
-                Theme firstTheme = themeMapper.selectOne(
-                    new LambdaQueryWrapper<Theme>()
-                        .eq(Theme::getStatus, Theme.ThemeStatus.ENABLED)
-                        .orderByAsc(Theme::getName)
-                        .last("LIMIT 1")
-                );
-                
-                if (firstTheme != null) {
-                    firstTheme.setIsActive(true);
-                    themeMapper.updateById(firstTheme);
-                    log.info("Activated first available theme: {}", firstTheme.getThemeId());
-                }
-            }
+        // Get all enabled themes
+        List<Theme> enabledThemes = themeMapper.selectList(
+            new LambdaQueryWrapper<Theme>().eq(Theme::getStatus, Theme.ThemeStatus.ENABLED)
+        );
+        
+        if (!enabledThemes.isEmpty()) {
+            // Randomly select one theme
+            Random random = new Random();
+            Theme randomTheme = enabledThemes.get(random.nextInt(enabledThemes.size()));
+            randomTheme.setIsActive(true);
+            themeMapper.updateById(randomTheme);
+            log.info("Randomly activated theme: {}", randomTheme.getThemeId());
+        } else {
+            log.warn("No enabled themes found to activate");
         }
     }
 
