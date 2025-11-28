@@ -90,11 +90,11 @@ watch(() => themeStore.activeTheme, (newTheme) => {
   if (newTheme?.themeId === 'anime-girls') {
     const bg = newTheme.settings?.currentBackground as string || 'bg1'
     currentBackgroundClass.value = `background-${bg}`
-    applyThemeStyles()
   } else {
     currentBackgroundClass.value = ''
-    removeThemeStyles()
   }
+  // Always apply theme styles for any theme that has settings
+  applyThemeStyles()
 }, { immediate: true, deep: true })
 
 // Apply theme styles to document
@@ -103,14 +103,22 @@ function applyThemeStyles() {
   const settings = themeStore.activeTheme?.settings
   
   if (settings) {
-    // Apply colors
+    // Apply colors for all themes that have color settings
     if (settings.primaryColor) {
       root.style.setProperty('--color-primary', settings.primaryColor as string)
-      root.style.setProperty('--color-primary-dark', settings.accentColor as string || settings.primaryColor as string)
+    }
+    if (settings.accentColor) {
+      root.style.setProperty('--color-primary-dark', settings.accentColor as string)
+    } else if (settings.primaryColor) {
+      // Fallback: use primaryColor as accent if not set
+      root.style.setProperty('--color-primary-dark', settings.primaryColor as string)
     }
     if (settings.textColor) {
       root.style.setProperty('--text-primary', settings.textColor as string)
     }
+  } else {
+    // Reset to defaults if no settings
+    removeThemeStyles()
   }
 }
 

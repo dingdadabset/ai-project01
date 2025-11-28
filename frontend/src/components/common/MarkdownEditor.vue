@@ -321,4 +321,54 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 .markdown-editor-wrapper .md-editor {
   min-height: 450px;
 }
+
+/* Fullscreen mode support - Page Fullscreen */
+.markdown-editor-wrapper .md-editor.md-editor-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+/* Also handle the wrapper when editor is in fullscreen */
+.markdown-editor-wrapper:has(.md-editor-fullscreen) {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+/* Fullscreen toolbar stays on top */
+.md-editor.md-editor-fullscreen .md-editor-toolbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10000 !important;
+}
+
+/* Fullscreen content area fills the rest */
+.md-editor.md-editor-fullscreen .md-editor-content {
+  height: calc(100vh - 50px) !important;
+}
+
+/* Browser Fullscreen API mode */
+.md-editor:-webkit-full-screen,
+.md-editor:-moz-full-screen,
+.md-editor:-ms-fullscreen,
+.md-editor:fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+}
 </style>
