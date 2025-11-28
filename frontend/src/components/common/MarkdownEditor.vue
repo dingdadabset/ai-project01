@@ -460,7 +460,7 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 /* Fullscreen mode header styling */
 .editor-header.exit-mode {
   background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-  padding: 12px 20px;
+  padding: 8px 20px;
 }
 
 .wrapper-fullscreen .editor-header {
@@ -468,6 +468,7 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   top: 0;
   left: 0;
   right: 0;
+  height: 44px;
   z-index: 100001;
   animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -622,6 +623,12 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   max-height: 100vh !important;
 }
 
+/* When in fullscreen wrapper, push editor down to make room for exit header */
+.wrapper-fullscreen .md-editor.md-editor-fullscreen {
+  top: 44px !important;
+  height: calc(100vh - 44px) !important;
+}
+
 /* Handle the wrapper when editor is in fullscreen - JavaScript-based class for better browser compatibility */
 .markdown-editor-wrapper.wrapper-fullscreen {
   position: fixed !important;
@@ -680,9 +687,9 @@ body.editor-fullscreen-active .modal-content {
   z-index: var(--z-editor-fullscreen-toolbar) !important;
 }
 
-/* Fullscreen content area fills the rest */
-.md-editor.md-editor-fullscreen .md-editor-content {
-  height: calc(100vh - 50px) !important;
+/* Fullscreen content area fills the rest - account for exit header (44px) + toolbar (~41px) */
+.wrapper-fullscreen .md-editor.md-editor-fullscreen .md-editor-content {
+  height: calc(100vh - 44px - 41px - 28px) !important;
 }
 
 /* Browser Fullscreen API mode */
