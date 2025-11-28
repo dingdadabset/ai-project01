@@ -436,13 +436,13 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 
 /* Exit button special styling */
 .fullscreen-toggle-btn.exit-btn {
-  background: rgba(220, 38, 38, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.4);
   animation: exitBtnAppear 0.4s ease;
 }
 
 .fullscreen-toggle-btn.exit-btn:hover:not(:disabled) {
-  background: rgba(220, 38, 38, 0.4);
+  background: rgba(255, 255, 255, 0.25);
   border-color: rgba(255, 255, 255, 0.6);
 }
 
@@ -457,9 +457,10 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   }
 }
 
-/* Fullscreen mode header styling */
+/* Fullscreen mode header styling - uses same dark background as editor */
 .editor-header.exit-mode {
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: var(--bg-secondary, #1a1a2e);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 8px 20px;
 }
 
