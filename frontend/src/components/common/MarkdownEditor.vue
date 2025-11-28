@@ -138,6 +138,10 @@ const checkFullscreen = () => {
 // Set up mutation observer to detect fullscreen class changes
 let observer: MutationObserver | null = null
 
+// Animation state and constants
+const isAnimating = ref(false)
+const TRANSITION_DURATION_MS = 400 // Must match CSS transition duration
+
 // Handle ESC key to exit fullscreen
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape' && isFullscreen.value && !isAnimating.value) {
@@ -173,9 +177,6 @@ onUnmounted(() => {
   document.body.classList.remove('editor-fullscreen-active')
 })
 
-// Animation state
-const isAnimating = ref(false)
-
 // Toggle fullscreen mode programmatically with smooth animation
 const toggleFullscreen = () => {
   if (wrapperRef.value && !isAnimating.value) {
@@ -204,7 +205,7 @@ const toggleFullscreen = () => {
           wrapperRef.value.classList.remove('transitioning')
         }
         isAnimating.value = false
-      }, 400) // Match CSS transition duration
+      }, TRANSITION_DURATION_MS)
     }
   }
 }
