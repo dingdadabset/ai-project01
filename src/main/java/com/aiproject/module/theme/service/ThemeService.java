@@ -194,7 +194,7 @@ public class ThemeService extends ServiceImpl<ThemeMapper, Theme> {
             );
             
             if (theme == null) {
-                throw new RuntimeException("No active theme found. Please check that theme files exist in the themes directory.");
+                throw new RuntimeException("No active theme found. Please check that theme files exist in the themes directory: " + getThemesPath().toAbsolutePath());
             }
         }
         return convertToResponse(theme);

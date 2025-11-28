@@ -240,6 +240,12 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 </template>
 
 <style>
+/* Z-index hierarchy for fullscreen mode */
+:root {
+  --z-editor-fullscreen: 99999;
+  --z-editor-fullscreen-toolbar: 100000;
+}
+
 /* Dark theme adjustments for md-editor-v3 */
 .markdown-editor-wrapper {
   border-radius: var(--radius-md, 16px);
@@ -379,7 +385,7 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 99999 !important;
+  z-index: var(--z-editor-fullscreen) !important;
   border-radius: 0 !important;
   margin: 0 !important;
   max-width: 100vw !important;
@@ -395,7 +401,7 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 99999 !important;
+  z-index: var(--z-editor-fullscreen) !important;
   border-radius: 0 !important;
   border: none !important;
   overflow: visible !important;
@@ -413,7 +419,7 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
     bottom: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 99999 !important;
+    z-index: var(--z-editor-fullscreen) !important;
     border-radius: 0 !important;
     border: none !important;
     overflow: visible !important;
@@ -441,7 +447,7 @@ body.editor-fullscreen-active .modal-content {
 .md-editor.md-editor-fullscreen .md-editor-toolbar {
   position: sticky !important;
   top: 0 !important;
-  z-index: 100000 !important;
+  z-index: var(--z-editor-fullscreen-toolbar) !important;
 }
 
 /* Fullscreen content area fills the rest */
