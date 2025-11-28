@@ -104,7 +104,9 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>()
 
-const editorId = ref('md-editor-' + Date.now())
+const editorId = ref('md-editor-' + Math.random().toString(36).substring(2, 11))
+
+const uploadError = ref('')
 
 const content = computed({
   get: () => props.modelValue,
@@ -114,6 +116,7 @@ const content = computed({
 // Handle image upload
 const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
   const uploadedUrls: string[] = []
+  uploadError.value = ''
   
   for (const file of files) {
     try {
@@ -122,9 +125,12 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
       if (response.data.success && response.data.url) {
         uploadedUrls.push(response.data.url)
       } else {
-        console.error('Upload failed:', response.data.error)
+        const errorMsg = response.data.error || '图片上传失败'
+        uploadError.value = errorMsg
+        console.error('Upload failed:', errorMsg)
       }
     } catch (error) {
+      uploadError.value = '图片上传失败，请重试'
       console.error('Upload error:', error)
     }
   }
@@ -135,6 +141,11 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 
 <template>
   <div class="markdown-editor-wrapper">
+    <!-- Upload error message -->
+    <div v-if="uploadError" class="upload-error-banner">
+      {{ uploadError }}
+      <button @click="uploadError = ''">&times;</button>
+    </div>
     <MdEditor
       :editorId="editorId"
       v-model="content"
@@ -185,6 +196,32 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   border-radius: var(--radius-md, 16px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Upload error banner */
+.upload-error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.upload-error-banner button {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.upload-error-banner button:hover {
+  color: #f87171;
 }
 
 .markdown-editor-wrapper .md-editor {
