@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { onMounted, computed, watch, ref } from 'vue'
-import { RouterView, useRouter, useRoute } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import NavBar from '@/components/layout/NavBar.vue'
 import FooterBar from '@/components/layout/FooterBar.vue'
 import BackgroundSelector from '@/components/common/BackgroundSelector.vue'
 import { useThemeStore } from '@/stores/theme'
-import gsap from 'gsap'
 
-const router = useRouter()
 const route = useRoute()
 const themeStore = useThemeStore()
 
@@ -123,42 +121,11 @@ function removeThemeStyles() {
   root.style.removeProperty('--text-primary')
 }
 
-// Page transition animation
-router.beforeEach((to, from, next) => {
-  const overlay = document.querySelector('.page-transition-overlay')
-  if (overlay && from.name) {
-    gsap.to(overlay, {
-      scaleY: 1,
-      transformOrigin: 'bottom',
-      duration: 0.4,
-      ease: 'power4.inOut',
-      onComplete: () => {
-        next()
-        setTimeout(() => {
-          gsap.to(overlay, {
-            scaleY: 0,
-            transformOrigin: 'top',
-            duration: 0.4,
-            ease: 'power4.inOut'
-          })
-        }, 100)
-      }
-    })
-  } else {
-    next()
-  }
-})
+// Page transition is handled by Vue's built-in transition component with fade effect
 
 onMounted(async () => {
   // Fetch active theme to apply settings
   await themeStore.fetchActiveTheme()
-  
-  // Initial page load animation
-  gsap.fromTo(
-    '.main-content',
-    { opacity: 0 },
-    { opacity: 1, duration: 0.5, ease: 'power2.out' }
-  )
 })
 </script>
 
@@ -169,9 +136,6 @@ onMounted(async () => {
     
     <!-- Background Overlay with Blur Effect (顶层覆盖虚化层) -->
     <div v-if="isAnimeTheme && isOverlayEnabled" class="theme-background-overlay"></div>
-    
-    <!-- Page Transition Overlay -->
-    <div class="page-transition-overlay"></div>
     
     <!-- Navigation (hide on admin/login routes) -->
     <NavBar v-if="!isAdminRoute" />
@@ -386,13 +350,23 @@ onMounted(async () => {
   padding-top: 80px;
   position: relative;
   z-index: 1;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .main-content.no-padding {
   padding-top: 0;
 }
 
-/* Page transition overlay */
+/* Page transition overlay - kept for backwards compatibility */
 .page-transition-overlay {
   position: fixed;
   inset: 0;
@@ -403,10 +377,13 @@ onMounted(async () => {
   pointer-events: none;
 }
 
-/* Vue transition classes */
-.fade-enter-active,
+/* Vue transition classes - Fade in/out effect */
+.fade-enter-active {
+  transition: opacity 0.4s ease-out;
+}
+
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease-in;
 }
 
 .fade-enter-from,
