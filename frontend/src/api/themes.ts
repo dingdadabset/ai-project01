@@ -127,6 +127,11 @@ const themeApi = {
     return api.delete(`/themes/${themeId}`)
   },
 
+  // Rescan themes from filesystem
+  rescan() {
+    return api.post<Theme[]>('/themes/rescan')
+  },
+
   // Get theme screenshot URL
   getScreenshotUrl(themeId: string) {
     return `/api/themes/${themeId}/screenshot`

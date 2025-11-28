@@ -3,6 +3,9 @@
     <div class="page-header">
       <h1>Theme Management</h1>
       <div class="header-actions">
+        <button class="btn btn-secondary" @click="rescanThemes" :disabled="rescanning">
+          {{ rescanning ? '🔄 Rescanning...' : '🔄 Rescan Themes' }}
+        </button>
         <label class="btn btn-primary upload-btn">
           <input type="file" accept=".zip" @change="handleUpload" hidden>
           <span>📦 Upload Theme</span>
@@ -264,6 +267,7 @@ const themeStore = useThemeStore()
 const themes = ref<Theme[]>([])
 const loading = ref(true)
 const activating = ref(false)
+const rescanning = ref(false)
 
 // Settings Modal
 const showSettingsModal = ref(false)
@@ -298,6 +302,22 @@ const loadThemes = async () => {
     console.error('Failed to load themes:', error)
   } finally {
     loading.value = false
+  }
+}
+
+const rescanThemes = async () => {
+  rescanning.value = true
+  try {
+    const response = await themeApi.rescan()
+    themes.value = response.data
+    // Update theme store so App.vue applies the active theme
+    await themeStore.fetchActiveTheme()
+    showToast('Themes rescanned successfully', 'success')
+  } catch (error) {
+    showToast('Failed to rescan themes', 'error')
+    console.error('Failed to rescan themes:', error)
+  } finally {
+    rescanning.value = false
   }
 }
 

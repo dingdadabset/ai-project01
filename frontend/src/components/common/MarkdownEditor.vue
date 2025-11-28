@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { MdEditor, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import uploadApi from '@/api/uploads'
@@ -122,19 +122,43 @@ const checkFullscreen = () => {
     if (editor) {
       const hasFullscreenClass = editor.classList.contains('md-editor-fullscreen')
       isFullscreen.value = hasFullscreenClass
+      
+      // Lock body scroll when in fullscreen mode
+      if (hasFullscreenClass) {
+        document.body.style.overflow = 'hidden'
+        document.body.classList.add('editor-fullscreen-active')
+      } else {
+        document.body.style.overflow = ''
+        document.body.classList.remove('editor-fullscreen-active')
+      }
     }
   }
 }
 
 // Set up mutation observer to detect fullscreen class changes
+let observer: MutationObserver | null = null
+
 onMounted(() => {
   if (wrapperRef.value) {
-    const observer = new MutationObserver(checkFullscreen)
+    observer = new MutationObserver(checkFullscreen)
     const editor = wrapperRef.value.querySelector('.md-editor')
     if (editor) {
       observer.observe(editor, { attributes: true, attributeFilter: ['class'] })
     }
   }
+})
+
+// Cleanup on unmount
+onUnmounted(() => {
+  // Disconnect the observer
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+  
+  // Reset body state in case we were in fullscreen
+  document.body.style.overflow = ''
+  document.body.classList.remove('editor-fullscreen-active')
 })
 
 // Handle image upload
@@ -355,9 +379,11 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 9999 !important;
+  z-index: 99999 !important;
   border-radius: 0 !important;
   margin: 0 !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
 }
 
 /* Handle the wrapper when editor is in fullscreen - JavaScript-based class for better browser compatibility */
@@ -369,10 +395,12 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 9999 !important;
+  z-index: 99999 !important;
   border-radius: 0 !important;
   border: none !important;
   overflow: visible !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
 }
 
 /* Fallback: Also support :has() for modern browsers */
@@ -385,18 +413,35 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
     bottom: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 9999 !important;
+    z-index: 99999 !important;
     border-radius: 0 !important;
     border: none !important;
     overflow: visible !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
   }
+}
+
+/* Global body style when editor is in fullscreen mode */
+body.editor-fullscreen-active {
+  overflow: hidden !important;
+}
+
+/* Hide modal overlay when editor is in fullscreen */
+body.editor-fullscreen-active .modal-overlay {
+  overflow: visible !important;
+}
+
+body.editor-fullscreen-active .modal-content {
+  overflow: visible !important;
+  max-height: none !important;
 }
 
 /* Fullscreen toolbar stays on top */
 .md-editor.md-editor-fullscreen .md-editor-toolbar {
   position: sticky !important;
   top: 0 !important;
-  z-index: 10000 !important;
+  z-index: 100000 !important;
 }
 
 /* Fullscreen content area fills the rest */

@@ -72,7 +72,78 @@ public class ThemeService extends ServiceImpl<ThemeMapper, Theme> {
         List<Theme> themes = themeMapper.selectList(
             new LambdaQueryWrapper<Theme>().orderByDesc(Theme::getIsActive).orderByAsc(Theme::getName)
         );
+        
+        // If no themes found, trigger rescan
+        if (themes.isEmpty()) {
+            log.warn("No themes found in database, triggering rescan...");
+            rescanThemes();
+            themes = themeMapper.selectList(
+                new LambdaQueryWrapper<Theme>().orderByDesc(Theme::getIsActive).orderByAsc(Theme::getName)
+            );
+        }
+        
         return themes.stream().map(this::convertToResponse).toList();
+    }
+
+    /**
+     * Rescan and re-register all themes from filesystem
+     * This is useful when the database is cleared or themes need to be refreshed
+     */
+    @Transactional
+    public void rescanThemes() {
+        log.info("Rescanning themes from filesystem...");
+        try {
+            scanAndRegisterThemes();
+            
+            // Ensure there's always an active theme
+            ensureActiveTheme();
+            
+            log.info("Theme rescan completed successfully");
+        } catch (IOException e) {
+            log.error("Failed to rescan themes", e);
+            throw new RuntimeException("Failed to rescan themes", e);
+        }
+    }
+
+    /**
+     * Ensure there's always an active theme
+     * If no theme is active, activate the default theme or the first available one
+     */
+    private void ensureActiveTheme() {
+        Theme activeTheme = themeMapper.selectOne(
+            new LambdaQueryWrapper<Theme>().eq(Theme::getIsActive, true)
+        );
+        
+        if (activeTheme == null) {
+            log.info("No active theme found, setting default theme as active");
+            
+            // Try to find and activate the default theme
+            Theme defaultTheme = themeMapper.selectOne(
+                new LambdaQueryWrapper<Theme>()
+                    .eq(Theme::getThemeId, defaultThemeName)
+                    .eq(Theme::getStatus, Theme.ThemeStatus.ENABLED)
+            );
+            
+            if (defaultTheme != null) {
+                defaultTheme.setIsActive(true);
+                themeMapper.updateById(defaultTheme);
+                log.info("Activated default theme: {}", defaultThemeName);
+            } else {
+                // If default theme doesn't exist, activate the first enabled theme
+                Theme firstTheme = themeMapper.selectOne(
+                    new LambdaQueryWrapper<Theme>()
+                        .eq(Theme::getStatus, Theme.ThemeStatus.ENABLED)
+                        .orderByAsc(Theme::getName)
+                        .last("LIMIT 1")
+                );
+                
+                if (firstTheme != null) {
+                    firstTheme.setIsActive(true);
+                    themeMapper.updateById(firstTheme);
+                    log.info("Activated first available theme: {}", firstTheme.getThemeId());
+                }
+            }
+        }
     }
 
     /**
@@ -113,7 +184,18 @@ public class ThemeService extends ServiceImpl<ThemeMapper, Theme> {
             );
         }
         if (theme == null) {
-            throw new RuntimeException("No active theme found");
+            // No themes found in database, try to rescan from filesystem
+            log.warn("No themes found in database, triggering rescan...");
+            rescanThemes();
+            
+            // Try again after rescan
+            theme = themeMapper.selectOne(
+                new LambdaQueryWrapper<Theme>().eq(Theme::getIsActive, true)
+            );
+            
+            if (theme == null) {
+                throw new RuntimeException("No active theme found. Please check that theme files exist in the themes directory.");
+            }
         }
         return convertToResponse(theme);
     }
