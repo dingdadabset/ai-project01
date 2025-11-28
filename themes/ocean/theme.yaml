@@ -1,0 +1,80 @@
+id: ocean
+name: Ocean Theme
+version: 1.0.0
+author:
+  name: AI Project Team
+  website: https://github.com/aiproject
+description: A calm and serene ocean-inspired theme with blue and teal colors
+screenshot: screenshot.png
+requires: "1.0.0"
+
+settings:
+  - group: general
+    label: General Settings
+    items:
+      - name: siteName
+        label: Site Name
+        type: text
+        defaultValue: Ocean Blog
+      - name: siteDescription
+        label: Site Description
+        type: textarea
+        defaultValue: A peaceful ocean-themed personal blog
+  - group: appearance
+    label: Appearance Settings
+    items:
+      - name: primaryColor
+        label: Primary Color
+        type: color
+        defaultValue: "#0ea5e9"
+        description: Main ocean blue color
+      - name: accentColor
+        label: Accent Color
+        type: color
+        defaultValue: "#14b8a6"
+        description: Teal accent color
+      - name: textColor
+        label: Text Color
+        type: color
+        defaultValue: "#f0f9ff"
+        description: Light text on dark ocean background
+      - name: waveAnimation
+        label: Enable Wave Animation
+        type: switch
+        defaultValue: true
+      - name: darkMode
+        label: Enable Dark Mode
+        type: switch
+        defaultValue: true
+  - group: sidebar
+    label: Sidebar Settings
+    items:
+      - name: showSidebar
+        label: Show Sidebar
+        type: switch
+        defaultValue: true
+      - name: showCategories
+        label: Show Categories
+        type: switch
+        defaultValue: true
+      - name: showTags
+        label: Show Tags
+        type: switch
+        defaultValue: true
+      - name: showRecentPosts
+        label: Show Recent Posts
+        type: switch
+        defaultValue: true
+
+i18n:
+  defaultLocale: en
+  supportedLocales:
+    - en
+    - zh-CN
+
+features:
+  darkMode: true
+  responsive: true
+  pwa: false
+  comments: true
+  search: true

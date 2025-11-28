@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { MdEditor, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import uploadApi from '@/api/uploads'
@@ -107,10 +107,34 @@ const emit = defineEmits<{
 const editorId = ref('md-editor-' + Math.random().toString(36).substring(2, 11))
 
 const uploadError = ref('')
+const wrapperRef = ref<HTMLElement | null>(null)
+const isFullscreen = ref(false)
 
 const content = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
+})
+
+// Watch for fullscreen class changes on the editor
+const checkFullscreen = () => {
+  if (wrapperRef.value) {
+    const editor = wrapperRef.value.querySelector('.md-editor')
+    if (editor) {
+      const hasFullscreenClass = editor.classList.contains('md-editor-fullscreen')
+      isFullscreen.value = hasFullscreenClass
+    }
+  }
+}
+
+// Set up mutation observer to detect fullscreen class changes
+onMounted(() => {
+  if (wrapperRef.value) {
+    const observer = new MutationObserver(checkFullscreen)
+    const editor = wrapperRef.value.querySelector('.md-editor')
+    if (editor) {
+      observer.observe(editor, { attributes: true, attributeFilter: ['class'] })
+    }
+  }
 })
 
 // Handle image upload
@@ -140,7 +164,7 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 </script>
 
 <template>
-  <div class="markdown-editor-wrapper">
+  <div ref="wrapperRef" class="markdown-editor-wrapper" :class="{ 'wrapper-fullscreen': isFullscreen }">
     <!-- Upload error message -->
     <div v-if="uploadError" class="upload-error-banner">
       {{ uploadError }}
@@ -320,5 +344,72 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 /* Set minimum height */
 .markdown-editor-wrapper .md-editor {
   min-height: 450px;
+}
+
+/* Fullscreen mode support - Page Fullscreen */
+.markdown-editor-wrapper .md-editor.md-editor-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+/* Handle the wrapper when editor is in fullscreen - JavaScript-based class for better browser compatibility */
+.markdown-editor-wrapper.wrapper-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+/* Fallback: Also support :has() for modern browsers */
+@supports selector(:has(*)) {
+  .markdown-editor-wrapper:has(.md-editor-fullscreen) {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    overflow: visible !important;
+  }
+}
+
+/* Fullscreen toolbar stays on top */
+.md-editor.md-editor-fullscreen .md-editor-toolbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10000 !important;
+}
+
+/* Fullscreen content area fills the rest */
+.md-editor.md-editor-fullscreen .md-editor-content {
+  height: calc(100vh - 50px) !important;
+}
+
+/* Browser Fullscreen API mode */
+.md-editor:-webkit-full-screen,
+.md-editor:-moz-full-screen,
+.md-editor:-ms-fullscreen,
+.md-editor:fullscreen {
+  width: 100% !important;
+  height: 100% !important;
 }
 </style>

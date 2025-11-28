@@ -1,0 +1,80 @@
+id: cyberpunk
+name: Cyberpunk Theme
+version: 1.0.0
+author:
+  name: AI Project Team
+  website: https://github.com/aiproject
+description: A futuristic cyberpunk theme with neon colors and dark backgrounds
+screenshot: screenshot.png
+requires: "1.0.0"
+
+settings:
+  - group: general
+    label: General Settings
+    items:
+      - name: siteName
+        label: Site Name
+        type: text
+        defaultValue: Cyber Blog
+      - name: siteDescription
+        label: Site Description
+        type: textarea
+        defaultValue: A cyberpunk-style personal blog
+  - group: appearance
+    label: Appearance Settings
+    items:
+      - name: primaryColor
+        label: Primary Color
+        type: color
+        defaultValue: "#00f0ff"
+        description: Main neon color for highlights
+      - name: accentColor
+        label: Accent Color
+        type: color
+        defaultValue: "#ff00ff"
+        description: Secondary neon color
+      - name: textColor
+        label: Text Color
+        type: color
+        defaultValue: "#e0e0ff"
+        description: Main text color
+      - name: enableGlowEffect
+        label: Enable Glow Effect
+        type: switch
+        defaultValue: true
+      - name: enableScanlines
+        label: Enable Scanlines Effect
+        type: switch
+        defaultValue: false
+  - group: sidebar
+    label: Sidebar Settings
+    items:
+      - name: showSidebar
+        label: Show Sidebar
+        type: switch
+        defaultValue: true
+      - name: showCategories
+        label: Show Categories
+        type: switch
+        defaultValue: true
+      - name: showTags
+        label: Show Tags
+        type: switch
+        defaultValue: true
+      - name: showRecentPosts
+        label: Show Recent Posts
+        type: switch
+        defaultValue: true
+
+i18n:
+  defaultLocale: en
+  supportedLocales:
+    - en
+    - zh-CN
+
+features:
+  darkMode: true
+  responsive: true
+  pwa: false
+  comments: true
+  search: true

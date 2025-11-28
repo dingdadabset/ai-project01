@@ -1,0 +1,26 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
+    <div class="widget categories-widget" th:if="${settings.showCategories}">
+        <h3 th:text="#{sidebar.categories}">Categories</h3>
+        <ul>
+            <li th:each="category : ${categories}">
+                <a th:href="@{/categories/{id}(id=${category.id})}" th:text="${category.name + ' (' + category.postCount + ')'}">Category</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="widget tags-widget" th:if="${settings.showTags}">
+        <h3 th:text="#{sidebar.tags}">Tags</h3>
+        <div class="tag-cloud">
+            <a th:each="tag : ${tags}" th:href="@{/tags/{slug}(slug=${tag.slug})}" class="tag" th:text="${tag.name}">Tag</a>
+        </div>
+    </div>
+
+    <div class="widget recent-posts-widget" th:if="${settings.showRecentPosts}">
+        <h3 th:text="#{sidebar.recentPosts}">Recent Posts</h3>
+        <ul>
+            <li th:each="post : ${recentPosts}">
+                <a th:href="@{/posts/{slug}(slug=${post.slug})}" th:text="${post.title}">Post</a>
+            </li>
+        </ul>
+    </div>
+</th:block>
