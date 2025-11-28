@@ -144,6 +144,18 @@ public class ThemeController {
     }
 
     /**
+     * Rescan and re-register themes from filesystem
+     * Useful when the database is cleared or themes need to be refreshed
+     */
+    @PostMapping("/rescan")
+    public ResponseEntity<List<ThemeResponse>> rescanThemes() {
+        log.info("POST /api/themes/rescan - Rescanning themes from filesystem");
+        themeService.rescanThemes();
+        List<ThemeResponse> themes = themeService.listThemes();
+        return ResponseEntity.ok(themes);
+    }
+
+    /**
      * Get theme screenshot
      */
     @GetMapping("/{themeId}/screenshot")

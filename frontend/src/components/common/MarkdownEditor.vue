@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { MdEditor, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import uploadApi from '@/api/uploads'
@@ -122,20 +122,64 @@ const checkFullscreen = () => {
     if (editor) {
       const hasFullscreenClass = editor.classList.contains('md-editor-fullscreen')
       isFullscreen.value = hasFullscreenClass
+      
+      // Lock body scroll when in fullscreen mode
+      if (hasFullscreenClass) {
+        document.body.style.overflow = 'hidden'
+        document.body.classList.add('editor-fullscreen-active')
+      } else {
+        document.body.style.overflow = ''
+        document.body.classList.remove('editor-fullscreen-active')
+      }
     }
   }
 }
 
 // Set up mutation observer to detect fullscreen class changes
+let observer: MutationObserver | null = null
+
 onMounted(() => {
   if (wrapperRef.value) {
-    const observer = new MutationObserver(checkFullscreen)
+    observer = new MutationObserver(checkFullscreen)
     const editor = wrapperRef.value.querySelector('.md-editor')
     if (editor) {
       observer.observe(editor, { attributes: true, attributeFilter: ['class'] })
     }
   }
 })
+
+// Cleanup on unmount
+onUnmounted(() => {
+  // Disconnect the observer
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+  
+  // Reset body state in case we were in fullscreen
+  document.body.style.overflow = ''
+  document.body.classList.remove('editor-fullscreen-active')
+})
+
+// Toggle fullscreen mode programmatically
+const toggleFullscreen = () => {
+  if (wrapperRef.value) {
+    const editor = wrapperRef.value.querySelector('.md-editor')
+    if (editor) {
+      // Find and click the pageFullscreen button in the toolbar
+      const fullscreenBtn = editor.querySelector('[title="页面全屏"]') || 
+                            editor.querySelector('[title="取消全屏"]') ||
+                            editor.querySelector('.md-editor-toolbar-item[title*="全屏"]')
+      if (fullscreenBtn) {
+        (fullscreenBtn as HTMLElement).click()
+      } else {
+        // Manually toggle fullscreen class if button not found
+        editor.classList.toggle('md-editor-fullscreen')
+        checkFullscreen()
+      }
+    }
+  }
+}
 
 // Handle image upload
 const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
@@ -165,6 +209,17 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 
 <template>
   <div ref="wrapperRef" class="markdown-editor-wrapper" :class="{ 'wrapper-fullscreen': isFullscreen }">
+    <!-- Prominent fullscreen toggle button -->
+    <div class="editor-header">
+      <button 
+        class="fullscreen-toggle-btn" 
+        @click="toggleFullscreen"
+        :title="isFullscreen ? '退出全屏' : '全屏编辑'"
+      >
+        <span class="fullscreen-icon">{{ isFullscreen ? '✕' : '⛶' }}</span>
+        <span>{{ isFullscreen ? '退出全屏' : '全屏编辑' }}</span>
+      </button>
+    </div>
     <!-- Upload error message -->
     <div v-if="uploadError" class="upload-error-banner">
       {{ uploadError }}
@@ -216,11 +271,68 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 </template>
 
 <style>
+/* Z-index hierarchy for fullscreen mode */
+:root {
+  --z-editor-fullscreen: 99999;
+  --z-editor-fullscreen-toolbar: 100000;
+}
+
 /* Dark theme adjustments for md-editor-v3 */
 .markdown-editor-wrapper {
   border-radius: var(--radius-md, 16px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Editor header with prominent fullscreen button */
+.editor-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fullscreen-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fullscreen-toggle-btn .fullscreen-icon {
+  font-size: 18px;
+  margin-right: 4px;
+}
+
+.fullscreen-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.fullscreen-toggle-btn:active {
+  transform: translateY(0);
+}
+
+/* Fullscreen mode header styling */
+.wrapper-fullscreen .editor-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100001;
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
 }
 
 /* Upload error banner */
@@ -355,9 +467,11 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 9999 !important;
+  z-index: var(--z-editor-fullscreen) !important;
   border-radius: 0 !important;
   margin: 0 !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
 }
 
 /* Handle the wrapper when editor is in fullscreen - JavaScript-based class for better browser compatibility */
@@ -369,10 +483,12 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 9999 !important;
+  z-index: var(--z-editor-fullscreen) !important;
   border-radius: 0 !important;
   border: none !important;
   overflow: visible !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
 }
 
 /* Fallback: Also support :has() for modern browsers */
@@ -385,18 +501,35 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
     bottom: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 9999 !important;
+    z-index: var(--z-editor-fullscreen) !important;
     border-radius: 0 !important;
     border: none !important;
     overflow: visible !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
   }
+}
+
+/* Global body style when editor is in fullscreen mode */
+body.editor-fullscreen-active {
+  overflow: hidden !important;
+}
+
+/* Hide modal overlay when editor is in fullscreen */
+body.editor-fullscreen-active .modal-overlay {
+  overflow: visible !important;
+}
+
+body.editor-fullscreen-active .modal-content {
+  overflow: visible !important;
+  max-height: none !important;
 }
 
 /* Fullscreen toolbar stays on top */
 .md-editor.md-editor-fullscreen .md-editor-toolbar {
   position: sticky !important;
   top: 0 !important;
-  z-index: 10000 !important;
+  z-index: var(--z-editor-fullscreen-toolbar) !important;
 }
 
 /* Fullscreen content area fills the rest */
