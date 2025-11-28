@@ -240,18 +240,55 @@ const applyCustomUrl = async () => {
   await applyCustomBackground(customUrl.value)
 }
 
-// Random image backgrounds from themes/jpg folder
-const randomImages = [
+// All available background images for random selection
+// Includes both SVG backgrounds and PNG images
+const allBackgroundImages = [
+  // PNG images from themes/jpg folder
   '/themes/jpg/img.png',
-  '/themes/jpg/img_1.png'
+  '/themes/jpg/img_1.png',
+  // SVG backgrounds from anime-girls theme
+  '/themes/anime-girls/static/images/backgrounds/bg1.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg2.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg3.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg4.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg5.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg6.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg7.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg8.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg9.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg10.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg11.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg12.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg13.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg14.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg15.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg16.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg17.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg18.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg19.svg',
+  '/themes/anime-girls/static/images/backgrounds/bg20.svg'
 ]
+
+// Get current background index to avoid repeating same background
+const lastRandomIndex = ref(-1)
 
 const applyRandomImage = async () => {
   try {
-    const randomIndex = Math.floor(Math.random() * randomImages.length)
-    const randomImageUrl = randomImages[randomIndex]
+    // Get a random index that's different from the last one
+    let randomIndex: number
+    do {
+      randomIndex = Math.floor(Math.random() * allBackgroundImages.length)
+    } while (randomIndex === lastRandomIndex.value && allBackgroundImages.length > 1)
+    
+    lastRandomIndex.value = randomIndex
+    const randomImageUrl = allBackgroundImages[randomIndex]
+    
     await applyCustomBackground(randomImageUrl)
-    showNotification('Random image applied! 🎲', 'success')
+    
+    // Show which type of background was applied
+    const isPng = randomImageUrl.includes('.png')
+    const bgName = isPng ? '随机美女图片' : `随机背景 ${randomIndex + 1}`
+    showNotification(`${bgName} 已应用! 🎲`, 'success')
   } catch (error) {
     console.error('Failed to apply random image:', error)
     showNotification('Failed to apply random image. Please try again.', 'error')
