@@ -1,722 +1,324 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { marked } from 'marked'
+import { ref, computed } from 'vue'
+import { MdEditor, config } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 import uploadApi from '@/api/uploads'
 
-interface I18nMessages {
-  emptyPreview?: string
-  uploadError?: string
-  uploading?: string
-  edit?: string
-  split?: string
-  preview?: string
-  hint?: string
-}
+// Configure md-editor-v3 global settings
+config({
+  editorConfig: {
+    languageUserDefined: {
+      'zh-CN': {
+        toolbarTips: {
+          bold: '加粗',
+          underline: '下划线',
+          italic: '斜体',
+          strikeThrough: '删除线',
+          title: '标题',
+          sub: '下标',
+          sup: '上标',
+          quote: '引用',
+          unorderedList: '无序列表',
+          orderedList: '有序列表',
+          task: '任务列表',
+          codeRow: '行内代码',
+          code: '代码块',
+          link: '链接',
+          image: '图片',
+          table: '表格',
+          mermaid: '流程图',
+          katex: '公式',
+          revoke: '撤销',
+          next: '重做',
+          save: '保存',
+          prettier: '美化',
+          pageFullscreen: '页面全屏',
+          fullscreen: '全屏',
+          preview: '预览',
+          htmlPreview: 'HTML预览',
+          catalog: '目录',
+          github: 'GitHub'
+        },
+        titleItem: {
+          h1: '一级标题',
+          h2: '二级标题',
+          h3: '三级标题',
+          h4: '四级标题',
+          h5: '五级标题',
+          h6: '六级标题'
+        },
+        imgTitleItem: {
+          link: '添加链接',
+          upload: '上传图片',
+          clip2upload: '粘贴上传'
+        },
+        linkModalTips: {
+          linkTitle: '链接描述',
+          imageTitle: '图片描述',
+          descLabel: '描述文本',
+          descLabelPlaceHolder: '请输入描述',
+          urlLabel: '链接地址',
+          urlLabelPlaceHolder: '请输入链接',
+          buttonOK: '确定'
+        },
+        clipModalTips: {
+          title: '粘贴图片上传',
+          buttonUpload: '上传'
+        },
+        copyCode: {
+          text: '复制代码',
+          successTips: '复制成功！',
+          failTips: '复制失败！'
+        },
+        mermaid: {
+          flow: '流程图',
+          sequence: '时序图',
+          gantt: '甘特图',
+          class: '类图',
+          state: '状态图',
+          pie: '饼图',
+          relationship: 'ER图',
+          journey: '用户旅程图'
+        },
+        katex: {
+          inline: '行内公式',
+          block: '块级公式'
+        },
+        footer: {
+          markdownTotal: '字数',
+          scrollAuto: '同步滚动'
+        }
+      }
+    }
+  }
+})
 
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder?: string
-  messages?: I18nMessages
 }>(), {
-  messages: () => ({
-    emptyPreview: 'Preview will be displayed here...',
-    uploadError: 'Upload failed, please try again',
-    uploading: 'Uploading...',
-    edit: 'Edit',
-    split: 'Split',
-    preview: 'Preview',
-    hint: 'Supports Markdown syntax | Drag & drop or paste images | Real-time preview'
-  })
+  placeholder: '请输入Markdown内容...\n\n支持拖放或粘贴图片上传'
 })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>()
 
-// View mode: 'edit', 'preview', 'split'
-const viewMode = ref<'edit' | 'preview' | 'split'>('split')
-const isUploading = ref(false)
+const editorId = ref('md-editor-' + Math.random().toString(36).substring(2, 11))
+
 const uploadError = ref('')
-const textareaRef = ref<HTMLTextAreaElement | null>(null)
-const fileInputRef = ref<HTMLInputElement | null>(null)
 
 const content = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
 })
 
-const renderedContent = computed(() => {
-  if (!content.value) return `<p class="empty-hint">${props.messages?.emptyPreview || 'Preview will be displayed here...'}</p>`
-  return marked(content.value) as string
-})
-
-const setViewMode = (mode: 'edit' | 'preview' | 'split') => {
-  viewMode.value = mode
-}
-
-const insertMarkdown = (prefix: string, suffix: string = '') => {
-  const textarea = textareaRef.value
-  if (!textarea) return
-  
-  const start = textarea.selectionStart
-  const end = textarea.selectionEnd
-  const text = content.value || ''
-  const selectedText = text.substring(start, end)
-  
-  const newText = text.substring(0, start) + prefix + selectedText + suffix + text.substring(end)
-  content.value = newText
-  
-  // Restore cursor position
-  setTimeout(() => {
-    textarea.focus()
-    textarea.setSelectionRange(start + prefix.length, start + prefix.length + selectedText.length)
-  }, 0)
-}
-
-const insertHeading = (level: number) => {
-  const prefix = '#'.repeat(level) + ' '
-  insertAtLineStart(prefix)
-}
-
-const insertAtLineStart = (prefix: string) => {
-  const textarea = textareaRef.value
-  if (!textarea) return
-  
-  const start = textarea.selectionStart
-  const text = content.value || ''
-  
-  // Find the start of the current line
-  let lineStart = start
-  while (lineStart > 0 && text[lineStart - 1] !== '\n') {
-    lineStart--
-  }
-  
-  const newText = text.substring(0, lineStart) + prefix + text.substring(lineStart)
-  content.value = newText
-  
-  setTimeout(() => {
-    textarea.focus()
-    textarea.setSelectionRange(start + prefix.length, start + prefix.length)
-  }, 0)
-}
-
-const insertTable = () => {
-  const tableMarkdown = `
-| Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
-| Content  | Content  | Content  |
-| Content  | Content  | Content  |
-`
-  insertMarkdown(tableMarkdown)
-}
-
-const insertQuote = () => {
-  insertAtLineStart('> ')
-}
-
-const insertHorizontalRule = () => {
-  insertMarkdown('\n---\n')
-}
-
-const triggerFileUpload = () => {
-  fileInputRef.value?.click()
-}
-
-const handleFileUpload = async (event: Event) => {
-  const input = event.target as HTMLInputElement
-  const files = input.files
-  if (!files || files.length === 0) return
-  
-  isUploading.value = true
+// Handle image upload
+const onUploadImg = async (files: File[], callback: (urls: string[]) => void) => {
+  const uploadedUrls: string[] = []
   uploadError.value = ''
   
-  try {
-    for (const file of files) {
-      const response = await uploadApi.upload(file, 'images')
+  for (const file of files) {
+    try {
+      // Upload to markdown-images directory
+      const response = await uploadApi.upload(file, 'markdown-images')
       if (response.data.success && response.data.url) {
-        const imageMarkdown = `![${file.name}](${response.data.url})`
-        insertMarkdown(imageMarkdown)
+        uploadedUrls.push(response.data.url)
       } else {
-        uploadError.value = response.data.error || props.messages?.uploadError || 'Upload failed'
+        const errorMsg = response.data.error || '图片上传失败'
+        uploadError.value = errorMsg
+        console.error('Upload failed:', errorMsg)
       }
-    }
-  } catch (error) {
-    uploadError.value = props.messages?.uploadError || 'Upload failed, please try again'
-    console.error('Upload failed:', error)
-  } finally {
-    isUploading.value = false
-    input.value = '' // Reset input
-  }
-}
-
-const handlePaste = async (event: ClipboardEvent) => {
-  const items = event.clipboardData?.items
-  if (!items) return
-  
-  for (const item of items) {
-    if (item.type.startsWith('image/')) {
-      event.preventDefault()
-      const file = item.getAsFile()
-      if (!file) continue
-      
-      isUploading.value = true
-      uploadError.value = ''
-      
-      try {
-        const response = await uploadApi.upload(file, 'images')
-        if (response.data.success && response.data.url) {
-          const imageMarkdown = `![pasted-image](${response.data.url})`
-          insertMarkdown(imageMarkdown)
-        } else {
-          uploadError.value = response.data.error || props.messages?.uploadError || 'Upload failed'
-        }
-      } catch (error) {
-        uploadError.value = props.messages?.uploadError || 'Upload failed, please try again'
-        console.error('Upload failed:', error)
-      } finally {
-        isUploading.value = false
-      }
-      break
+    } catch (error) {
+      uploadError.value = '图片上传失败，请重试'
+      console.error('Upload error:', error)
     }
   }
-}
-
-const handleDrop = async (event: DragEvent) => {
-  event.preventDefault()
-  const files = event.dataTransfer?.files
-  if (!files || files.length === 0) return
   
-  isUploading.value = true
-  uploadError.value = ''
-  
-  try {
-    for (const file of files) {
-      if (file.type.startsWith('image/')) {
-        const response = await uploadApi.upload(file, 'images')
-        if (response.data.success && response.data.url) {
-          const imageMarkdown = `![${file.name}](${response.data.url})`
-          insertMarkdown(imageMarkdown)
-        } else {
-          uploadError.value = response.data.error || props.messages?.uploadError || 'Upload failed'
-        }
-      }
-    }
-  } catch (error) {
-    uploadError.value = props.messages?.uploadError || 'Upload failed, please try again'
-    console.error('Upload failed:', error)
-  } finally {
-    isUploading.value = false
-  }
-}
-
-const handleDragOver = (event: DragEvent) => {
-  event.preventDefault()
+  callback(uploadedUrls)
 }
 </script>
 
 <template>
-  <div class="markdown-editor">
-    <div class="editor-toolbar">
-      <div class="toolbar-buttons">
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('**', '**')" title="Bold (Ctrl+B)">
-          <strong>B</strong>
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('*', '*')" title="Italic (Ctrl+I)">
-          <em>I</em>
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('~~', '~~')" title="Strikethrough">
-          <s>S</s>
-        </button>
-        <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertHeading(1)" title="Heading 1">
-          H1
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertHeading(2)" title="Heading 2">
-          H2
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertHeading(3)" title="Heading 3">
-          H3
-        </button>
-        <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertAtLineStart('- ')" title="Unordered List">
-          •
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertAtLineStart('1. ')" title="Ordered List">
-          1.
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertAtLineStart('- [ ] ')" title="Task List">
-          ☑
-        </button>
-        <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('`', '`')" title="Inline Code">
-          &lt;/&gt;
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('```\n', '\n```')" title="Code Block">
-          { }
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertQuote" title="Quote">
-          ❝
-        </button>
-        <span class="toolbar-divider"></span>
-        <button type="button" class="toolbar-btn" @click="insertMarkdown('[Link Text](', ')')" title="Link">
-          🔗
-        </button>
-        <button type="button" class="toolbar-btn" @click="triggerFileUpload" title="Upload Image" :disabled="isUploading">
-          {{ isUploading ? '⏳' : '🖼️' }}
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertTable" title="Table">
-          📊
-        </button>
-        <button type="button" class="toolbar-btn" @click="insertHorizontalRule" title="Horizontal Rule">
-          ─
-        </button>
-      </div>
-      <div class="view-mode-toggle">
-        <button 
-          type="button" 
-          class="mode-btn"
-          :class="{ active: viewMode === 'edit' }"
-          @click="setViewMode('edit')"
-        >
-          ✏️ {{ messages?.edit || 'Edit' }}
-        </button>
-        <button 
-          type="button" 
-          class="mode-btn"
-          :class="{ active: viewMode === 'split' }"
-          @click="setViewMode('split')"
-        >
-          📋 {{ messages?.split || 'Split' }}
-        </button>
-        <button 
-          type="button" 
-          class="mode-btn"
-          :class="{ active: viewMode === 'preview' }"
-          @click="setViewMode('preview')"
-        >
-          👁️ {{ messages?.preview || 'Preview' }}
-        </button>
-      </div>
-    </div>
-    
-    <!-- Hidden file input -->
-    <input 
-      ref="fileInputRef"
-      type="file" 
-      accept="image/*" 
-      multiple 
-      hidden 
-      @change="handleFileUpload"
-    />
-    
+  <div class="markdown-editor-wrapper">
     <!-- Upload error message -->
-    <div v-if="uploadError" class="upload-error">
+    <div v-if="uploadError" class="upload-error-banner">
       {{ uploadError }}
       <button @click="uploadError = ''">&times;</button>
     </div>
-    
-    <div class="editor-content" :class="viewMode">
-      <!-- Edit pane -->
-      <div
-        v-if="viewMode !== 'preview'" 
-        class="edit-pane"
-        @drop="handleDrop"
-        @dragover="handleDragOver"
-      >
-        <textarea
-          ref="textareaRef"
-          v-model="content"
-          class="md-textarea"
-          :placeholder="placeholder || 'Write your content in Markdown format...\n\nSupports drag & drop or paste for image uploads'"
-          @paste="handlePaste"
-        ></textarea>
-        <div v-if="isUploading" class="upload-overlay">
-          <div class="upload-spinner"></div>
-          <span>{{ messages?.uploading || 'Uploading...' }}</span>
-        </div>
-      </div>
-      
-      <!-- Preview pane -->
-      <div 
-        v-if="viewMode !== 'edit'" 
-        class="preview-pane"
-      >
-        <div class="md-preview" v-html="renderedContent"></div>
-      </div>
-    </div>
-    
-    <div class="editor-hint">
-      💡 {{ messages?.hint || 'Supports Markdown syntax | Drag & drop or paste images | Real-time preview' }}
-    </div>
+    <MdEditor
+      :editorId="editorId"
+      v-model="content"
+      :placeholder="placeholder"
+      language="zh-CN"
+      theme="dark"
+      previewTheme="github"
+      codeTheme="atom"
+      :showCodeRowNumber="true"
+      :autoFocus="false"
+      :tableShape="[8, 6]"
+      :footers="['markdownTotal', 'scrollSwitch']"
+      :toolbars="[
+        'bold',
+        'underline',
+        'italic',
+        'strikeThrough',
+        '-',
+        'title',
+        'sub',
+        'sup',
+        '-',
+        'quote',
+        'unorderedList',
+        'orderedList',
+        'task',
+        '-',
+        'codeRow',
+        'code',
+        'link',
+        'image',
+        'table',
+        '-',
+        'revoke',
+        'next',
+        '=',
+        'preview',
+        'pageFullscreen',
+        'fullscreen'
+      ]"
+      @onUploadImg="onUploadImg"
+    />
   </div>
 </template>
 
-<style scoped>
-.markdown-editor {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
+<style>
+/* Dark theme adjustments for md-editor-v3 */
+.markdown-editor-wrapper {
+  border-radius: var(--radius-md, 16px);
   overflow: hidden;
-  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.editor-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.toolbar-buttons {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.toolbar-divider {
-  width: 1px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 0 4px;
-}
-
-.toolbar-btn {
-  min-width: 32px;
-  height: 32px;
-  padding: 0 6px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toolbar-btn:hover:not(:disabled) {
-  background: var(--color-primary);
-  color: white;
-}
-
-.toolbar-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.view-mode-toggle {
-  display: flex;
-  gap: 4px;
-  padding: 3px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-}
-
-.mode-btn {
-  padding: 6px 12px;
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.mode-btn:hover {
-  color: var(--text-primary);
-}
-
-.mode-btn.active {
-  background: var(--color-primary);
-  color: white;
-}
-
-.upload-error {
+/* Upload error banner */
+.upload-error-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: 10px 16px;
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
-  font-size: 13px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-.upload-error button {
+.upload-error-banner button {
   background: none;
   border: none;
   color: #ef4444;
   cursor: pointer;
   font-size: 18px;
   padding: 0 4px;
+  line-height: 1;
 }
 
-.editor-content {
-  display: flex;
-  min-height: 400px;
+.upload-error-banner button:hover {
+  color: #f87171;
 }
 
-.editor-content.edit .edit-pane {
-  width: 100%;
+.markdown-editor-wrapper .md-editor {
+  --md-bk-color: var(--bg-secondary, #1a1a2e) !important;
+  --md-border-color: rgba(255, 255, 255, 0.1) !important;
+  --md-color: var(--text-primary, #ffffff) !important;
 }
 
-.editor-content.preview .preview-pane {
-  width: 100%;
+.markdown-editor-wrapper .md-editor-dark {
+  --md-bk-color: var(--bg-secondary, #1a1a2e) !important;
+  --md-border-color: rgba(255, 255, 255, 0.1) !important;
+  --md-color: var(--text-primary, #ffffff) !important;
 }
 
-.editor-content.split .edit-pane,
-.editor-content.split .preview-pane {
-  width: 50%;
+/* Toolbar styling */
+.markdown-editor-wrapper .md-editor .md-editor-toolbar {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.edit-pane {
-  position: relative;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+.markdown-editor-wrapper .md-editor .md-editor-toolbar-wrapper .md-editor-toolbar-item {
+  color: var(--text-secondary, #a1a1aa) !important;
 }
 
-.editor-content.edit .edit-pane {
-  border-right: none;
+.markdown-editor-wrapper .md-editor .md-editor-toolbar-wrapper .md-editor-toolbar-item:hover {
+  background: var(--color-primary, #6366f1) !important;
+  color: white !important;
 }
 
-.md-textarea {
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  padding: 16px;
-  border: none;
-  background: transparent;
-  color: var(--text-primary);
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
-  font-size: 14px;
-  line-height: 1.6;
-  resize: none;
+/* Content area styling */
+.markdown-editor-wrapper .md-editor .md-editor-content {
+  background: var(--bg-secondary, #1a1a2e) !important;
 }
 
-.md-textarea:focus {
-  outline: none;
+.markdown-editor-wrapper .md-editor .md-editor-input-wrapper {
+  background: transparent !important;
 }
 
-.md-textarea::placeholder {
-  color: var(--text-muted);
+.markdown-editor-wrapper .md-editor .md-editor-preview-wrapper {
+  background: rgba(0, 0, 0, 0.1) !important;
 }
 
-.upload-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: white;
+/* CodeMirror editor styling */
+.markdown-editor-wrapper .md-editor .cm-editor {
+  background: transparent !important;
 }
 
-.upload-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: var(--color-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.markdown-editor-wrapper .md-editor .cm-editor .cm-content {
+  color: var(--text-primary, #ffffff) !important;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.markdown-editor-wrapper .md-editor .cm-editor .cm-gutters {
+  background: rgba(0, 0, 0, 0.2) !important;
+  color: var(--text-muted, #71717a) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.preview-pane {
-  overflow-y: auto;
-  background: rgba(0, 0, 0, 0.1);
+/* Footer styling */
+.markdown-editor-wrapper .md-editor .md-editor-footer {
+  background: rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-muted, #71717a) !important;
 }
 
-.md-preview {
-  padding: 16px;
-  min-height: 400px;
-  color: var(--text-secondary);
-  line-height: 1.7;
+/* Modal styling */
+.markdown-editor-wrapper .md-editor .md-editor-modal {
+  background: var(--bg-card, #16213e) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.md-preview :deep(.empty-hint) {
-  color: var(--text-muted);
-  font-style: italic;
+.markdown-editor-wrapper .md-editor .md-editor-modal input,
+.markdown-editor-wrapper .md-editor .md-editor-modal textarea {
+  background: var(--bg-secondary, #1a1a2e) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary, #ffffff) !important;
 }
 
-.md-preview :deep(h1),
-.md-preview :deep(h2),
-.md-preview :deep(h3),
-.md-preview :deep(h4),
-.md-preview :deep(h5),
-.md-preview :deep(h6) {
-  color: var(--text-primary);
-  margin: 20px 0 12px;
-  font-weight: 600;
+.markdown-editor-wrapper .md-editor .md-editor-modal button {
+  background: var(--color-primary, #6366f1) !important;
+  color: white !important;
+  border: none !important;
 }
 
-.md-preview :deep(h1) { font-size: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-.md-preview :deep(h2) { font-size: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; }
-.md-preview :deep(h3) { font-size: 1.25rem; }
-.md-preview :deep(h4) { font-size: 1.1rem; }
-
-.md-preview :deep(p) {
-  margin-bottom: 12px;
+/* Dropdown menu styling */
+.markdown-editor-wrapper .md-editor .md-editor-dropdown {
+  background: var(--bg-card, #16213e) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.md-preview :deep(ul),
-.md-preview :deep(ol) {
-  padding-left: 24px;
-  margin-bottom: 12px;
+.markdown-editor-wrapper .md-editor .md-editor-dropdown li:hover {
+  background: var(--color-primary, #6366f1) !important;
+  color: white !important;
 }
 
-.md-preview :deep(li) {
-  margin-bottom: 6px;
-}
-
-.md-preview :deep(code) {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-  font-size: 0.9em;
-  color: #e06c75;
-}
-
-.md-preview :deep(pre) {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  margin: 16px 0;
-}
-
-.md-preview :deep(pre code) {
-  background: none;
-  padding: 0;
-  color: #abb2bf;
-}
-
-.md-preview :deep(a) {
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-.md-preview :deep(a:hover) {
-  color: var(--color-secondary);
-}
-
-.md-preview :deep(blockquote) {
-  border-left: 4px solid var(--color-primary);
-  padding-left: 16px;
-  margin: 16px 0;
-  color: var(--text-muted);
-  background: rgba(0, 0, 0, 0.1);
-  padding: 12px 16px;
-  border-radius: 0 8px 8px 0;
-}
-
-.md-preview :deep(table) {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 16px 0;
-}
-
-.md-preview :deep(th),
-.md-preview :deep(td) {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 14px;
-  text-align: left;
-}
-
-.md-preview :deep(th) {
-  background: rgba(0, 0, 0, 0.2);
-  font-weight: 600;
-}
-
-.md-preview :deep(tr:nth-child(even)) {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.md-preview :deep(img) {
-  max-width: 100%;
-  border-radius: 8px;
-  margin: 12px 0;
-}
-
-.md-preview :deep(hr) {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 24px 0;
-}
-
-.md-preview :deep(input[type="checkbox"]) {
-  margin-right: 8px;
-}
-
-.editor-hint {
-  padding: 8px 12px;
-  font-size: 12px;
-  color: var(--text-muted);
-  background: rgba(0, 0, 0, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-@media (max-width: 768px) {
-  .editor-content.split {
-    flex-direction: column;
-  }
-  
-  .editor-content.split .edit-pane,
-  .editor-content.split .preview-pane {
-    width: 100%;
-    min-height: 250px;
-  }
-  
-  .editor-content.split .edit-pane {
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .md-textarea {
-    min-height: 250px;
-  }
-  
-  .md-preview {
-    min-height: 250px;
-  }
-  
-  .toolbar-buttons {
-    order: 2;
-    width: 100%;
-  }
-  
-  .view-mode-toggle {
-    order: 1;
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .toolbar-btn {
-    min-width: 28px;
-    height: 28px;
-    font-size: 11px;
-  }
-  
-  .mode-btn {
-    font-size: 11px;
-    padding: 4px 8px;
-  }
-  
-  .toolbar-divider {
-    display: none;
-  }
+/* Set minimum height */
+.markdown-editor-wrapper .md-editor {
+  min-height: 450px;
 }
 </style>

@@ -235,6 +235,16 @@
         <div class="modal-body preview-body">
           <iframe :src="previewUrl" class="preview-iframe"></iframe>
         </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" @click="closePreview">取消</button>
+          <button 
+            class="btn btn-primary btn-confirm" 
+            @click="applyPreviewedTheme"
+            :disabled="applyingPreview"
+          >
+            {{ applyingPreview ? '应用中...' : '✓ 确认切换主题' }}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -272,6 +282,7 @@ const deleting = ref(false)
 const showPreviewModal = ref(false)
 const previewThemeId = ref('')
 const previewUrl = ref('')
+const applyingPreview = ref(false)
 
 // Toast
 const toastMessage = ref('')
@@ -400,6 +411,25 @@ const closePreview = () => {
   showPreviewModal.value = false
   previewThemeId.value = ''
   previewUrl.value = ''
+}
+
+const applyPreviewedTheme = async () => {
+  if (!previewThemeId.value) return
+  
+  applyingPreview.value = true
+  try {
+    await themeApi.activate(previewThemeId.value)
+    await loadThemes()
+    // Update theme store so App.vue applies the new theme
+    await themeStore.fetchActiveTheme()
+    showToast('主题切换成功', 'success')
+    closePreview()
+  } catch (error) {
+    showToast('主题切换失败', 'error')
+    console.error('Failed to apply theme:', error)
+  } finally {
+    applyingPreview.value = false
+  }
 }
 
 const confirmDelete = (theme: Theme) => {
