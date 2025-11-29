@@ -24,15 +24,11 @@ const backgroundStyle = computed(() => {
   const settings = themeStore.activeTheme.settings
   const themeId = themeStore.activeTheme.themeId
   
-  // Only apply background for anime-girls theme
-  if (themeId !== 'anime-girls') return {}
-  
-  const currentBackground = settings.currentBackground as string || 'bg1'
   const customBackgroundUrl = settings.customBackgroundUrl as string
   const backgroundOpacity = settings.backgroundOpacity as string || '0.85'
   const backgroundBlur = settings.backgroundBlur as string || '8'
   
-  // If custom URL is provided, use it
+  // If custom URL is provided, use it for any theme
   if (customBackgroundUrl) {
     return {
       '--theme-background-image': `url(${customBackgroundUrl})`,
@@ -40,6 +36,11 @@ const backgroundStyle = computed(() => {
       '--theme-background-blur': `${backgroundBlur}px`
     }
   }
+  
+  // Only apply predefined backgrounds for anime-girls theme
+  if (themeId !== 'anime-girls') return {}
+  
+  const currentBackground = settings.currentBackground as string || 'bg1'
   
   // Use predefined background
   const backgroundUrl = `/themes/anime-girls/static/images/backgrounds/${currentBackground}.svg`
@@ -85,6 +86,12 @@ const isAnimeTheme = computed(() => {
   return themeStore.activeTheme?.themeId === 'anime-girls'
 })
 
+// Check if custom background is set (from themes/jpg or custom URL)
+const hasCustomBackground = computed(() => {
+  const settings = themeStore.activeTheme?.settings
+  return !!settings?.customBackgroundUrl
+})
+
 // Check if background overlay is enabled
 const isOverlayEnabled = computed(() => {
   const settings = themeStore.activeTheme?.settings
@@ -96,6 +103,9 @@ watch(() => themeStore.activeTheme, (newTheme) => {
   if (newTheme?.themeId === 'anime-girls') {
     const bg = newTheme.settings?.currentBackground as string || 'bg1'
     currentBackgroundClass.value = `background-${bg}`
+  } else if (newTheme?.settings?.customBackgroundUrl) {
+    // Custom background URL is set
+    currentBackgroundClass.value = 'custom-background'
   } else {
     currentBackgroundClass.value = ''
   }
@@ -161,12 +171,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div id="app" :class="[currentBackgroundClass, { 'anime-theme': isAnimeTheme }]" :style="themeStyles">
+  <div id="app" :class="[currentBackgroundClass, { 'anime-theme': isAnimeTheme, 'has-custom-background': hasCustomBackground }]" :style="themeStyles">
     <!-- Theme Background Layer (底层背景) -->
-    <div v-if="isAnimeTheme" class="theme-background-layer"></div>
+    <div v-if="isAnimeTheme || hasCustomBackground" class="theme-background-layer"></div>
     
     <!-- Background Overlay with Blur Effect (顶层覆盖虚化层) -->
-    <div v-if="isAnimeTheme && isOverlayEnabled" class="theme-background-overlay"></div>
+    <div v-if="(isAnimeTheme || hasCustomBackground) && isOverlayEnabled" class="theme-background-overlay"></div>
     
     <!-- Navigation (hide on admin/login routes) -->
     <NavBar v-if="!isAdminRoute" />
@@ -183,8 +193,8 @@ onMounted(async () => {
     <!-- Footer (hide on admin/login routes) -->
     <FooterBar v-if="!isAdminRoute" />
     
-    <!-- Background Selector (一键切换背景) -->
-    <BackgroundSelector v-if="isAnimeTheme && !isAdminRoute" />
+    <!-- Background Selector (一键切换背景) - Show for all themes -->
+    <BackgroundSelector v-if="!isAdminRoute" />
   </div>
 </template>
 
@@ -261,6 +271,16 @@ onMounted(async () => {
 #app.anime-theme {
   --color-primary: var(--theme-primary-color, #ff69b4);
   --color-primary-dark: var(--theme-accent-color, #ff1493);
+}
+
+/* Custom background from any theme (including themes/jpg images) */
+#app.has-custom-background .theme-background-layer,
+#app.custom-background .theme-background-layer {
+  background-image: var(--theme-background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* Background classes for different anime backgrounds */

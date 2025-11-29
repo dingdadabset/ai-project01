@@ -1248,25 +1248,47 @@ public class ThemeService extends ServiceImpl<ThemeMapper, Theme> {
             .createdAt(theme.getCreatedAt())
             .updatedAt(theme.getUpdatedAt());
         
+        ThemeConfig config = null;
+        
         // Parse config JSON
         if (theme.getConfigJson() != null) {
             try {
-                ThemeConfig config = objectMapper.readValue(theme.getConfigJson(), ThemeConfig.class);
+                config = objectMapper.readValue(theme.getConfigJson(), ThemeConfig.class);
                 builder.config(config);
             } catch (JsonProcessingException e) {
                 log.warn("Failed to parse theme config JSON", e);
             }
         }
         
-        // Parse settings JSON
+        // Build settings with default values from config
+        Map<String, Object> mergedSettings = new HashMap<>();
+        
+        // First, populate with default values from config
+        if (config != null && config.getSettings() != null) {
+            for (ThemeConfig.SettingGroup group : config.getSettings()) {
+                if (group.getItems() != null) {
+                    for (ThemeConfig.SettingItem item : group.getItems()) {
+                        if (item.getDefaultValue() != null) {
+                            mergedSettings.put(item.getName(), item.getDefaultValue());
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Then, override with user-saved settings
         if (theme.getSettingsJson() != null) {
             try {
                 @SuppressWarnings("unchecked")
-                Map<String, Object> settings = objectMapper.readValue(theme.getSettingsJson(), Map.class);
-                builder.settings(settings);
+                Map<String, Object> savedSettings = objectMapper.readValue(theme.getSettingsJson(), Map.class);
+                mergedSettings.putAll(savedSettings);
             } catch (JsonProcessingException e) {
                 log.warn("Failed to parse theme settings JSON", e);
             }
+        }
+        
+        if (!mergedSettings.isEmpty()) {
+            builder.settings(mergedSettings);
         }
         
         return builder.build();

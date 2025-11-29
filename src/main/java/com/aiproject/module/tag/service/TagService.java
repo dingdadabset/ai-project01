@@ -1,5 +1,7 @@
 package com.aiproject.module.tag.service;
 
+import com.aiproject.module.post.mapper.PostTagMapper;
+import com.aiproject.module.post.model.PostTag;
 import com.aiproject.module.tag.mapper.TagMapper;
 import com.aiproject.module.tag.model.Tag;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -22,6 +24,7 @@ import java.util.List;
 public class TagService extends ServiceImpl<TagMapper, Tag> {
 
     private final TagMapper tagMapper;
+    private final PostTagMapper postTagMapper;
 
     @Transactional
     public Tag createTag(String name) {
@@ -41,6 +44,9 @@ public class TagService extends ServiceImpl<TagMapper, Tag> {
         if (tag == null) {
             throw new RuntimeException("Tag not found");
         }
+        // Calculate post count dynamically
+        Long count = postTagMapper.selectCount(new LambdaQueryWrapper<PostTag>().eq(PostTag::getTagId, id));
+        tag.setPostCount(count != null ? count.intValue() : 0);
         return tag;
     }
 
@@ -49,6 +55,9 @@ public class TagService extends ServiceImpl<TagMapper, Tag> {
         if (tag == null) {
             throw new RuntimeException("Tag not found");
         }
+        // Calculate post count dynamically
+        Long count = postTagMapper.selectCount(new LambdaQueryWrapper<PostTag>().eq(PostTag::getTagId, tag.getId()));
+        tag.setPostCount(count != null ? count.intValue() : 0);
         return tag;
     }
 
@@ -61,22 +70,40 @@ public class TagService extends ServiceImpl<TagMapper, Tag> {
     }
 
     public List<Tag> getAllTags() {
-        return tagMapper.selectList(null);
+        List<Tag> tags = tagMapper.selectList(null);
+        // Calculate post count for each tag
+        for (Tag tag : tags) {
+            Long count = postTagMapper.selectCount(new LambdaQueryWrapper<PostTag>().eq(PostTag::getTagId, tag.getId()));
+            tag.setPostCount(count != null ? count.intValue() : 0);
+        }
+        return tags;
     }
 
     /**
      * List all tags (for theme context)
      */
     public List<Tag> listTags() {
-        return tagMapper.selectList(
+        List<Tag> tags = tagMapper.selectList(
             new LambdaQueryWrapper<Tag>().orderByAsc(Tag::getName)
         );
+        // Calculate post count for each tag
+        for (Tag tag : tags) {
+            Long count = postTagMapper.selectCount(new LambdaQueryWrapper<PostTag>().eq(PostTag::getTagId, tag.getId()));
+            tag.setPostCount(count != null ? count.intValue() : 0);
+        }
+        return tags;
     }
 
     public IPage<Tag> listTags(int page, int size) {
         Page<Tag> tagPage = new Page<>(page + 1, size);
-        return tagMapper.selectPage(tagPage, 
+        IPage<Tag> result = tagMapper.selectPage(tagPage, 
                 new LambdaQueryWrapper<Tag>().orderByDesc(Tag::getCreatedAt));
+        // Calculate post count for each tag
+        for (Tag tag : result.getRecords()) {
+            Long count = postTagMapper.selectCount(new LambdaQueryWrapper<PostTag>().eq(PostTag::getTagId, tag.getId()));
+            tag.setPostCount(count != null ? count.intValue() : 0);
+        }
+        return result;
     }
 
     @Transactional
