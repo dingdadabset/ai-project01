@@ -2,6 +2,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import tagApi from '@/api/tags'
+import postApi from '@/api/posts'
 import type { Post, Tag } from '@/types'
 import PostCard from '@/components/common/PostCard.vue'
 
@@ -14,9 +15,15 @@ const tagSlug = computed(() => route.params.slug as string)
 
 onMounted(async () => {
   try {
+    // First get the tag by slug
     const tagRes = await tagApi.getBySlug(tagSlug.value)
     tag.value = tagRes.data
-    // Note: Would need a separate API to get posts by tag
+    
+    // Then fetch posts by tag ID
+    if (tag.value?.id) {
+      const postsRes = await postApi.listByTag(tag.value.id, 0, 20)
+      posts.value = postsRes.data.records || []
+    }
   } catch (error) {
     console.error('Failed to load tag:', error)
   } finally {

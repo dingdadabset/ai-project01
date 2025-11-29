@@ -2,6 +2,8 @@ package com.aiproject.module.category.service;
 
 import com.aiproject.module.category.mapper.CategoryMapper;
 import com.aiproject.module.category.model.Category;
+import com.aiproject.module.post.mapper.PostMapper;
+import com.aiproject.module.post.model.Post;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,6 +24,7 @@ import java.util.List;
 public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
     private final CategoryMapper categoryMapper;
+    private final PostMapper postMapper;
 
     @Transactional
     public Category createCategory(String name, String description) {
@@ -42,26 +45,47 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
         if (category == null) {
             throw new RuntimeException("Category not found");
         }
+        // Calculate post count dynamically
+        Long count = postMapper.selectCount(new LambdaQueryWrapper<Post>().eq(Post::getCategoryId, id));
+        category.setPostCount(count != null ? count.intValue() : 0);
         return category;
     }
 
     public List<Category> getAllCategories() {
-        return categoryMapper.selectList(null);
+        List<Category> categories = categoryMapper.selectList(null);
+        // Calculate post count for each category
+        for (Category category : categories) {
+            Long count = postMapper.selectCount(new LambdaQueryWrapper<Post>().eq(Post::getCategoryId, category.getId()));
+            category.setPostCount(count != null ? count.intValue() : 0);
+        }
+        return categories;
     }
 
     /**
      * List all categories (for theme context)
      */
     public List<Category> listCategories() {
-        return categoryMapper.selectList(
+        List<Category> categories = categoryMapper.selectList(
             new LambdaQueryWrapper<Category>().orderByAsc(Category::getName)
         );
+        // Calculate post count for each category
+        for (Category category : categories) {
+            Long count = postMapper.selectCount(new LambdaQueryWrapper<Post>().eq(Post::getCategoryId, category.getId()));
+            category.setPostCount(count != null ? count.intValue() : 0);
+        }
+        return categories;
     }
 
     public IPage<Category> listCategories(int page, int size) {
         Page<Category> categoryPage = new Page<>(page + 1, size);
-        return categoryMapper.selectPage(categoryPage, 
+        IPage<Category> result = categoryMapper.selectPage(categoryPage, 
                 new LambdaQueryWrapper<Category>().orderByDesc(Category::getCreatedAt));
+        // Calculate post count for each category
+        for (Category category : result.getRecords()) {
+            Long count = postMapper.selectCount(new LambdaQueryWrapper<Post>().eq(Post::getCategoryId, category.getId()));
+            category.setPostCount(count != null ? count.intValue() : 0);
+        }
+        return result;
     }
 
     @Transactional

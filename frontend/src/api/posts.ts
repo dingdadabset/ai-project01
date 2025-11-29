@@ -34,6 +34,10 @@ export const postApi = {
   listByCategory: (categoryId: number, page: number = 0, size: number = 10) =>
     api.get<PaginatedResponse<Post>>(`/posts/category/${categoryId}?page=${page}&size=${size}`),
 
+  // List posts by tag
+  listByTag: (tagId: number, page: number = 0, size: number = 10) =>
+    api.get<PaginatedResponse<Post>>(`/posts/tag/${tagId}?page=${page}&size=${size}`),
+
   // Search posts
   search: (keyword: string, page: number = 0, size: number = 10) =>
     api.get<PaginatedResponse<Post>>(`/posts/search?keyword=${keyword}&page=${page}&size=${size}`)

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -233,6 +234,38 @@ public class PostService extends ServiceImpl<PostMapper, Post> {
         return result.convert(post -> {
             User author = userMapper.selectById(post.getAuthorId());
             Category category = categoryMapper.selectById(categoryId);
+            return convertToResponse(post, author, category, getTagsForPost(post.getId()));
+        });
+    }
+
+    /**
+     * List posts by tag ID
+     */
+    public IPage<PostResponse> listPostsByTag(Long tagId, int page, int size) {
+        // First, get all post IDs associated with this tag
+        List<PostTag> postTags = postTagMapper.selectList(
+                new LambdaQueryWrapper<PostTag>().eq(PostTag::getTagId, tagId));
+        
+        if (postTags.isEmpty()) {
+            // Return empty page if no posts with this tag
+            Page<PostResponse> emptyPage = new Page<>(page + 1, size);
+            emptyPage.setRecords(new ArrayList<>());
+            emptyPage.setTotal(0);
+            return emptyPage;
+        }
+        
+        List<Long> postIds = postTags.stream().map(PostTag::getPostId).collect(Collectors.toList());
+        
+        // Then paginate the posts
+        Page<Post> postPage = new Page<>(page + 1, size);
+        IPage<Post> result = postMapper.selectPage(postPage,
+                new LambdaQueryWrapper<Post>()
+                        .in(Post::getId, postIds)
+                        .orderByDesc(Post::getCreatedAt));
+        
+        return result.convert(post -> {
+            User author = userMapper.selectById(post.getAuthorId());
+            Category category = post.getCategoryId() != null ? categoryMapper.selectById(post.getCategoryId()) : null;
             return convertToResponse(post, author, category, getTagsForPost(post.getId()));
         });
     }

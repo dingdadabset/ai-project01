@@ -106,6 +106,19 @@ public class PostController {
     }
 
     /**
+     * List posts by tag
+     */
+    @GetMapping("/tag/{tagId}")
+    public ResponseEntity<IPage<PostResponse>> listPostsByTag(
+            @PathVariable Long tagId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info("GET /api/posts/tag/{}", tagId);
+        IPage<PostResponse> posts = postService.listPostsByTag(tagId, page, size);
+        return ResponseEntity.ok(posts);
+    }
+
+    /**
      * Search posts by keyword
      */
     @GetMapping("/search")
