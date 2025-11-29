@@ -50,20 +50,26 @@ const backgroundStyle = computed(() => {
   }
 })
 
-// Color settings from theme
+// Color settings from theme - now applies to ALL themes
 const themeColors = computed(() => {
   if (!themeStore.activeTheme?.settings) return {}
   
   const settings = themeStore.activeTheme.settings
-  const themeId = themeStore.activeTheme.themeId
   
-  if (themeId !== 'anime-girls') return {}
+  // Apply colors for all themes that have color settings
+  const colors: Record<string, string> = {}
   
-  return {
-    '--theme-primary-color': settings.primaryColor as string || '#ff69b4',
-    '--theme-accent-color': settings.accentColor as string || '#ff1493',
-    '--theme-text-color': settings.textColor as string || '#ffffff'
+  if (settings.primaryColor) {
+    colors['--theme-primary-color'] = settings.primaryColor as string
   }
+  if (settings.accentColor) {
+    colors['--theme-accent-color'] = settings.accentColor as string
+  }
+  if (settings.textColor) {
+    colors['--theme-text-color'] = settings.textColor as string
+  }
+  
+  return colors
 })
 
 // Combined theme styles
@@ -102,13 +108,19 @@ function applyThemeStyles() {
   const root = document.documentElement
   const settings = themeStore.activeTheme?.settings
   
+  // Always reset first to ensure clean application
+  removeThemeStyles()
+  
   if (settings) {
     // Apply colors for all themes that have color settings
     if (settings.primaryColor) {
       root.style.setProperty('--color-primary', settings.primaryColor as string)
+      // Also set --color-secondary for gradient effects
+      root.style.setProperty('--color-secondary', settings.primaryColor as string)
     }
     if (settings.accentColor) {
       root.style.setProperty('--color-primary-dark', settings.accentColor as string)
+      root.style.setProperty('--color-accent', settings.accentColor as string)
     } else if (settings.primaryColor) {
       // Fallback: use primaryColor as accent if not set
       root.style.setProperty('--color-primary-dark', settings.primaryColor as string)
@@ -116,9 +128,16 @@ function applyThemeStyles() {
     if (settings.textColor) {
       root.style.setProperty('--text-primary', settings.textColor as string)
     }
-  } else {
-    // Reset to defaults if no settings
-    removeThemeStyles()
+    
+    // Apply glow effects based on primary color
+    if (settings.primaryColor) {
+      const color = settings.primaryColor as string
+      root.style.setProperty('--glow-primary', `0 0 20px ${color}66`)
+    }
+    if (settings.accentColor) {
+      const color = settings.accentColor as string
+      root.style.setProperty('--glow-secondary', `0 0 20px ${color}66`)
+    }
   }
 }
 
@@ -126,7 +145,11 @@ function removeThemeStyles() {
   const root = document.documentElement
   root.style.removeProperty('--color-primary')
   root.style.removeProperty('--color-primary-dark')
+  root.style.removeProperty('--color-secondary')
+  root.style.removeProperty('--color-accent')
   root.style.removeProperty('--text-primary')
+  root.style.removeProperty('--glow-primary')
+  root.style.removeProperty('--glow-secondary')
 }
 
 // Page transition is handled by Vue's built-in transition component with fade effect

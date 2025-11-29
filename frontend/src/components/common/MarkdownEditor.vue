@@ -138,6 +138,17 @@ const checkFullscreen = () => {
 // Set up mutation observer to detect fullscreen class changes
 let observer: MutationObserver | null = null
 
+// Animation state and constants
+const isAnimating = ref(false)
+const TRANSITION_DURATION_MS = 400 // Must match CSS transition duration
+
+// Handle ESC key to exit fullscreen
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && isFullscreen.value && !isAnimating.value) {
+    toggleFullscreen()
+  }
+}
+
 onMounted(() => {
   if (wrapperRef.value) {
     observer = new MutationObserver(checkFullscreen)
@@ -146,6 +157,8 @@ onMounted(() => {
       observer.observe(editor, { attributes: true, attributeFilter: ['class'] })
     }
   }
+  // Add ESC key listener
+  document.addEventListener('keydown', handleKeydown)
 })
 
 // Cleanup on unmount
@@ -156,16 +169,24 @@ onUnmounted(() => {
     observer = null
   }
   
+  // Remove ESC key listener
+  document.removeEventListener('keydown', handleKeydown)
+  
   // Reset body state in case we were in fullscreen
   document.body.style.overflow = ''
   document.body.classList.remove('editor-fullscreen-active')
 })
 
-// Toggle fullscreen mode programmatically
+// Toggle fullscreen mode programmatically with smooth animation
 const toggleFullscreen = () => {
-  if (wrapperRef.value) {
+  if (wrapperRef.value && !isAnimating.value) {
     const editor = wrapperRef.value.querySelector('.md-editor')
     if (editor) {
+      isAnimating.value = true
+      
+      // Add animation class for smooth transition
+      wrapperRef.value.classList.add('transitioning')
+      
       // Find and click the pageFullscreen button in the toolbar
       const fullscreenBtn = editor.querySelector('[title="页面全屏"]') || 
                             editor.querySelector('[title="取消全屏"]') ||
@@ -177,6 +198,14 @@ const toggleFullscreen = () => {
         editor.classList.toggle('md-editor-fullscreen')
         checkFullscreen()
       }
+      
+      // Remove animation class after transition completes
+      setTimeout(() => {
+        if (wrapperRef.value) {
+          wrapperRef.value.classList.remove('transitioning')
+        }
+        isAnimating.value = false
+      }, TRANSITION_DURATION_MS)
     }
   }
 }
@@ -208,16 +237,24 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
 </script>
 
 <template>
-  <div ref="wrapperRef" class="markdown-editor-wrapper" :class="{ 'wrapper-fullscreen': isFullscreen }">
-    <!-- Prominent fullscreen toggle button -->
-    <div class="editor-header">
+  <div ref="wrapperRef" class="markdown-editor-wrapper" :class="{ 'wrapper-fullscreen': isFullscreen, 'animating': isAnimating }">
+    <!-- Elegant fullscreen toggle header -->
+    <div class="editor-header" :class="{ 'exit-mode': isFullscreen }">
+      <div class="header-left">
+        <span v-if="isFullscreen" class="mode-indicator">
+          <span class="pulse-dot"></span>
+          全屏编辑模式
+        </span>
+      </div>
       <button 
         class="fullscreen-toggle-btn" 
+        :class="{ 'exit-btn': isFullscreen }"
         @click="toggleFullscreen"
-        :title="isFullscreen ? '退出全屏' : '全屏编辑'"
+        :title="isFullscreen ? '退出全屏 (ESC)' : '全屏编辑'"
+        :disabled="isAnimating"
       >
-        <span class="fullscreen-icon">{{ isFullscreen ? '✕' : '⛶' }}</span>
-        <span>{{ isFullscreen ? '退出全屏' : '全屏编辑' }}</span>
+        <span class="btn-icon">{{ isFullscreen ? '✕' : '⛶' }}</span>
+        <span class="btn-text">{{ isFullscreen ? '退出全屏' : '全屏编辑' }}</span>
       </button>
     </div>
     <!-- Upload error message -->
@@ -282,57 +319,170 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   border-radius: var(--radius-md, 16px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Editor header with prominent fullscreen button */
+/* Smooth animation during transition */
+.markdown-editor-wrapper.transitioning {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.markdown-editor-wrapper.animating .fullscreen-toggle-btn {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Editor header with elegant fullscreen button */
 .editor-header {
   display: flex;
-  justify-content: flex-end;
-  padding: 8px 12px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.mode-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .fullscreen-toggle-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 8px;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
   color: white;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
 }
 
-.fullscreen-toggle-btn .fullscreen-icon {
+.fullscreen-toggle-btn .btn-icon {
   font-size: 18px;
-  margin-right: 4px;
+  transition: transform 0.3s ease;
 }
 
-.fullscreen-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.fullscreen-toggle-btn .btn-text {
+  transition: opacity 0.3s ease;
 }
 
-.fullscreen-toggle-btn:active {
+.fullscreen-toggle-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.fullscreen-toggle-btn:hover .btn-icon {
+  transform: scale(1.15);
+}
+
+.fullscreen-toggle-btn:active:not(:disabled) {
   transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Fullscreen mode header styling */
+.fullscreen-toggle-btn:disabled {
+  cursor: not-allowed;
+}
+
+/* Exit button special styling */
+.fullscreen-toggle-btn.exit-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  animation: exitBtnAppear 0.4s ease;
+}
+
+.fullscreen-toggle-btn.exit-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes exitBtnAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Fullscreen mode header styling - uses same dark background as editor */
+.editor-header.exit-mode {
+  background: var(--bg-secondary, #1a1a2e);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+}
+
 .wrapper-fullscreen .editor-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  height: 44px;
   z-index: 100001;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes headerSlideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Upload error banner */
@@ -474,6 +624,12 @@ const onUploadImg = async (files: File[], callback: (urls: string[]) => void) =>
   max-height: 100vh !important;
 }
 
+/* When in fullscreen wrapper, push editor down to make room for exit header */
+.wrapper-fullscreen .md-editor.md-editor-fullscreen {
+  top: 44px !important;
+  height: calc(100vh - 44px) !important;
+}
+
 /* Handle the wrapper when editor is in fullscreen - JavaScript-based class for better browser compatibility */
 .markdown-editor-wrapper.wrapper-fullscreen {
   position: fixed !important;
@@ -532,9 +688,9 @@ body.editor-fullscreen-active .modal-content {
   z-index: var(--z-editor-fullscreen-toolbar) !important;
 }
 
-/* Fullscreen content area fills the rest */
-.md-editor.md-editor-fullscreen .md-editor-content {
-  height: calc(100vh - 50px) !important;
+/* Fullscreen content area fills the rest - account for exit header (44px) + toolbar (~41px) */
+.wrapper-fullscreen .md-editor.md-editor-fullscreen .md-editor-content {
+  height: calc(100vh - 44px - 41px - 28px) !important;
 }
 
 /* Browser Fullscreen API mode */
