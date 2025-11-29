@@ -1,34 +1,97 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
     <linearGradient id="bg14-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#a855f7;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#d946ef;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6b5b95;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-crystal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e6e6fa" />
+      <stop offset="50%" style="stop-color:#dda0dd" />
+      <stop offset="100%" style="stop-color:#ba55d3" />
+    </linearGradient>
+    <linearGradient id="skin-crystal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff8ff" />
+      <stop offset="100%" style="stop-color:#ffe8f5" />
+    </linearGradient>
+    <radialGradient id="eye-amethyst" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#e6e6fa" />
+      <stop offset="50%" style="stop-color:#9370db" />
+      <stop offset="100%" style="stop-color:#8b008b" />
+    </radialGradient>
+    <radialGradient id="crystal-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#e6e6fa;stop-opacity:0" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg14-gradient)"/>
-  <g fill="#fff" opacity="0.3">
-    <path d="M100,200 L150,100 L200,200 Z"/>
-    <path d="M350,300 L420,180 L490,300 Z"/>
-    <path d="M600,250 L680,120 L760,250 Z"/>
-    <path d="M900,280 L990,150 L1080,280 Z"/>
-    <path d="M1200,220 L1290,90 L1380,220 Z"/>
-    <path d="M1500,300 L1600,160 L1700,300 Z"/>
-    <path d="M1780,250 L1860,130 L1940,250 Z"/>
+  <!-- Crystal formations -->
+  <g opacity="0.4">
+    <polygon points="150,800 180,650 210,800" fill="#e6e6fa"/>
+    <polygon points="180,820 220,680 260,820" fill="#dda0dd"/>
+    <polygon points="1680,780 1720,620 1760,780" fill="#e6e6fa"/>
+    <polygon points="1720,800 1750,670 1780,800" fill="#dda0dd"/>
   </g>
-  <g fill="#fff" opacity="0.2">
-    <path d="M200,600 L280,450 L360,600 Z"/>
-    <path d="M500,550 L600,400 L700,550 Z"/>
-    <path d="M850,620 L960,470 L1070,620 Z"/>
-    <path d="M1200,580 L1320,430 L1440,580 Z"/>
-    <path d="M1550,600 L1680,450 L1810,600 Z"/>
+  <!-- Sparkles -->
+  <g fill="url(#crystal-glow)">
+    <circle cx="300" cy="200" r="5"/>
+    <circle cx="500" cy="350" r="4"/>
+    <circle cx="1600" cy="280" r="5"/>
+    <circle cx="1400" cy="400" r="4"/>
   </g>
-  <g fill="#fff" opacity="0.15">
-    <path d="M50,900 L180,700 L310,900 Z"/>
-    <path d="M400,850 L560,650 L720,850 Z"/>
-    <path d="M800,920 L1000,720 L1200,920 Z"/>
-    <path d="M1300,870 L1500,670 L1700,870 Z"/>
-    <path d="M1750,900 L1880,740 L2010,900 Z"/>
+  <!-- Anime Girl - Crystal Princess Theme -->
+  <g transform="translate(960, 490)">
+    <!-- Gradient purple-lavender hair -->
+    <ellipse cx="0" cy="-25" rx="200" ry="255" fill="url(#hair-crystal)"/>
+    <ellipse cx="-145" cy="110" rx="78" ry="220" fill="url(#hair-crystal)"/>
+    <ellipse cx="145" cy="110" rx="78" ry="220" fill="url(#hair-crystal)"/>
+    <!-- Crystal sparkles in hair -->
+    <polygon points="-85,-110 -80,-95 -75,-110 -80,-125" fill="#fff" opacity="0.8"/>
+    <polygon points="75,-100 80,-85 85,-100 80,-115" fill="#fff" opacity="0.8"/>
+    <polygon points="-100,20 -95,35 -90,20 -95,5" fill="#fff" opacity="0.7"/>
+    <polygon points="95,30 100,45 105,30 100,15" fill="#fff" opacity="0.7"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-10" rx="89" ry="104" fill="url(#skin-crystal)"/>
+    <!-- Bangs -->
+    <path d="M-89,-55 Q-72,-132 -47,-150 Q-22,-112 0,-155 Q22,-112 47,-150 Q72,-132 89,-55" fill="url(#hair-crystal)"/>
+    <!-- Eyes -->
+    <g transform="translate(-37, -35)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="20" ry="25" fill="url(#eye-amethyst)"/>
+      <ellipse cx="6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <polygon points="8,5 12,12 4,12" fill="#fff" opacity="0.4"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#8b008b" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(37, -35)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="20" ry="25" fill="url(#eye-amethyst)"/>
+      <ellipse cx="-6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <polygon points="-8,5 -12,12 -4,12" fill="#fff" opacity="0.4"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#8b008b" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-54" cy="-5" rx="18" ry="10" fill="#dda0dd" opacity="0.4"/>
+    <ellipse cx="54" cy="-5" rx="18" ry="10" fill="#dda0dd" opacity="0.4"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-5 L2,8" stroke="#e0c0d8" stroke-width="2" fill="none"/>
+    <path d="M-10,28 Q0,36 10,28" stroke="#ba55d3" stroke-width="2" fill="none"/>
+    <!-- Crystal tiara -->
+    <g transform="translate(0, -165)">
+      <polygon points="0,-35 10,-15 -10,-15" fill="#e6e6fa" stroke="#fff" stroke-width="1"/>
+      <polygon points="-30,-20 -20,-5 -40,-5" fill="#dda0dd" stroke="#fff" stroke-width="1"/>
+      <polygon points="30,-20 20,-5 40,-5" fill="#dda0dd" stroke="#fff" stroke-width="1"/>
+      <ellipse cx="0" cy="0" rx="50" ry="8" fill="none" stroke="#ffd700" stroke-width="3"/>
+    </g>
+    <!-- Crystal scepter -->
+    <g transform="translate(170, 80) rotate(20)">
+      <rect x="-5" y="0" width="10" height="90" fill="#ffd700"/>
+      <polygon points="0,-40 15,-10 0,5 -15,-10" fill="#e6e6fa" stroke="#fff" stroke-width="2"/>
+      <circle cx="0" cy="-25" r="8" fill="#fff"/>
+    </g>
+    <!-- Princess dress -->
+    <ellipse cx="0" cy="135" rx="110" ry="70" fill="#9370db" opacity="0.9"/>
+    <path d="M-70,100 Q0,80 70,100" stroke="#e6e6fa" stroke-width="3" fill="none"/>
+    <polygon points="0,80 15,95 -15,95" fill="#e6e6fa"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">水晶公主 Crystal Princess</text>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#e6e6fa" opacity="0.9">水晶公主 Crystal Princess</text>
 </svg>

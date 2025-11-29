@@ -1,45 +1,88 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
     <linearGradient id="bg8-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f0c29;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#302b63;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#24243e;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#0c1445;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a237e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#283593;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-midnight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#191970" />
+      <stop offset="100%" style="stop-color:#0a0a30" />
+    </linearGradient>
+    <linearGradient id="skin-moon" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fffaf0" />
+      <stop offset="100%" style="stop-color:#fff0e8" />
+    </linearGradient>
+    <radialGradient id="eye-sapphire" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#87ceeb" />
+      <stop offset="100%" style="stop-color:#191970" />
+    </radialGradient>
     <radialGradient id="moon-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#fffde7;stop-opacity:1" />
-      <stop offset="70%" style="stop-color:#fff9c4;stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:#fff9c4;stop-opacity:0" />
+      <stop offset="0%" style="stop-color:#fffacd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fffacd;stop-opacity:0" />
     </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg8-gradient)"/>
-  <circle cx="1500" cy="200" r="80" fill="url(#moon-glow)"/>
-  <g fill="#fff" opacity="0.6">
-    <circle cx="100" cy="100" r="2"/>
-    <circle cx="250" cy="150" r="1.5"/>
-    <circle cx="400" cy="80" r="2"/>
-    <circle cx="600" cy="200" r="1"/>
-    <circle cx="800" cy="120" r="2.5"/>
-    <circle cx="1000" cy="180" r="1.5"/>
-    <circle cx="1200" cy="100" r="2"/>
-    <circle cx="180" cy="350" r="1.5"/>
-    <circle cx="350" cy="420" r="2"/>
-    <circle cx="550" cy="380" r="1"/>
-    <circle cx="750" cy="500" r="2.5"/>
-    <circle cx="950" cy="450" r="1.5"/>
-    <circle cx="1150" cy="520" r="2"/>
-    <circle cx="1350" cy="400" r="1"/>
-    <circle cx="1600" cy="480" r="2.5"/>
-    <circle cx="1800" cy="350" r="1.5"/>
-    <circle cx="120" cy="700" r="2"/>
-    <circle cx="320" cy="800" r="1.5"/>
-    <circle cx="520" cy="750" r="2"/>
-    <circle cx="720" cy="850" r="1"/>
-    <circle cx="920" cy="720" r="2.5"/>
-    <circle cx="1120" cy="900" r="1.5"/>
-    <circle cx="1320" cy="780" r="2"/>
-    <circle cx="1520" cy="880" r="1"/>
-    <circle cx="1720" cy="700" r="2.5"/>
-    <circle cx="1900" cy="850" r="1.5"/>
+  <!-- Moon -->
+  <circle cx="1600" cy="200" r="100" fill="url(#moon-glow)"/>
+  <circle cx="1600" cy="200" r="70" fill="#fffacd"/>
+  <!-- Stars -->
+  <g fill="#fff">
+    <circle cx="200" cy="150" r="2" opacity="0.8"/>
+    <circle cx="400" cy="100" r="1.5" opacity="0.6"/>
+    <circle cx="600" cy="200" r="2" opacity="0.7"/>
+    <circle cx="800" cy="80" r="2.5" opacity="0.8"/>
+    <circle cx="1000" cy="150" r="1.5" opacity="0.6"/>
+    <circle cx="1200" cy="100" r="2" opacity="0.7"/>
+    <circle cx="300" cy="300" r="1.5" opacity="0.6"/>
+    <circle cx="700" cy="350" r="2" opacity="0.7"/>
+    <circle cx="1100" cy="280" r="1.5" opacity="0.6"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">月夜精灵 Moonlight Spirit</text>
+  <!-- Anime Girl - Moonlight Spirit Theme -->
+  <g transform="translate(960, 490)">
+    <!-- Long midnight blue hair -->
+    <ellipse cx="0" cy="-25" rx="195" ry="250" fill="url(#hair-midnight)"/>
+    <ellipse cx="-145" cy="120" rx="75" ry="220" fill="url(#hair-midnight)"/>
+    <ellipse cx="145" cy="120" rx="75" ry="220" fill="url(#hair-midnight)"/>
+    <!-- Moon sparkles in hair -->
+    <circle cx="-80" cy="-100" r="3" fill="#fffacd" opacity="0.8"/>
+    <circle cx="70" cy="-80" r="2" fill="#fffacd" opacity="0.7"/>
+    <circle cx="-110" cy="40" r="2.5" fill="#fffacd" opacity="0.6"/>
+    <circle cx="100" cy="60" r="3" fill="#fffacd" opacity="0.8"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-10" rx="88" ry="103" fill="url(#skin-moon)"/>
+    <!-- Bangs -->
+    <path d="M-88,-60 Q-72,-135 -46,-150 Q-22,-113 0,-155 Q22,-113 46,-150 Q72,-135 88,-60" fill="url(#hair-midnight)"/>
+    <!-- Eyes -->
+    <g transform="translate(-37, -35)">
+      <ellipse cx="0" cy="0" rx="26" ry="31" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="19" ry="23" fill="url(#eye-sapphire)"/>
+      <ellipse cx="5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <ellipse cx="-2" cy="6" rx="4" ry="5" fill="#fffacd" opacity="0.3"/>
+      <path d="M-26,-15 Q0,-27 26,-15" stroke="#0a0a30" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(37, -35)">
+      <ellipse cx="0" cy="0" rx="26" ry="31" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="19" ry="23" fill="url(#eye-sapphire)"/>
+      <ellipse cx="-5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <ellipse cx="2" cy="6" rx="4" ry="5" fill="#fffacd" opacity="0.3"/>
+      <path d="M-26,-15 Q0,-27 26,-15" stroke="#0a0a30" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-53" cy="-5" rx="17" ry="9" fill="#ffb6c1" opacity="0.35"/>
+    <ellipse cx="53" cy="-5" rx="17" ry="9" fill="#ffb6c1" opacity="0.35"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-5 L2,8" stroke="#e0c8c0" stroke-width="2" fill="none"/>
+    <path d="M-9,28 Q0,35 9,28" stroke="#c8a8a0" stroke-width="2" fill="none"/>
+    <!-- Moon crescent ornament -->
+    <g transform="translate(95, -130)">
+      <path d="M0,-25 A20,20 0 1,1 0,25 A15,15 0 1,0 0,-25" fill="#fffacd"/>
+      <circle cx="8" cy="0" r="4" fill="#fff"/>
+    </g>
+    <!-- Night dress -->
+    <ellipse cx="0" cy="135" rx="108" ry="68" fill="#191970" opacity="0.9"/>
+    <path d="M-68,100 Q0,80 68,100" stroke="#4169e1" stroke-width="3" fill="none"/>
+    <circle cx="0" cy="90" r="8" fill="#fffacd"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#fffacd" opacity="0.9">月夜精灵 Moonlight Spirit</text>
 </svg>

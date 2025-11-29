@@ -1,35 +1,92 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
     <linearGradient id="bg6-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#ff9a9e;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#fecfef;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#a18cd1;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#fbc2eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a6c1ee;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-magical" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff69b4" />
+      <stop offset="50%" style="stop-color:#da70d6" />
+      <stop offset="100%" style="stop-color:#9370db" />
+    </linearGradient>
+    <linearGradient id="skin-magical" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff5f8" />
+      <stop offset="100%" style="stop-color:#ffe8f0" />
+    </linearGradient>
+    <radialGradient id="eye-magic" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ff1493" />
+      <stop offset="50%" style="stop-color:#da70d6" />
+      <stop offset="100%" style="stop-color:#9370db" />
+    </radialGradient>
+    <radialGradient id="magic-sparkle" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff69b4;stop-opacity:0" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg6-gradient)"/>
-  <g fill="#fff" opacity="0.4">
-    <circle cx="150" cy="100" r="5"/>
-    <circle cx="350" cy="200" r="3"/>
-    <circle cx="550" cy="80" r="6"/>
-    <circle cx="750" cy="300" r="4"/>
-    <circle cx="950" cy="150" r="5"/>
-    <circle cx="1150" cy="250" r="3"/>
-    <circle cx="1350" cy="100" r="6"/>
-    <circle cx="1550" cy="350" r="4"/>
-    <circle cx="1750" cy="200" r="5"/>
-    <circle cx="250" cy="500" r="4"/>
-    <circle cx="500" cy="600" r="6"/>
-    <circle cx="800" cy="450" r="3"/>
-    <circle cx="1100" cy="550" r="5"/>
-    <circle cx="1400" cy="500" r="4"/>
-    <circle cx="1700" cy="600" r="6"/>
-    <circle cx="200" cy="800" r="5"/>
-    <circle cx="450" cy="900" r="3"/>
-    <circle cx="700" cy="750" r="6"/>
-    <circle cx="1000" cy="850" r="4"/>
-    <circle cx="1300" cy="950" r="5"/>
-    <circle cx="1600" cy="800" r="3"/>
-    <circle cx="1850" cy="900" r="6"/>
+  <!-- Magic sparkles -->
+  <g>
+    <circle cx="200" cy="200" r="5" fill="url(#magic-sparkle)"/>
+    <circle cx="400" cy="300" r="4" fill="url(#magic-sparkle)"/>
+    <circle cx="1600" cy="250" r="5" fill="url(#magic-sparkle)"/>
+    <circle cx="1750" cy="400" r="4" fill="url(#magic-sparkle)"/>
+    <circle cx="300" cy="700" r="4" fill="url(#magic-sparkle)"/>
+    <circle cx="1650" cy="750" r="5" fill="url(#magic-sparkle)"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">魔法少女 Magical Girl</text>
+  <!-- Anime Girl - Magical Girl Theme -->
+  <g transform="translate(960, 490)">
+    <!-- Twin tails hairstyle -->
+    <ellipse cx="-150" cy="50" rx="70" ry="220" fill="url(#hair-magical)" transform="rotate(-20 -150 50)"/>
+    <ellipse cx="150" cy="50" rx="70" ry="220" fill="url(#hair-magical)" transform="rotate(20 150 50)"/>
+    <!-- Main hair -->
+    <ellipse cx="0" cy="-40" rx="170" ry="200" fill="url(#hair-magical)"/>
+    <!-- Magic ribbons -->
+    <g fill="#ff1493">
+      <ellipse cx="-120" cy="-80" rx="25" ry="15" transform="rotate(-30 -120 -80)"/>
+      <ellipse cx="-90" cy="-90" rx="20" ry="12" transform="rotate(20 -90 -90)"/>
+      <ellipse cx="120" cy="-80" rx="25" ry="15" transform="rotate(30 120 -80)"/>
+      <ellipse cx="90" cy="-90" rx="20" ry="12" transform="rotate(-20 90 -90)"/>
+    </g>
+    <!-- Face -->
+    <ellipse cx="0" cy="-15" rx="88" ry="102" fill="url(#skin-magical)"/>
+    <!-- Bangs -->
+    <path d="M-88,-65 Q-70,-135 -45,-150 Q-20,-115 0,-155 Q20,-115 45,-150 Q70,-135 88,-65" fill="url(#hair-magical)"/>
+    <!-- Big magical eyes -->
+    <g transform="translate(-36, -40)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="20" ry="25" fill="url(#eye-magic)"/>
+      <ellipse cx="6" cy="-6" rx="8" ry="10" fill="#fff" opacity="0.9"/>
+      <ellipse cx="-3" cy="8" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <circle cx="10" cy="5" r="3" fill="#ff69b4" opacity="0.4"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#da70d6" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(36, -40)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="20" ry="25" fill="url(#eye-magic)"/>
+      <ellipse cx="-6" cy="-6" rx="8" ry="10" fill="#fff" opacity="0.9"/>
+      <ellipse cx="3" cy="8" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <circle cx="-10" cy="5" r="3" fill="#ff69b4" opacity="0.4"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#da70d6" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-52" cy="-8" rx="18" ry="10" fill="#ff9999" opacity="0.5"/>
+    <ellipse cx="52" cy="-8" rx="18" ry="10" fill="#ff9999" opacity="0.5"/>
+    <!-- Nose and cute smile -->
+    <path d="M0,-8 L2,5" stroke="#e8b8c8" stroke-width="2" fill="none"/>
+    <path d="M-12,25 Q0,35 12,25" stroke="#ff69b4" stroke-width="3" fill="none"/>
+    <!-- Magic wand -->
+    <g transform="translate(180, 80) rotate(30)">
+      <rect x="-5" y="0" width="10" height="100" fill="#ffd700"/>
+      <polygon points="0,-30 15,0 0,10 -15,0" fill="#ff69b4"/>
+      <circle cx="0" cy="-15" r="8" fill="#fff"/>
+    </g>
+    <!-- Magical girl outfit -->
+    <ellipse cx="0" cy="130" rx="105" ry="65" fill="#ff69b4" opacity="0.9"/>
+    <path d="M-65,95 Q0,75 65,95" stroke="#fff" stroke-width="3" fill="none"/>
+    <ellipse cx="0" cy="85" rx="15" ry="12" fill="#ffd700"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#fff" opacity="0.9">魔法少女 Magical Girl</text>
 </svg>

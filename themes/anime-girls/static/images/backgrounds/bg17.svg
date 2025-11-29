@@ -1,44 +1,96 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
-    <linearGradient id="bg17-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0d0d0d;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#1a1a1a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#2d2d2d;stop-opacity:1" />
+    <linearGradient id="bg17-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0c29;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#1a1050;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#302060;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a3050;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="aurora" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#00ff87;stop-opacity:0.3" />
-      <stop offset="25%" style="stop-color:#60efff;stop-opacity:0.4" />
-      <stop offset="50%" style="stop-color:#ff69b4;stop-opacity:0.3" />
-      <stop offset="75%" style="stop-color:#7b68ee;stop-opacity:0.4" />
-      <stop offset="100%" style="stop-color:#00ff87;stop-opacity:0.3" />
+    <linearGradient id="aurora1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00ff00;stop-opacity:0.6" />
+      <stop offset="50%" style="stop-color:#00ffff;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#ff00ff;stop-opacity:0.6" />
     </linearGradient>
+    <linearGradient id="hair-aurora" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88" />
+      <stop offset="50%" style="stop-color:#00ccff" />
+      <stop offset="100%" style="stop-color:#cc88ff" />
+    </linearGradient>
+    <linearGradient id="skin-aurora" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff5f8" />
+      <stop offset="100%" style="stop-color:#ffe8f0" />
+    </linearGradient>
+    <radialGradient id="eye-aurora" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#00ffcc" />
+      <stop offset="50%" style="stop-color:#00ccff" />
+      <stop offset="100%" style="stop-color:#9966ff" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg17-gradient)"/>
-  <ellipse cx="960" cy="200" rx="1000" ry="150" fill="url(#aurora)" opacity="0.6"/>
-  <ellipse cx="960" cy="250" rx="800" ry="100" fill="url(#aurora)" opacity="0.4"/>
-  <g fill="#fff" opacity="0.6">
-    <circle cx="100" cy="400" r="1.5"/>
-    <circle cx="250" cy="350" r="2"/>
-    <circle cx="400" cy="500" r="1"/>
-    <circle cx="550" cy="420" r="2.5"/>
-    <circle cx="700" cy="380" r="1.5"/>
-    <circle cx="850" cy="480" r="2"/>
-    <circle cx="1000" cy="400" r="1"/>
-    <circle cx="1150" cy="520" r="2.5"/>
-    <circle cx="1300" cy="380" r="1.5"/>
-    <circle cx="1450" cy="450" r="2"/>
-    <circle cx="1600" cy="400" r="1"/>
-    <circle cx="1750" cy="480" r="2.5"/>
-    <circle cx="1850" cy="420" r="1.5"/>
-    <circle cx="150" cy="700" r="2"/>
-    <circle cx="350" cy="650" r="1.5"/>
-    <circle cx="550" cy="750" r="2"/>
-    <circle cx="750" cy="680" r="1"/>
-    <circle cx="950" cy="720" r="2.5"/>
-    <circle cx="1150" cy="680" r="1.5"/>
-    <circle cx="1350" cy="750" r="2"/>
-    <circle cx="1550" cy="700" r="1"/>
-    <circle cx="1750" cy="760" r="2.5"/>
+  <!-- Aurora waves -->
+  <path d="M0,300 Q200,250 400,300 Q600,350 800,280 Q1000,210 1200,280 Q1400,350 1600,300 Q1800,250 1920,300" fill="none" stroke="url(#aurora1)" stroke-width="80" opacity="0.4"/>
+  <path d="M0,400 Q300,350 600,420 Q900,490 1200,400 Q1500,310 1920,380" fill="none" stroke="url(#aurora1)" stroke-width="60" opacity="0.3"/>
+  <!-- Stars -->
+  <g fill="#fff">
+    <circle cx="150" cy="100" r="2" opacity="0.8"/>
+    <circle cx="350" cy="150" r="1.5" opacity="0.6"/>
+    <circle cx="550" cy="80" r="2" opacity="0.7"/>
+    <circle cx="1400" cy="120" r="2" opacity="0.8"/>
+    <circle cx="1600" cy="90" r="1.5" opacity="0.6"/>
+    <circle cx="1800" cy="140" r="2" opacity="0.7"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#00ff87" opacity="0.8">极光仙子 Aurora Fairy</text>
+  <!-- Anime Girl - Aurora Fairy Theme -->
+  <g transform="translate(960, 490)">
+    <!-- Aurora gradient hair -->
+    <ellipse cx="0" cy="-25" rx="200" ry="260" fill="url(#hair-aurora)"/>
+    <ellipse cx="-148" cy="115" rx="78" ry="225" fill="url(#hair-aurora)"/>
+    <ellipse cx="148" cy="115" rx="78" ry="225" fill="url(#hair-aurora)"/>
+    <!-- Aurora sparkles in hair -->
+    <circle cx="-90" cy="-110" r="4" fill="#00ffcc" opacity="0.8"/>
+    <circle cx="80" cy="-95" r="3" fill="#cc88ff" opacity="0.8"/>
+    <circle cx="-110" cy="30" r="3" fill="#00ccff" opacity="0.7"/>
+    <circle cx="100" cy="50" r="4" fill="#00ff88" opacity="0.7"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-8" rx="89" ry="104" fill="url(#skin-aurora)"/>
+    <!-- Bangs -->
+    <path d="M-89,-52 Q-72,-130 -47,-148 Q-22,-110 0,-153 Q22,-110 47,-148 Q72,-130 89,-52" fill="url(#hair-aurora)"/>
+    <!-- Eyes -->
+    <g transform="translate(-37, -33)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="20" ry="25" fill="url(#eye-aurora)"/>
+      <ellipse cx="6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="-3" cy="8" rx="3" ry="4" fill="#00ffcc" opacity="0.4"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#9966ff" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(37, -33)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="20" ry="25" fill="url(#eye-aurora)"/>
+      <ellipse cx="-6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="3" cy="8" rx="3" ry="4" fill="#cc88ff" opacity="0.4"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#00ccff" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-54" cy="-3" rx="18" ry="10" fill="#ff99cc" opacity="0.4"/>
+    <ellipse cx="54" cy="-3" rx="18" ry="10" fill="#ff99cc" opacity="0.4"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-3 L2,10" stroke="#e0c0c8" stroke-width="2" fill="none"/>
+    <path d="M-10,30 Q0,38 10,30" stroke="#cc88ff" stroke-width="2" fill="none"/>
+    <!-- Aurora wings -->
+    <g opacity="0.5">
+      <ellipse cx="-170" cy="20" rx="80" ry="130" fill="url(#aurora1)" transform="rotate(-15 -170 20)"/>
+      <ellipse cx="170" cy="20" rx="80" ry="130" fill="url(#aurora1)" transform="rotate(15 170 20)"/>
+      <ellipse cx="-140" cy="-50" rx="50" ry="90" fill="url(#aurora1)" transform="rotate(-25 -140 -50)"/>
+      <ellipse cx="140" cy="-50" rx="50" ry="90" fill="url(#aurora1)" transform="rotate(25 140 -50)"/>
+    </g>
+    <!-- Star crown -->
+    <g transform="translate(0, -165)">
+      <polygon points="0,-25 5,-10 20,-10 8,2 12,18 0,10 -12,18 -8,2 -20,-10 -5,-10" fill="#ffd700"/>
+      <polygon points="-35,-10 -30,0 -20,0 -27,6 -24,16 -35,10 -46,16 -43,6 -50,0 -40,0" fill="#00ffcc" transform="scale(0.6)"/>
+      <polygon points="35,-10 30,0 20,0 27,6 24,16 35,10 46,16 43,6 50,0 40,0" fill="#cc88ff" transform="scale(0.6)"/>
+    </g>
+    <!-- Aurora dress -->
+    <ellipse cx="0" cy="140" rx="110" ry="72" fill="url(#hair-aurora)" opacity="0.85"/>
+    <path d="M-70,105 Q0,85 70,105" stroke="#fff" stroke-width="3" fill="none" opacity="0.6"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#00ffcc" opacity="0.9">极光仙子 Aurora Fairy</text>
 </svg>

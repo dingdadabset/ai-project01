@@ -5,41 +5,83 @@
       <stop offset="50%" style="stop-color:#ff69b4;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#ffb6c1;stop-opacity:1" />
     </linearGradient>
-    <radialGradient id="sakura-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#fff;stop-opacity:0.3" />
-      <stop offset="100%" style="stop-color:#fff;stop-opacity:0" />
+    <linearGradient id="hair-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d1810" />
+      <stop offset="100%" style="stop-color:#1a0f0a" />
+    </linearGradient>
+    <linearGradient id="skin-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffe4d6" />
+      <stop offset="100%" style="stop-color:#ffd4c4" />
+    </linearGradient>
+    <radialGradient id="eye-gradient" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ff69b4" />
+      <stop offset="100%" style="stop-color:#c71585" />
+    </radialGradient>
+    <radialGradient id="blush" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff9999;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#ff9999;stop-opacity:0" />
     </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg1-gradient)"/>
-  <!-- Cherry blossom petals -->
-  <g fill="#fff" opacity="0.6">
-    <circle cx="200" cy="150" r="8"/>
-    <circle cx="400" cy="250" r="6"/>
-    <circle cx="650" cy="180" r="10"/>
-    <circle cx="900" cy="120" r="7"/>
-    <circle cx="1200" cy="200" r="9"/>
-    <circle cx="1500" cy="150" r="8"/>
-    <circle cx="1700" cy="280" r="6"/>
-    <circle cx="300" cy="400" r="7"/>
-    <circle cx="550" cy="350" r="9"/>
-    <circle cx="800" cy="450" r="8"/>
-    <circle cx="1100" cy="380" r="6"/>
-    <circle cx="1400" cy="420" r="10"/>
-    <circle cx="1650" cy="350" r="7"/>
-    <circle cx="180" cy="600" r="8"/>
-    <circle cx="450" cy="550" r="6"/>
-    <circle cx="700" cy="650" r="9"/>
-    <circle cx="950" cy="580" r="7"/>
-    <circle cx="1250" cy="620" r="8"/>
-    <circle cx="1550" cy="550" r="10"/>
-    <circle cx="1800" cy="680" r="6"/>
-    <circle cx="250" cy="850" r="9"/>
-    <circle cx="500" cy="780" r="7"/>
-    <circle cx="750" cy="880" r="8"/>
-    <circle cx="1000" cy="820" r="6"/>
-    <circle cx="1300" cy="900" r="9"/>
-    <circle cx="1600" cy="850" r="7"/>
-    <circle cx="1850" cy="950" r="8"/>
+  <!-- Cherry blossom petals floating -->
+  <g fill="#fff" opacity="0.7">
+    <ellipse cx="200" cy="150" rx="12" ry="8" transform="rotate(30 200 150)"/>
+    <ellipse cx="400" cy="250" rx="10" ry="6" transform="rotate(-20 400 250)"/>
+    <ellipse cx="650" cy="180" rx="14" ry="9" transform="rotate(45 650 180)"/>
+    <ellipse cx="1500" cy="150" rx="11" ry="7" transform="rotate(-35 1500 150)"/>
+    <ellipse cx="1700" cy="280" rx="9" ry="6" transform="rotate(25 1700 280)"/>
+    <ellipse cx="300" cy="800" rx="10" ry="7" transform="rotate(-15 300 800)"/>
+    <ellipse cx="1600" cy="850" rx="12" ry="8" transform="rotate(40 1600 850)"/>
+    <ellipse cx="1800" cy="680" rx="8" ry="5" transform="rotate(-25 1800 680)"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">樱花少女 Sakura Girl</text>
+  <!-- Anime Girl - Sakura Theme -->
+  <g transform="translate(960, 540)">
+    <!-- Long flowing hair -->
+    <ellipse cx="0" cy="-50" rx="180" ry="220" fill="url(#hair-gradient)"/>
+    <ellipse cx="-120" cy="100" rx="60" ry="180" fill="url(#hair-gradient)"/>
+    <ellipse cx="120" cy="100" rx="60" ry="180" fill="url(#hair-gradient)"/>
+    <!-- Hair highlights -->
+    <path d="M-80,-200 Q-60,-100 -90,50" stroke="#4a3020" stroke-width="3" fill="none" opacity="0.5"/>
+    <path d="M80,-200 Q60,-100 90,50" stroke="#4a3020" stroke-width="3" fill="none" opacity="0.5"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-30" rx="85" ry="100" fill="url(#skin-gradient)"/>
+    <!-- Bangs -->
+    <path d="M-85,-80 Q-70,-140 -40,-150 Q-20,-120 0,-155 Q20,-120 40,-150 Q70,-140 85,-80" fill="url(#hair-gradient)"/>
+    <!-- Eyes -->
+    <g transform="translate(-35, -50)">
+      <ellipse cx="0" cy="0" rx="25" ry="30" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="18" ry="22" fill="url(#eye-gradient)"/>
+      <ellipse cx="5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <ellipse cx="0" cy="5" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-25,-15 Q0,-25 25,-15" stroke="#2d1810" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(35, -50)">
+      <ellipse cx="0" cy="0" rx="25" ry="30" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="18" ry="22" fill="url(#eye-gradient)"/>
+      <ellipse cx="-5" cy="-5" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <ellipse cx="0" cy="5" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-25,-15 Q0,-25 25,-15" stroke="#2d1810" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-50" cy="-20" rx="20" ry="12" fill="url(#blush)"/>
+    <ellipse cx="50" cy="-20" rx="20" ry="12" fill="url(#blush)"/>
+    <!-- Nose -->
+    <path d="M0,-20 L3,-5" stroke="#e8b4a0" stroke-width="2" fill="none"/>
+    <!-- Mouth -->
+    <path d="M-12,15 Q0,25 12,15" stroke="#e57373" stroke-width="3" fill="none"/>
+    <!-- Cherry blossom hair ornament -->
+    <g transform="translate(-100, -120)">
+      <circle cx="0" cy="0" r="15" fill="#ffb7c5"/>
+      <ellipse cx="-12" cy="-8" rx="8" ry="5" fill="#ffc0cb" transform="rotate(-30 -12 -8)"/>
+      <ellipse cx="12" cy="-8" rx="8" ry="5" fill="#ffc0cb" transform="rotate(30 12 -8)"/>
+      <ellipse cx="-12" cy="8" rx="8" ry="5" fill="#ffc0cb" transform="rotate(30 -12 8)"/>
+      <ellipse cx="12" cy="8" rx="8" ry="5" fill="#ffc0cb" transform="rotate(-30 12 8)"/>
+      <circle cx="0" cy="0" r="6" fill="#ffeb3b"/>
+    </g>
+    <!-- Shoulders/dress hint -->
+    <ellipse cx="0" cy="120" rx="100" ry="60" fill="#ffc0cb"/>
+    <path d="M-60,90 Q0,70 60,90" stroke="#ff69b4" stroke-width="3" fill="none"/>
+  </g>
+  <!-- Title -->
+  <text x="960" y="980" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#fff" opacity="0.9">樱花少女 Sakura Girl</text>
 </svg>

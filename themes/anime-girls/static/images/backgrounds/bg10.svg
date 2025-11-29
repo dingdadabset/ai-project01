@@ -1,24 +1,84 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
     <linearGradient id="bg10-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#a8edea;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#fed6e3;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#ffecd2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fcb69f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffdde1;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-pastel-pink" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffb6c1" />
+      <stop offset="100%" style="stop-color:#ff69b4" />
+    </linearGradient>
+    <linearGradient id="skin-angel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff8f5" />
+      <stop offset="100%" style="stop-color:#ffe8e0" />
+    </linearGradient>
+    <radialGradient id="eye-rose" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ff69b4" />
+      <stop offset="100%" style="stop-color:#db7093" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg10-gradient)"/>
-  <g fill="#fff" opacity="0.5">
-    <circle cx="100" cy="150" r="60"/>
-    <circle cx="300" cy="100" r="40"/>
-    <circle cx="200" cy="200" r="50"/>
-    <circle cx="600" cy="120" r="55"/>
-    <circle cx="800" cy="180" r="45"/>
-    <circle cx="700" cy="80" r="35"/>
-    <circle cx="1100" cy="150" r="50"/>
-    <circle cx="1300" cy="100" r="40"/>
-    <circle cx="1200" cy="220" r="60"/>
-    <circle cx="1600" cy="130" r="45"/>
-    <circle cx="1800" cy="180" r="55"/>
-    <circle cx="1700" cy="80" r="35"/>
+  <!-- Fluffy clouds -->
+  <g fill="#fff" opacity="0.6">
+    <ellipse cx="200" cy="200" rx="80" ry="40"/>
+    <ellipse cx="150" cy="190" rx="50" ry="30"/>
+    <ellipse cx="270" cy="195" rx="60" ry="35"/>
+    <ellipse cx="1700" cy="250" rx="90" ry="45"/>
+    <ellipse cx="1640" cy="240" rx="55" ry="32"/>
+    <ellipse cx="1780" cy="245" rx="65" ry="38"/>
+    <ellipse cx="400" cy="750" rx="70" ry="35"/>
+    <ellipse cx="1550" cy="800" rx="75" ry="40"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#666" opacity="0.6">棉花糖天使 Cotton Candy Angel</text>
+  <!-- Anime Girl - Cotton Candy Angel Theme -->
+  <g transform="translate(960, 490)">
+    <!-- Fluffy pastel pink hair -->
+    <ellipse cx="0" cy="-25" rx="200" ry="250" fill="url(#hair-pastel-pink)"/>
+    <ellipse cx="-150" cy="80" rx="80" ry="210" fill="url(#hair-pastel-pink)"/>
+    <ellipse cx="150" cy="80" rx="80" ry="210" fill="url(#hair-pastel-pink)"/>
+    <!-- Extra fluffy volume -->
+    <ellipse cx="-100" cy="-130" rx="50" ry="40" fill="#ffc0cb"/>
+    <ellipse cx="100" cy="-130" rx="50" ry="40" fill="#ffc0cb"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-10" rx="88" ry="103" fill="url(#skin-angel)"/>
+    <!-- Fluffy bangs -->
+    <path d="M-88,-55 Q-70,-130 -45,-148 Q-20,-110 0,-152 Q20,-110 45,-148 Q70,-130 88,-55" fill="url(#hair-pastel-pink)"/>
+    <ellipse cx="-50" cy="-100" rx="30" ry="25" fill="#ffc0cb"/>
+    <ellipse cx="50" cy="-100" rx="30" ry="25" fill="#ffc0cb"/>
+    <!-- Big cute eyes -->
+    <g transform="translate(-37, -35)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="20" ry="25" fill="url(#eye-rose)"/>
+      <ellipse cx="6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="-2" cy="8" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#db7093" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(37, -35)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="20" ry="25" fill="url(#eye-rose)"/>
+      <ellipse cx="-6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="2" cy="8" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#db7093" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-54" cy="-5" rx="20" ry="11" fill="#ffb6c1" opacity="0.5"/>
+    <ellipse cx="54" cy="-5" rx="20" ry="11" fill="#ffb6c1" opacity="0.5"/>
+    <!-- Nose and cute smile -->
+    <path d="M0,-5 L2,8" stroke="#e8c0b8" stroke-width="2" fill="none"/>
+    <path d="M-12,28 Q0,38 12,28" stroke="#db7093" stroke-width="3" fill="none"/>
+    <!-- Angel wings -->
+    <g fill="#fff" opacity="0.8">
+      <ellipse cx="-180" cy="20" rx="80" ry="120" transform="rotate(-20 -180 20)"/>
+      <ellipse cx="180" cy="20" rx="80" ry="120" transform="rotate(20 180 20)"/>
+      <ellipse cx="-160" cy="-30" rx="50" ry="80" transform="rotate(-30 -160 -30)"/>
+      <ellipse cx="160" cy="-30" rx="50" ry="80" transform="rotate(30 160 -30)"/>
+    </g>
+    <!-- Halo -->
+    <ellipse cx="0" cy="-180" rx="50" ry="15" fill="none" stroke="#ffd700" stroke-width="6"/>
+    <!-- Angel dress -->
+    <ellipse cx="0" cy="135" rx="105" ry="68" fill="#fff" opacity="0.95"/>
+    <path d="M-65,100 Q0,80 65,100" stroke="#ffb6c1" stroke-width="3" fill="none"/>
+    <ellipse cx="0" cy="90" rx="12" ry="10" fill="#ffc0cb"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ff69b4" opacity="0.9">棉花糖天使 Cotton Candy Angel</text>
 </svg>

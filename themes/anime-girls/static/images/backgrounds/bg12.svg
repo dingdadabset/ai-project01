@@ -1,30 +1,83 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
     <linearGradient id="bg12-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ee9ca7;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ffdde1;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#ff9a9e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fad0c4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffecd2;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-love" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff1493" />
+      <stop offset="100%" style="stop-color:#c71585" />
+    </linearGradient>
+    <linearGradient id="skin-love" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff5f5" />
+      <stop offset="100%" style="stop-color:#ffe8e8" />
+    </linearGradient>
+    <radialGradient id="eye-love" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ff1493" />
+      <stop offset="100%" style="stop-color:#c71585" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg12-gradient)"/>
-  <g fill="#fff" opacity="0.6">
-    <path d="M150,200 Q175,150 200,200 Q225,250 250,200 Q225,150 200,200 Q175,250 150,200 Z"/>
-    <path d="M450,150 Q475,100 500,150 Q525,200 550,150 Q525,100 500,150 Q475,200 450,150 Z"/>
-    <path d="M750,250 Q775,200 800,250 Q825,300 850,250 Q825,200 800,250 Q775,300 750,250 Z"/>
-    <path d="M1050,180 Q1075,130 1100,180 Q1125,230 1150,180 Q1125,130 1100,180 Q1075,230 1050,180 Z"/>
-    <path d="M1350,220 Q1375,170 1400,220 Q1425,270 1450,220 Q1425,170 1400,220 Q1375,270 1350,220 Z"/>
-    <path d="M1650,160 Q1675,110 1700,160 Q1725,210 1750,160 Q1725,110 1700,160 Q1675,210 1650,160 Z"/>
-    <path d="M250,550 Q275,500 300,550 Q325,600 350,550 Q325,500 300,550 Q275,600 250,550 Z"/>
-    <path d="M550,480 Q575,430 600,480 Q625,530 650,480 Q625,430 600,480 Q575,530 550,480 Z"/>
-    <path d="M850,600 Q875,550 900,600 Q925,650 950,600 Q925,550 900,600 Q875,650 850,600 Z"/>
-    <path d="M1150,520 Q1175,470 1200,520 Q1225,570 1250,520 Q1225,470 1200,520 Q1175,570 1150,520 Z"/>
-    <path d="M1450,580 Q1475,530 1500,580 Q1525,630 1550,580 Q1525,530 1500,580 Q1475,630 1450,580 Z"/>
-    <path d="M1750,500 Q1775,450 1800,500 Q1825,550 1850,500 Q1825,450 1800,500 Q1775,550 1750,500 Z"/>
-    <path d="M200,850 Q225,800 250,850 Q275,900 300,850 Q275,800 250,850 Q225,900 200,850 Z"/>
-    <path d="M500,780 Q525,730 550,780 Q575,830 600,780 Q575,730 550,780 Q525,830 500,780 Z"/>
-    <path d="M800,900 Q825,850 850,900 Q875,950 900,900 Q875,850 850,900 Q825,950 800,900 Z"/>
-    <path d="M1100,820 Q1125,770 1150,820 Q1175,870 1200,820 Q1175,770 1150,820 Q1125,870 1100,820 Z"/>
-    <path d="M1400,880 Q1425,830 1450,880 Q1475,930 1500,880 Q1475,830 1450,880 Q1425,930 1400,880 Z"/>
-    <path d="M1700,800 Q1725,750 1750,800 Q1775,850 1800,800 Q1775,750 1750,800 Q1725,850 1700,800 Z"/>
+  <!-- Floating hearts -->
+  <g fill="#ff69b4" opacity="0.5">
+    <path d="M200,200 C200,180 180,160 160,180 C140,200 160,230 200,250 C240,230 260,200 240,180 C220,160 200,180 200,200" transform="scale(0.5)"/>
+    <path d="M1700,300 C1700,280 1680,260 1660,280 C1640,300 1660,330 1700,350 C1740,330 1760,300 1740,280 C1720,260 1700,280 1700,300" transform="scale(0.4)"/>
+    <path d="M350,800 C350,780 330,760 310,780 C290,800 310,830 350,850 C390,830 410,800 390,780 C370,760 350,780 350,800" transform="scale(0.3)"/>
+    <path d="M1600,750 C1600,730 1580,710 1560,730 C1540,750 1560,780 1600,800 C1640,780 1660,750 1640,730 C1620,710 1600,730 1600,750" transform="scale(0.35)"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">恋爱天使 Love Angel</text>
+  <!-- Anime Girl - Love Angel Theme -->
+  <g transform="translate(960, 490)">
+    <!-- Twin tails love style -->
+    <ellipse cx="-160" cy="30" rx="70" ry="230" fill="url(#hair-love)" transform="rotate(-25 -160 30)"/>
+    <ellipse cx="160" cy="30" rx="70" ry="230" fill="url(#hair-love)" transform="rotate(25 160 30)"/>
+    <!-- Main hair -->
+    <ellipse cx="0" cy="-40" rx="175" ry="210" fill="url(#hair-love)"/>
+    <!-- Heart ribbons on twin tails -->
+    <g fill="#ff69b4">
+      <path d="M-130,-100 C-130,-115 -145,-125 -155,-115 C-165,-105 -155,-90 -130,-75 C-105,-90 -95,-105 -105,-115 C-115,-125 -130,-115 -130,-100"/>
+      <path d="M130,-100 C130,-115 145,-125 155,-115 C165,-105 155,-90 130,-75 C105,-90 95,-105 105,-115 C115,-125 130,-115 130,-100"/>
+    </g>
+    <!-- Face -->
+    <ellipse cx="0" cy="-15" rx="87" ry="102" fill="url(#skin-love)"/>
+    <!-- Bangs -->
+    <path d="M-87,-62 Q-70,-135 -45,-150 Q-20,-112 0,-155 Q20,-112 45,-150 Q70,-135 87,-62" fill="url(#hair-love)"/>
+    <!-- Big loving eyes -->
+    <g transform="translate(-36, -38)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="20" ry="25" fill="url(#eye-love)"/>
+      <ellipse cx="6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <!-- Heart sparkle in eye -->
+      <path d="M-5,5 C-5,2 -8,0 -10,2 C-12,4 -10,7 -5,10 C0,7 2,4 0,2 C-2,0 -5,2 -5,5" fill="#fff" opacity="0.5" transform="scale(0.5) translate(-10 -5)"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#c71585" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(36, -38)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="20" ry="25" fill="url(#eye-love)"/>
+      <ellipse cx="-6" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <path d="M5,5 C5,2 8,0 10,2 C12,4 10,7 5,10 C0,7 -2,4 0,2 C2,0 5,2 5,5" fill="#fff" opacity="0.5" transform="scale(0.5) translate(10 -5)"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#c71585" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush with hearts -->
+    <ellipse cx="-52" cy="-8" rx="20" ry="11" fill="#ffb6c1" opacity="0.5"/>
+    <ellipse cx="52" cy="-8" rx="20" ry="11" fill="#ffb6c1" opacity="0.5"/>
+    <!-- Nose and smile -->
+    <path d="M0,-8 L2,5" stroke="#e8b8c0" stroke-width="2" fill="none"/>
+    <path d="M-12,25 Q0,35 12,25" stroke="#ff69b4" stroke-width="3" fill="none"/>
+    <!-- Angel wings -->
+    <g fill="#fff" opacity="0.7">
+      <ellipse cx="-170" cy="30" rx="70" ry="110" transform="rotate(-20 -170 30)"/>
+      <ellipse cx="170" cy="30" rx="70" ry="110" transform="rotate(20 170 30)"/>
+    </g>
+    <!-- Heart wand -->
+    <g transform="translate(170, 100) rotate(25)">
+      <rect x="-4" y="0" width="8" height="80" fill="#ffd700"/>
+      <path d="M0,-25 C0,-45 -25,-55 -35,-40 C-45,-25 -25,5 0,25 C25,5 45,-25 35,-40 C25,-55 0,-45 0,-25" fill="#ff1493"/>
+    </g>
+    <!-- Love dress -->
+    <ellipse cx="0" cy="130" rx="105" ry="65" fill="#ff69b4" opacity="0.9"/>
+    <path d="M-65,95 Q0,75 65,95" stroke="#fff" stroke-width="3" fill="none"/>
+    <path d="M0,80 C0,65 -15,55 -22,65 C-30,75 -15,90 0,105 C15,90 30,75 22,65 C15,55 0,65 0,80" fill="#fff"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ff1493" opacity="0.9">恋爱天使 Love Angel</text>
 </svg>

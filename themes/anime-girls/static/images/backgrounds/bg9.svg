@@ -1,31 +1,81 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
-    <linearGradient id="bg9-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#ff8e53;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#feca57;stop-opacity:1" />
+    <linearGradient id="bg9-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff7e5f;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff9966;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffcc66;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-auburn" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b4513" />
+      <stop offset="100%" style="stop-color:#5d2906" />
+    </linearGradient>
+    <linearGradient id="skin-warm" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffe4c8" />
+      <stop offset="100%" style="stop-color:#ffd4b8" />
+    </linearGradient>
+    <radialGradient id="eye-hazel" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#daa520" />
+      <stop offset="100%" style="stop-color:#8b4513" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg9-gradient)"/>
-  <g fill="#fff" opacity="0.3">
-    <polygon points="200,100 230,170 180,150" />
-    <polygon points="500,200 540,280 470,250" />
-    <polygon points="800,80 850,160 760,130" />
-    <polygon points="1100,250 1150,330 1060,300" />
-    <polygon points="1400,150 1450,230 1360,200" />
-    <polygon points="1700,100 1750,180 1660,150" />
-    <polygon points="300,500 350,580 260,550" />
-    <polygon points="600,450 650,530 560,500" />
-    <polygon points="900,550 950,630 860,600" />
-    <polygon points="1200,400 1250,480 1160,450" />
-    <polygon points="1500,500 1550,580 1460,550" />
-    <polygon points="1800,450 1850,530 1760,500" />
-    <polygon points="150,800 200,880 110,850" />
-    <polygon points="450,750 500,830 410,800" />
-    <polygon points="750,850 800,930 710,900" />
-    <polygon points="1050,700 1100,780 1010,750" />
-    <polygon points="1350,800 1400,880 1310,850" />
-    <polygon points="1650,750 1700,830 1610,800" />
+  <!-- Sun glow -->
+  <circle cx="1650" cy="300" r="150" fill="#fff" opacity="0.2"/>
+  <circle cx="1650" cy="300" r="100" fill="#fff" opacity="0.3"/>
+  <!-- Warm light rays -->
+  <g fill="#fff" opacity="0.1">
+    <polygon points="1650,300 1400,0 1500,0"/>
+    <polygon points="1650,300 1550,0 1650,0"/>
+    <polygon points="1650,300 1700,0 1800,0"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">落日少女 Sunset Girl</text>
+  <!-- Anime Girl - Sunset Girl Theme -->
+  <g transform="translate(960, 490)">
+    <!-- Auburn hair -->
+    <ellipse cx="0" cy="-30" rx="185" ry="235" fill="url(#hair-auburn)"/>
+    <ellipse cx="-130" cy="90" rx="68" ry="195" fill="url(#hair-auburn)"/>
+    <ellipse cx="130" cy="90" rx="68" ry="195" fill="url(#hair-auburn)"/>
+    <!-- Hair highlights -->
+    <path d="M-90,-150 Q-70,-50 -100,80" stroke="#cd853f" stroke-width="4" fill="none" opacity="0.5"/>
+    <path d="M90,-150 Q70,-50 100,80" stroke="#cd853f" stroke-width="4" fill="none" opacity="0.5"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-15" rx="86" ry="100" fill="url(#skin-warm)"/>
+    <!-- Bangs -->
+    <path d="M-86,-62 Q-68,-132 -44,-148 Q-20,-112 0,-152 Q20,-112 44,-148 Q68,-132 86,-62" fill="url(#hair-auburn)"/>
+    <!-- Eyes -->
+    <g transform="translate(-35, -38)">
+      <ellipse cx="0" cy="0" rx="24" ry="29" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="17" ry="21" fill="url(#eye-hazel)"/>
+      <ellipse cx="5" cy="-5" rx="6" ry="7" fill="#fff" opacity="0.9"/>
+      <path d="M-24,-13 Q0,-25 24,-13" stroke="#5d2906" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(35, -38)">
+      <ellipse cx="0" cy="0" rx="24" ry="29" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="17" ry="21" fill="url(#eye-hazel)"/>
+      <ellipse cx="-5" cy="-5" rx="6" ry="7" fill="#fff" opacity="0.9"/>
+      <path d="M-24,-13 Q0,-25 24,-13" stroke="#5d2906" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-50" cy="-8" rx="16" ry="9" fill="#ff9999" opacity="0.45"/>
+    <ellipse cx="50" cy="-8" rx="16" ry="9" fill="#ff9999" opacity="0.45"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-8 L2,5" stroke="#daa570" stroke-width="2" fill="none"/>
+    <path d="M-10,22 Q0,30 10,22" stroke="#c89070" stroke-width="2" fill="none"/>
+    <!-- Sunflower hair clip -->
+    <g transform="translate(-95, -115)">
+      <circle cx="0" cy="0" r="18" fill="#8b4513"/>
+      <ellipse cx="-18" cy="0" rx="12" ry="8" fill="#ffd700" transform="rotate(0)"/>
+      <ellipse cx="18" cy="0" rx="12" ry="8" fill="#ffd700"/>
+      <ellipse cx="0" cy="-18" rx="12" ry="8" fill="#ffd700" transform="rotate(90)"/>
+      <ellipse cx="0" cy="18" rx="12" ry="8" fill="#ffd700" transform="rotate(90)"/>
+      <ellipse cx="-13" cy="-13" rx="10" ry="6" fill="#ffcc00" transform="rotate(45 -13 -13)"/>
+      <ellipse cx="13" cy="-13" rx="10" ry="6" fill="#ffcc00" transform="rotate(-45 13 -13)"/>
+      <ellipse cx="-13" cy="13" rx="10" ry="6" fill="#ffcc00" transform="rotate(-45 -13 13)"/>
+      <ellipse cx="13" cy="13" rx="10" ry="6" fill="#ffcc00" transform="rotate(45 13 13)"/>
+      <circle cx="0" cy="0" r="10" fill="#8b4513"/>
+    </g>
+    <!-- Summer dress -->
+    <ellipse cx="0" cy="125" rx="100" ry="60" fill="#fff5e6" opacity="0.9"/>
+    <path d="M-60,90 Q0,70 60,90" stroke="#ffa500" stroke-width="3" fill="none"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#fff" opacity="0.9">落日少女 Sunset Girl</text>
 </svg>

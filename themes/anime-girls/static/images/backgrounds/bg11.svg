@@ -1,38 +1,96 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
-    <linearGradient id="bg11-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#16213e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0f3460;stop-opacity:1" />
+    <linearGradient id="bg11-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a3e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d0a4e;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffff" />
+      <stop offset="50%" style="stop-color:#ff00ff" />
+      <stop offset="100%" style="stop-color:#00ff00" />
+    </linearGradient>
+    <linearGradient id="skin-cyber" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8e0f0" />
+      <stop offset="100%" style="stop-color:#d8d0e8" />
+    </linearGradient>
+    <radialGradient id="eye-neon" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#00ffff" />
+      <stop offset="50%" style="stop-color:#ff00ff" />
+      <stop offset="100%" style="stop-color:#8b008b" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg11-gradient)"/>
-  <g fill="#00d9ff" opacity="0.3">
-    <rect x="100" y="800" width="4" height="280" rx="2"/>
-    <rect x="200" y="700" width="4" height="380" rx="2"/>
-    <rect x="300" y="850" width="4" height="230" rx="2"/>
-    <rect x="450" y="600" width="4" height="480" rx="2"/>
-    <rect x="550" y="750" width="4" height="330" rx="2"/>
-    <rect x="700" y="650" width="4" height="430" rx="2"/>
-    <rect x="850" y="800" width="4" height="280" rx="2"/>
-    <rect x="950" y="550" width="4" height="530" rx="2"/>
-    <rect x="1100" y="700" width="4" height="380" rx="2"/>
-    <rect x="1200" y="800" width="4" height="280" rx="2"/>
-    <rect x="1350" y="650" width="4" height="430" rx="2"/>
-    <rect x="1450" y="750" width="4" height="330" rx="2"/>
-    <rect x="1600" y="600" width="4" height="480" rx="2"/>
-    <rect x="1700" y="850" width="4" height="230" rx="2"/>
-    <rect x="1850" y="700" width="4" height="380" rx="2"/>
+  <!-- Neon grid lines -->
+  <g stroke="#00ffff" stroke-width="1" opacity="0.3">
+    <line x1="0" y1="800" x2="1920" y2="800"/>
+    <line x1="0" y1="850" x2="1920" y2="850"/>
+    <line x1="0" y1="900" x2="1920" y2="900"/>
+    <line x1="0" y1="950" x2="1920" y2="950"/>
+    <line x1="0" y1="1000" x2="1920" y2="1000"/>
   </g>
-  <g fill="#e94560" opacity="0.2">
-    <rect x="150" y="850" width="3" height="230" rx="1.5"/>
-    <rect x="400" y="750" width="3" height="330" rx="1.5"/>
-    <rect x="600" y="800" width="3" height="280" rx="1.5"/>
-    <rect x="800" y="700" width="3" height="380" rx="1.5"/>
-    <rect x="1000" y="650" width="3" height="430" rx="1.5"/>
-    <rect x="1250" y="750" width="3" height="330" rx="1.5"/>
-    <rect x="1500" y="800" width="3" height="280" rx="1.5"/>
-    <rect x="1750" y="650" width="3" height="430" rx="1.5"/>
+  <g stroke="#ff00ff" stroke-width="1" opacity="0.3">
+    <line x1="200" y1="750" x2="200" y2="1080"/>
+    <line x1="400" y1="750" x2="400" y2="1080"/>
+    <line x1="600" y1="750" x2="600" y2="1080"/>
+    <line x1="800" y1="750" x2="800" y2="1080"/>
+    <line x1="1000" y1="750" x2="1000" y2="1080"/>
+    <line x1="1200" y1="750" x2="1200" y2="1080"/>
+    <line x1="1400" y1="750" x2="1400" y2="1080"/>
+    <line x1="1600" y1="750" x2="1600" y2="1080"/>
+    <line x1="1800" y1="750" x2="1800" y2="1080"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#00d9ff" opacity="0.8">赛博朋克 Cyber Punk</text>
+  <!-- Neon shapes -->
+  <polygon points="150,200 200,100 250,200" fill="none" stroke="#ff00ff" stroke-width="2" opacity="0.5"/>
+  <rect x="1650" y="150" width="80" height="80" fill="none" stroke="#00ffff" stroke-width="2" opacity="0.5"/>
+  <!-- Anime Girl - Cyber Punk Theme -->
+  <g transform="translate(960, 480)">
+    <!-- Cyber hair with neon glow -->
+    <ellipse cx="0" cy="-20" rx="195" ry="245" fill="url(#hair-cyber)"/>
+    <ellipse cx="-145" cy="100" rx="75" ry="215" fill="url(#hair-cyber)"/>
+    <ellipse cx="145" cy="100" rx="75" ry="215" fill="url(#hair-cyber)"/>
+    <!-- Digital glitch effects in hair -->
+    <rect x="-120" y="-80" width="40" height="5" fill="#00ffff" opacity="0.7"/>
+    <rect x="80" y="-60" width="50" height="5" fill="#ff00ff" opacity="0.7"/>
+    <rect x="-90" y="50" width="30" height="5" fill="#00ff00" opacity="0.7"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-5" rx="90" ry="105" fill="url(#skin-cyber)"/>
+    <!-- Bangs -->
+    <path d="M-90,-50 Q-72,-125 -48,-145 Q-22,-108 0,-150 Q22,-108 48,-145 Q72,-125 90,-50" fill="url(#hair-cyber)"/>
+    <!-- Cyber eyes with neon effect -->
+    <g transform="translate(-38, -30)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#0f0f23"/>
+      <ellipse cx="0" cy="0" rx="25" ry="31" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="19" ry="24" fill="url(#eye-neon)"/>
+      <ellipse cx="5" cy="-6" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <rect x="-15" y="10" width="30" height="2" fill="#00ffff" opacity="0.5"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#ff00ff" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(38, -30)">
+      <ellipse cx="0" cy="0" rx="27" ry="33" fill="#0f0f23"/>
+      <ellipse cx="0" cy="0" rx="25" ry="31" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="19" ry="24" fill="url(#eye-neon)"/>
+      <ellipse cx="-5" cy="-6" rx="6" ry="8" fill="#fff" opacity="0.9"/>
+      <rect x="-15" y="10" width="30" height="2" fill="#ff00ff" opacity="0.5"/>
+      <path d="M-27,-16 Q0,-28 27,-16" stroke="#00ffff" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-55" cy="0" rx="18" ry="10" fill="#ff00ff" opacity="0.3"/>
+    <ellipse cx="55" cy="0" rx="18" ry="10" fill="#00ffff" opacity="0.3"/>
+    <!-- Nose and mouth -->
+    <path d="M0,0 L2,15" stroke="#c8b8d0" stroke-width="2" fill="none"/>
+    <path d="M-10,35 Q0,43 10,35" stroke="#ff00ff" stroke-width="2" fill="none"/>
+    <!-- Cyber headset -->
+    <ellipse cx="-105" cy="-30" rx="28" ry="38" fill="#1a1a3e" stroke="#00ffff" stroke-width="3"/>
+    <ellipse cx="105" cy="-30" rx="28" ry="38" fill="#1a1a3e" stroke="#ff00ff" stroke-width="3"/>
+    <path d="M-95,-85 Q0,-120 95,-85" stroke="#2d2d5e" stroke-width="10" fill="none"/>
+    <circle cx="-105" cy="-30" r="8" fill="#00ffff"/>
+    <circle cx="105" cy="-30" r="8" fill="#ff00ff"/>
+    <!-- Cyber outfit -->
+    <ellipse cx="0" cy="140" rx="110" ry="70" fill="#1a1a3e" opacity="0.95"/>
+    <path d="M-70,105 Q0,85 70,105" stroke="#00ffff" stroke-width="3" fill="none"/>
+    <path d="M-50,120 Q0,100 50,120" stroke="#ff00ff" stroke-width="2" fill="none"/>
+    <rect x="-15" y="85" width="30" height="10" fill="#00ff00"/>
+  </g>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#00ffff" opacity="0.9">赛博朋克 Cyber Punk</text>
 </svg>

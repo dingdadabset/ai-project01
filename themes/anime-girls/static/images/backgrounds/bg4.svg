@@ -2,55 +2,83 @@
   <defs>
     <linearGradient id="bg4-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#134e5e;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#71b280;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a6b3d;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#2d5016;stop-opacity:1" />
     </linearGradient>
-    <radialGradient id="light-ray" cx="50%" cy="20%" r="80%">
-      <stop offset="0%" style="stop-color:#fff;stop-opacity:0.4" />
-      <stop offset="100%" style="stop-color:#fff;stop-opacity:0" />
+    <linearGradient id="hair-green" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2e8b57" />
+      <stop offset="100%" style="stop-color:#1a5030" />
+    </linearGradient>
+    <linearGradient id="skin-forest" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffecd4" />
+      <stop offset="100%" style="stop-color:#ffe0c0" />
+    </linearGradient>
+    <radialGradient id="eye-emerald" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#50c878" />
+      <stop offset="100%" style="stop-color:#228b22" />
     </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg4-gradient)"/>
-  <!-- Light rays through trees -->
-  <ellipse cx="960" cy="100" rx="800" ry="600" fill="url(#light-ray)"/>
-  <!-- Trees silhouettes -->
-  <g fill="#1a3a1a" opacity="0.8">
-    <!-- Left trees -->
-    <polygon points="0,1080 100,600 200,1080"/>
-    <polygon points="150,1080 280,500 410,1080"/>
-    <polygon points="350,1080 500,450 650,1080"/>
-    <!-- Right trees -->
-    <polygon points="1520,1080 1650,550 1780,1080"/>
-    <polygon points="1650,1080 1780,480 1920,1080"/>
-    <polygon points="1720,1080 1850,520 1920,800 1920,1080"/>
+  <!-- Forest trees silhouettes -->
+  <g fill="#0a3010" opacity="0.3">
+    <polygon points="100,1080 150,600 200,1080"/>
+    <polygon points="250,1080 320,550 390,1080"/>
+    <polygon points="1550,1080 1620,580 1690,1080"/>
+    <polygon points="1750,1080 1800,620 1850,1080"/>
   </g>
-  <!-- Fireflies / magical particles -->
-  <g fill="#fffacd">
-    <circle cx="300" cy="400" r="4" opacity="0.8"/>
-    <circle cx="500" cy="350" r="3" opacity="0.6"/>
-    <circle cx="700" cy="450" r="5" opacity="0.7"/>
-    <circle cx="900" cy="380" r="3" opacity="0.8"/>
-    <circle cx="1100" cy="420" r="4" opacity="0.6"/>
-    <circle cx="1300" cy="360" r="3" opacity="0.7"/>
-    <circle cx="1500" cy="400" r="5" opacity="0.8"/>
-    <circle cx="400" cy="600" r="3" opacity="0.6"/>
-    <circle cx="600" cy="550" r="4" opacity="0.7"/>
-    <circle cx="800" cy="620" r="3" opacity="0.8"/>
-    <circle cx="1000" cy="580" r="5" opacity="0.6"/>
-    <circle cx="1200" cy="640" r="3" opacity="0.7"/>
-    <circle cx="1400" cy="590" r="4" opacity="0.8"/>
-    <circle cx="1600" cy="650" r="3" opacity="0.6"/>
+  <!-- Fireflies -->
+  <g fill="#98fb98">
+    <circle cx="200" cy="400" r="4" opacity="0.8"/>
+    <circle cx="350" cy="300" r="3" opacity="0.6"/>
+    <circle cx="1600" cy="350" r="4" opacity="0.7"/>
+    <circle cx="1750" cy="450" r="3" opacity="0.6"/>
+    <circle cx="400" cy="700" r="3" opacity="0.5"/>
+    <circle cx="1500" cy="680" r="4" opacity="0.7"/>
   </g>
-  <!-- Mushrooms -->
-  <g>
-    <ellipse cx="250" cy="950" rx="30" ry="15" fill="#8b4513"/>
-    <ellipse cx="250" cy="935" rx="40" ry="20" fill="#ff6b6b"/>
-    <circle cx="240" cy="930" r="5" fill="#fff" opacity="0.7"/>
-    <circle cx="260" cy="940" r="4" fill="#fff" opacity="0.7"/>
-    <ellipse cx="1700" cy="980" rx="25" ry="12" fill="#8b4513"/>
-    <ellipse cx="1700" cy="968" rx="35" ry="18" fill="#ff6b6b"/>
-    <circle cx="1690" cy="963" r="4" fill="#fff" opacity="0.7"/>
-    <circle cx="1710" cy="973" r="3" fill="#fff" opacity="0.7"/>
+  <!-- Anime Girl - Enchanted Forest Theme -->
+  <g transform="translate(960, 500)">
+    <!-- Long green hair -->
+    <ellipse cx="0" cy="-30" rx="185" ry="235" fill="url(#hair-green)"/>
+    <ellipse cx="-130" cy="100" rx="70" ry="190" fill="url(#hair-green)"/>
+    <ellipse cx="130" cy="100" rx="70" ry="190" fill="url(#hair-green)"/>
+    <!-- Leaves in hair -->
+    <ellipse cx="-80" cy="-120" rx="12" ry="8" fill="#90ee90" transform="rotate(-30 -80 -120)"/>
+    <ellipse cx="70" cy="-100" rx="10" ry="6" fill="#98fb98" transform="rotate(25 70 -100)"/>
+    <ellipse cx="-100" cy="30" rx="11" ry="7" fill="#90ee90" transform="rotate(-20 -100 30)"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-15" rx="86" ry="100" fill="url(#skin-forest)"/>
+    <!-- Bangs with slight wavy effect -->
+    <path d="M-86,-65 Q-68,-135 -42,-150 Q-18,-115 0,-155 Q18,-115 42,-150 Q68,-135 86,-65" fill="url(#hair-green)"/>
+    <!-- Eyes -->
+    <g transform="translate(-35, -40)">
+      <ellipse cx="0" cy="0" rx="24" ry="29" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="17" ry="21" fill="url(#eye-emerald)"/>
+      <ellipse cx="5" cy="-5" rx="6" ry="7" fill="#fff" opacity="0.9"/>
+      <path d="M-24,-13 Q0,-25 24,-13" stroke="#1a3020" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(35, -40)">
+      <ellipse cx="0" cy="0" rx="24" ry="29" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="17" ry="21" fill="url(#eye-emerald)"/>
+      <ellipse cx="-5" cy="-5" rx="6" ry="7" fill="#fff" opacity="0.9"/>
+      <path d="M-24,-13 Q0,-25 24,-13" stroke="#1a3020" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-50" cy="-10" rx="16" ry="9" fill="#ffb6c1" opacity="0.4"/>
+    <ellipse cx="50" cy="-10" rx="16" ry="9" fill="#ffb6c1" opacity="0.4"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-10 L2,3" stroke="#deb887" stroke-width="2" fill="none"/>
+    <path d="M-10,22 Q0,30 10,22" stroke="#c9a085" stroke-width="2" fill="none"/>
+    <!-- Flower crown -->
+    <g transform="translate(0, -155)">
+      <ellipse cx="-40" cy="0" rx="10" ry="8" fill="#ff69b4"/>
+      <ellipse cx="0" cy="-10" rx="12" ry="10" fill="#ff1493"/>
+      <ellipse cx="40" cy="0" rx="10" ry="8" fill="#ff69b4"/>
+      <ellipse cx="-20" cy="-5" rx="8" ry="6" fill="#90ee90"/>
+      <ellipse cx="20" cy="-5" rx="8" ry="6" fill="#90ee90"/>
+    </g>
+    <!-- Forest dress -->
+    <ellipse cx="0" cy="125" rx="100" ry="60" fill="#228b22" opacity="0.85"/>
+    <path d="M-60,90 Q0,70 60,90" stroke="#90ee90" stroke-width="3" fill="none"/>
   </g>
-  <text x="960" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.9">梦幻森林 Enchanted Forest</text>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#98fb98" opacity="0.9">魔法森林 Enchanted Forest</text>
 </svg>

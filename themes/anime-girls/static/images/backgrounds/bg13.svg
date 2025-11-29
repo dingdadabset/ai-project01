@@ -1,25 +1,89 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <defs>
-    <linearGradient id="bg13-gradient" x1="50%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    <linearGradient id="bg13-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8edea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fed6e3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d299c2;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="hair-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87ceeb" />
+      <stop offset="100%" style="stop-color:#4682b4" />
+    </linearGradient>
+    <linearGradient id="skin-cloud" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fffaf5" />
+      <stop offset="100%" style="stop-color:#fff0e8" />
+    </linearGradient>
+    <radialGradient id="eye-sky" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#87ceeb" />
+      <stop offset="100%" style="stop-color:#4169e1" />
+    </radialGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg13-gradient)"/>
-  <g fill="#fff" opacity="0.4">
-    <ellipse cx="200" cy="800" rx="200" ry="60"/>
-    <ellipse cx="600" cy="850" rx="250" ry="80"/>
-    <ellipse cx="1000" cy="780" rx="180" ry="50"/>
-    <ellipse cx="1400" cy="830" rx="220" ry="70"/>
-    <ellipse cx="1750" cy="800" rx="170" ry="55"/>
+  <!-- Fluffy clouds -->
+  <g fill="#fff" opacity="0.8">
+    <ellipse cx="200" cy="200" rx="100" ry="50"/>
+    <ellipse cx="140" cy="185" rx="60" ry="35"/>
+    <ellipse cx="280" cy="190" rx="70" ry="40"/>
+    <ellipse cx="1700" cy="180" rx="110" ry="55"/>
+    <ellipse cx="1620" cy="165" rx="65" ry="38"/>
+    <ellipse cx="1800" cy="170" rx="75" ry="42"/>
+    <ellipse cx="400" cy="800" rx="90" ry="45"/>
+    <ellipse cx="1500" cy="850" rx="95" ry="48"/>
   </g>
-  <g fill="#fff" opacity="0.3">
-    <ellipse cx="100" cy="700" rx="150" ry="45"/>
-    <ellipse cx="400" cy="750" rx="180" ry="55"/>
-    <ellipse cx="800" cy="680" rx="200" ry="60"/>
-    <ellipse cx="1200" cy="730" rx="160" ry="50"/>
-    <ellipse cx="1600" cy="700" rx="190" ry="58"/>
-    <ellipse cx="1850" cy="750" rx="120" ry="40"/>
+  <!-- Anime Girl - Cloud Girl Theme -->
+  <g transform="translate(960, 500)">
+    <!-- Light blue flowing hair -->
+    <ellipse cx="0" cy="-25" rx="195" ry="250" fill="url(#hair-sky)"/>
+    <ellipse cx="-140" cy="100" rx="75" ry="215" fill="url(#hair-sky)"/>
+    <ellipse cx="140" cy="100" rx="75" ry="215" fill="url(#hair-sky)"/>
+    <!-- Fluffy cloud accessories in hair -->
+    <ellipse cx="-90" cy="-100" rx="25" ry="15" fill="#fff" opacity="0.8"/>
+    <ellipse cx="80" cy="-90" rx="22" ry="13" fill="#fff" opacity="0.8"/>
+    <!-- Face -->
+    <ellipse cx="0" cy="-10" rx="88" ry="103" fill="url(#skin-cloud)"/>
+    <!-- Bangs -->
+    <path d="M-88,-55 Q-70,-130 -46,-148 Q-22,-110 0,-152 Q22,-110 46,-148 Q70,-130 88,-55" fill="url(#hair-sky)"/>
+    <!-- Eyes -->
+    <g transform="translate(-36, -35)">
+      <ellipse cx="0" cy="0" rx="26" ry="32" fill="#fff"/>
+      <ellipse cx="3" cy="2" rx="19" ry="24" fill="url(#eye-sky)"/>
+      <ellipse cx="5" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="-2" cy="7" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-26,-15 Q0,-27 26,-15" stroke="#4169e1" stroke-width="3" fill="none"/>
+    </g>
+    <g transform="translate(36, -35)">
+      <ellipse cx="0" cy="0" rx="26" ry="32" fill="#fff"/>
+      <ellipse cx="-3" cy="2" rx="19" ry="24" fill="url(#eye-sky)"/>
+      <ellipse cx="-5" cy="-6" rx="7" ry="9" fill="#fff" opacity="0.9"/>
+      <ellipse cx="2" cy="7" rx="4" ry="5" fill="#fff" opacity="0.5"/>
+      <path d="M-26,-15 Q0,-27 26,-15" stroke="#4169e1" stroke-width="3" fill="none"/>
+    </g>
+    <!-- Blush -->
+    <ellipse cx="-53" cy="-5" rx="18" ry="10" fill="#fed6e3" opacity="0.6"/>
+    <ellipse cx="53" cy="-5" rx="18" ry="10" fill="#fed6e3" opacity="0.6"/>
+    <!-- Nose and mouth -->
+    <path d="M0,-5 L2,8" stroke="#e0c0b8" stroke-width="2" fill="none"/>
+    <path d="M-10,28 Q0,36 10,28" stroke="#d299c2" stroke-width="2" fill="none"/>
+    <!-- Cloud wings -->
+    <g fill="#fff" opacity="0.85">
+      <ellipse cx="-180" cy="20" rx="90" ry="60"/>
+      <ellipse cx="-150" cy="-10" rx="50" ry="35"/>
+      <ellipse cx="-200" cy="50" rx="55" ry="40"/>
+      <ellipse cx="180" cy="20" rx="90" ry="60"/>
+      <ellipse cx="150" cy="-10" rx="50" ry="35"/>
+      <ellipse cx="200" cy="50" rx="55" ry="40"/>
+    </g>
+    <!-- Cloud ornament -->
+    <g transform="translate(0, -170)">
+      <ellipse cx="0" cy="0" rx="40" ry="20" fill="#fff"/>
+      <ellipse cx="-25" cy="-8" rx="22" ry="14" fill="#fff"/>
+      <ellipse cx="25" cy="-8" rx="22" ry="14" fill="#fff"/>
+    </g>
+    <!-- Sky dress -->
+    <ellipse cx="0" cy="135" rx="108" ry="68" fill="#87ceeb" opacity="0.9"/>
+    <path d="M-68,100 Q0,80 68,100" stroke="#fff" stroke-width="3" fill="none"/>
+    <!-- Cloud on dress -->
+    <ellipse cx="0" cy="90" rx="30" ry="15" fill="#fff" opacity="0.8"/>
   </g>
-  <text x="960" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#fff" opacity="0.8">云端少女 Cloud Girl</text>
+  <text x="960" y="1000" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#4682b4" opacity="0.9">云端少女 Cloud Girl</text>
 </svg>
