@@ -274,14 +274,7 @@ onMounted(async () => {
 }
 
 /* Custom background from any theme (including themes/jpg images) */
-#app.has-custom-background .theme-background-layer {
-  background-image: var(--theme-background-image);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
+#app.has-custom-background .theme-background-layer,
 #app.custom-background .theme-background-layer {
   background-image: var(--theme-background-image);
   background-size: cover;
